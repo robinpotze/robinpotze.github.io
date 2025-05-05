@@ -1,0 +1,68 @@
+.logo-home-link {
+    width: 64px;
+    height: 64px;
+    position: absolute;
+    top: 64px;
+    left: 64px;
+}
+
+#landing-name {
+    width: 64px;
+    height: 64px;
+    position: absolute;
+    top: 64px;
+    right: 64px;
+    text-align: center;
+}
+
+#landing-content {
+    gap: 28px;
+    padding: 188px 0;
+}
+
+#landing-content-top {
+    height: 132px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+
+
+
+/* WHERE TO PUT THIS?? */
+.hero-section {
+    height: 100vh;
+    display: flex;
+    padding: 64px 0 0 64px;
+    background: linear-gradient(to bottom,
+            var(--c-BRND),
+            var(--c-DRK_TRNS))
+}
+
+.hero-content {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.hero-title {
+    font: var(--f-TITLE);
+    color: var(--c-LGHT);
+    text-transform: uppercase;
+    text-shadow: var(--s-TXT_SHDW);
+    line-height: 0.7em;
+}
+
+.hero-side {
+    width: 64px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+
+.hero-accents-bottom {
+    display: flex;
+    gap: 54px;
+}
