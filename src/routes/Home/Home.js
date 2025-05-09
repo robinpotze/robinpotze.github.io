@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
+
 import RAD_GRID_TXT from '../../components/DECO/RAD_GRID/TXT/RAD_GRID_TXT';
+import BlackwallEffect from '../../components/Blackwall/Blackwall';
 
 import './Home.css';
 
@@ -25,7 +27,9 @@ export default function Home() {
     }, []);
 
     return (
+
         <div className='hero-section' id='landing-hero'>
+            <BlackwallEffect onScrollTrigger={() => {"hero-section"}} />
             <a href='/' className='logo-home-link'><img src="logo64.png" alt='robin potze logo' className='logo-header' id='logo-landing' /></a>
             <p className='tech-small' id='landing-name'>ROBIN POTZE</p>
             <div className='hero-content' id='landing-content'>
@@ -41,7 +45,7 @@ export default function Home() {
                     <p className='tech-small' id='landing-subtitle-text'>GRONINGEN | NL</p>
                 </div>
                 <div className='hero-accents-bottom' id='landing-accents-bottom'>
-                    <RAD_GRID_TXT/>
+                    <RAD_GRID_TXT />
                 </div>
             </div>
             <div className='hero-side' id='landing-side'></div>
