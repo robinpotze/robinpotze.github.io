@@ -6,6 +6,12 @@ uniform float u_time;
 uniform vec2 u_mouse;
 uniform sampler2D u_flame;
 
+vec2 getAspectUV(vec2 fragCoord, vec2 resolution) {
+    vec2 uv = fragCoord / resolution;
+    uv.x = (uv.x - 0.5) * (resolution.x / resolution.y) + 0.5;
+    return uv;
+}
+
 float random(vec2 st) {
     return fract(sin(dot(st.xy, vec2(12.9898, 78.233))) * 43758.5453123);
 }
@@ -33,25 +39,22 @@ float dotGrid(vec2 uv, float gridSize, float dotRadius) {
     return smoothstep(dotRadius, dotRadius - 0.02, dist);
 }
 
-float ratio(float height, float width) {
-    return height / width;
-}
-
 void main() {
-    vec2 uv = gl_FragCoord.xy / u_resolution.xy;
+    vec2 uv = getAspectUV(gl_FragCoord.xy, u_resolution);
 
     vec3 baseColor = vec3(0.0, 0.0, 0.0);
     vec3 glitchColor = vec3(1.0, 0.0, 0.0);
-    vec3 floorColor = vec3(0.1, 0.1, 0.1);
+    vec3 floorColor = vec3(0., 0., 0.);
 
     float floorLine = 0.3;
+    float floorSpecular = 0.5;
 
-    float mask = circularMask(uv, u_mouse, 0.05);
+    float mouseMask = circularMask(uv, u_mouse, 0.05);
 
     vec3 flameColor = texture2D(u_flame, uv).rgb;
     float flameBrightness = dot(flameColor, vec3(0.299, 0.587, 0.114));
 
-    vec2 distortedUV = uv + (flameBrightness - mask - .5) * 0.05;
+    vec2 distortedUV = uv + (flameBrightness - mouseMask - 0.5) * 0.05;
 
     float dotMask = dotGrid(distortedUV, 200.0, 0.15);
 
@@ -83,30 +86,36 @@ void main() {
         reflectedUV.x += ripple;
         reflectedUV.y += ripple;
 
-        reflectedUV.xy += flameBrightness * 0.01;
-        vec3 reflectedFlame = mix(flameColor, baseColor, .1);
-
-        vec3 reflectionColor = mix(reflectedFlame, glitchColor, layeredNoise);
+        vec3 reflectionColor = mix(baseColor, glitchColor, layeredNoise);
         reflectionColor.r += redUV.x * flicker;
         reflectionColor.g += distortedUV.x * flicker;
         reflectionColor.b += blueUV.x * flicker;
 
         float reflectionFalloff = smoothstep(0.0, floorLine, distortedUV.y);
-        float reflectionStrength = 0.5 * reflectionFalloff;
+        float reflectionStrength = floorSpecular * reflectionFalloff;
 
         color = mix(floorColor, reflectionColor, reflectionStrength);
+
+        vec2 reflectedFlameUV = distortedUV;
+        reflectedFlameUV.y = floorLine + (floorLine - distortedUV.y);
+
+        vec3 reflectedFlameColor = texture2D(u_flame, reflectedFlameUV).rgb;
+        float reflectedDotMask = dotGrid(reflectedFlameUV, 200.0, 0.15);
+
+        color += reflectedFlameColor * reflectedDotMask * 0.5;
     } else {
         color = mix(baseColor, glitchColor, layeredNoise);
+        color += flameColor * dotMask;
+
         color.r += redUV.x * flicker;
         color.g += distortedUV.x * flicker;
         color.b += blueUV.x * flicker;
     }
 
-    color = mix(color, baseColor, mask);
+    color = mix(color, baseColor, mouseMask);
+    // color = mix(color, flameColor, .1);
 
-    color = mix(color, flameColor, .1);
-
-    color += flameColor * dotMask;
+    // color += flameColor * dotMask;
     color *= dotMask;
 
     gl_FragColor = vec4(color, 1);

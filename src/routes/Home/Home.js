@@ -33,11 +33,11 @@ export default function Home() {
             <p className='tech-small' id='landing-name'>ROBIN POTZE</p>
             <div className='hero-content' id='landing-content'>
                 <div className='hero-content-top' id='landing-content-top'>
-                    <h1 className='hero-title' id='landing-title'>DESIGNED</h1>
+                    <h1 className='hero-title' id='landing-title'>ROBIN</h1>
                     <p className='tech-small' id='landing-time'>{date}</p>
                 </div>
                 <div className='hero-content-bottom' id='landing-content-bottom'>
-                    <h1 className='hero-title' id='landing-title'>TO COMPILE</h1>
+                    <h1 className='hero-title' id='landing-title'>POTZE</h1>
                 </div>
                 <div className='hero-subtitle' id='landing-subtitle'>
                     <p className='tech-small' id='landing-subtitle-text'>PRJNo::000 | C://PRJ/PF/CUSTOM | V1</p>

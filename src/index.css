@@ -29,6 +29,10 @@
   --s-TXT_SHDW: 0px 0px 20px var(--c-DRK_TRNS);
 }
 
+html {
+  scrollbar-width: none;
+}
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',

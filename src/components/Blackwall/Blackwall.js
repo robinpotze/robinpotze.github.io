@@ -74,10 +74,13 @@ export default function BlackwallEffect() {
         animate();
 
         function onMouseMove(e) {
+            const aspect = window.innerWidth / window.innerHeight;
             const x = e.clientX / window.innerWidth;
             const y = 1.0 - e.clientY / window.innerHeight;
-            flameUniforms.u_mouse.value = new THREE.Vector2(x, y);
-            blackwallUniforms.u_mouse.value = new THREE.Vector2(x, y);
+            const ascpectMouseX = (x - 0.5) * aspect + 0.5;
+
+            flameUniforms.u_mouse.value.set(ascpectMouseX, y);
+            blackwallUniforms.u_mouse.value.set(ascpectMouseX, y);
         }
 
         function onResize() {
