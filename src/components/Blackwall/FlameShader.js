@@ -22,16 +22,9 @@ float sphere(vec3 p, vec4 spr)
 
 float flame(vec3 p)
 {
-	vec2 mouse = (u_mouse) * vec2(u_resolution.x/u_resolution.y, 1.);
-	vec2 mouseScene = vec2(mouse.x, mouse.y);
-
-	float mouseDist = length(p.xy - mouseScene);
-
 	float d = sphere(p*vec3(0.5,.5,1.), vec4(.0,-1.,.0,1.));
 
-	float repel = smoothstep(.3, 0., mouseDist) * 1.;
-
-	return d + repel + (noise(p + vec3(.0,u_time * 2.,.0)) + noise(p * 3.) * .5) * .25 * (p.y) ;
+	return d + (noise(p + vec3(.0,u_time * 2.,.0)) + noise(p * 3.) * .5) * .25 * (p.y) ;
 }
 
 float scene(vec3 p)
