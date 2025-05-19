@@ -17,13 +17,13 @@ export default function BlackwallEffect() {
             u_time: { value: 0.0 },
             u_resolution: { value: new THREE.Vector2(window.innerWidth, window.innerHeight) },
             u_mouse: { value: new THREE.Vector2(0.5, 0.5) },
-            u_flame: { value: null },
         };
 
         const blackwallUniforms = {
             u_time: { value: 0.0 },
             u_resolution: { value: new THREE.Vector2(window.innerWidth, window.innerHeight) },
             u_mouse: { value: new THREE.Vector2(0.5, 0.5) },
+            u_flame: { value: null },
         };
 
         const scene = new THREE.Scene();
@@ -37,14 +37,14 @@ export default function BlackwallEffect() {
 
         const flameMaterial = new THREE.ShaderMaterial({
             uniforms: flameUniforms,
-            framgmentShader: flameShader,
+            fragmentShader: flameShader,
             transparent: true,
         });
         const flameMesh = new THREE.Mesh(geometry, flameMaterial);
         const flameScene = new THREE.Scene();
         flameScene.add(flameMesh);
 
-        blackwallUniforms.u_flame = flameRenderTarget.texture;
+        blackwallUniforms.u_flame.value = flameRenderTarget.texture;
 
         const blackwallMaterial = new THREE.ShaderMaterial({
             uniforms: blackwallUniforms,
