@@ -1,3 +1,4 @@
+export default `
 precision mediump float;
 
 uniform vec2 u_resolution;
@@ -94,3 +95,4 @@ void main() {
 
     gl_FragColor = vec4(color, 1.0);
 }
+`

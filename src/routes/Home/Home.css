@@ -35,9 +35,6 @@
     height: 100vh;
     display: flex;
     padding: 64px 0 0 64px;
-    background: linear-gradient(to bottom,
-            var(--c-BRND),
-            var(--c-DRK_TRNS))
 }
 
 .hero-content {

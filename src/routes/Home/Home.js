@@ -27,7 +27,6 @@ export default function Home() {
     }, []);
 
     return (
-
         <div className='hero-section' id='landing-hero'>
             <BlackwallEffect onScrollTrigger={() => {"hero-section"}} />
             <a href='/' className='logo-home-link'><img src="logo64.png" alt='robin potze logo' className='logo-header' id='logo-landing' /></a>
