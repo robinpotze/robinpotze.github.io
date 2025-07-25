@@ -49,14 +49,14 @@ void main() {
     float floorLine = 0.3;
     float floorSpecular = 0.5;
 
-    float mouseMask = circularMask(uv, u_mouse, 0.05);
+    float mouseMask = circularMask(uv, u_mouse, 0.08);
 
     vec3 flameColor = texture2D(u_flame, uv).rgb;
     float flameBrightness = dot(flameColor, vec3(0.299, 0.587, 0.114));
 
     vec2 distortedUV = uv + (flameBrightness - mouseMask - 0.5) * 0.05;
 
-    float dotMask = dotGrid(distortedUV, 200.0, 0.15);
+    float dotMask = dotGrid(distortedUV, 100.0, 0.35);
 
     float wave = sin(distortedUV.x * 5.0 + u_time * 0.5) * 0.1;
     distortedUV.x += wave;
@@ -100,12 +100,11 @@ void main() {
         reflectedFlameUV.y = floorLine + (floorLine - distortedUV.y);
 
         vec3 reflectedFlameColor = texture2D(u_flame, reflectedFlameUV).rgb;
-        float reflectedDotMask = dotGrid(reflectedFlameUV, 200.0, 0.15);
 
-        color += reflectedFlameColor * reflectedDotMask * 0.5;
+        color += reflectedFlameColor;
     } else {
         color = mix(baseColor, glitchColor, layeredNoise);
-        color += flameColor * dotMask;
+        color += flameColor;
 
         color.r += redUV.x * flicker;
         color.g += distortedUV.x * flicker;
@@ -117,6 +116,8 @@ void main() {
 
     // color += flameColor * dotMask;
     color *= dotMask;
+
+    color *= 1.0;
 
     gl_FragColor = vec4(color, 1);
 }

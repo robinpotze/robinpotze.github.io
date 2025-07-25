@@ -1,9 +1,10 @@
 export default `
-precision mediump float;
+precision lowp float;
 
 uniform vec2 u_resolution;
 uniform float u_time;
 uniform vec2 u_mouse;
+uniform sampler3D u_noiseTex;
 
 vec2 getAspectUV(vec2 fragCoord, vec2 resolution) {
     vec2 uv = fragCoord / resolution;

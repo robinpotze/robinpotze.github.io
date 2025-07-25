@@ -1,8 +1,8 @@
-import { useRef, useEffect } from "react";
+import { useEffect, useRef } from "react";
 import * as THREE from "three";
 
-import flameShader from "./FlameShader.js";
 import blackwallShader from "./BlackwallShader.js";
+import flameShader from "./FlameShader.js";
 
 import "./Blackwall.css";
 
@@ -13,27 +13,24 @@ export default function BlackwallEffect() {
         const container = containerRef.current;
         if (!container) return;
 
-        const flameUniforms = {
-            u_time: { value: 0.0 },
-            u_resolution: { value: new THREE.Vector2(window.innerWidth, window.innerHeight) },
-            u_mouse: { value: new THREE.Vector2(0.5, 0.5) },
-        };
-
-        const blackwallUniforms = {
-            u_time: { value: 0.0 },
-            u_resolution: { value: new THREE.Vector2(window.innerWidth, window.innerHeight) },
-            u_mouse: { value: new THREE.Vector2(0.5, 0.5) },
-            u_flame: { value: null },
-        };
-
         const scene = new THREE.Scene();
         const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
         const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-        renderer.setSize(window.innerWidth, window.innerHeight);
+        const renderScale = 0.6;
+        
+        renderer.setSize(window.innerWidth * renderScale, window.innerHeight * renderScale);
+        renderer.domElement.style.width = "100vw";
+        renderer.domElement.style.height = "100vh";
         container.appendChild(renderer.domElement);
 
-        const flameRenderTarget = new THREE.WebGLRenderTarget(window.innerWidth, window.innerHeight);
+        const flameRenderTarget = new THREE.WebGLRenderTarget(window.innerWidth * renderScale, window.innerHeight * renderScale);
         const geometry = new THREE.PlaneGeometry(2, 2);
+
+        const flameUniforms = {
+            u_time: { value: 0.0 },
+            u_resolution: { value: new THREE.Vector2(window.innerWidth * renderScale, window.innerHeight * renderScale) },
+            u_mouse: { value: new THREE.Vector2(0.5, 0.5) },
+        };
 
         const flameMaterial = new THREE.ShaderMaterial({
             uniforms: flameUniforms,
@@ -44,7 +41,12 @@ export default function BlackwallEffect() {
         const flameScene = new THREE.Scene();
         flameScene.add(flameMesh);
 
-        blackwallUniforms.u_flame.value = flameRenderTarget.texture;
+        const blackwallUniforms = {
+            u_time: { value: 0.0 },
+            u_resolution: { value: new THREE.Vector2(window.innerWidth * renderScale, window.innerHeight * renderScale) },
+            u_mouse: { value: new THREE.Vector2(0.5, 0.5) },
+            u_flame: { value: flameRenderTarget.texture },
+        };
 
         const blackwallMaterial = new THREE.ShaderMaterial({
             uniforms: blackwallUniforms,
@@ -56,9 +58,13 @@ export default function BlackwallEffect() {
 
         let startTime = performance.now();
 
+        let lastFrame = 0;
+        const targetFPS = 30;
         function animate() {
             requestAnimationFrame(animate);
             const now = performance.now();
+            if (now - lastFrame < 1000 / targetFPS) return;
+            lastFrame = now;
             const elapsed = (now - startTime) * 0.001;
 
             flameUniforms.u_time.value = elapsed;
@@ -84,9 +90,9 @@ export default function BlackwallEffect() {
         }
 
         function onResize() {
-            renderer.setSize(window.innerWidth, window.innerHeight);
-            flameUniforms.u_resolution.value.set(window.innerWidth, window.innerHeight);
-            blackwallUniforms.u_resolution.value.set(window.innerWidth, window.innerHeight);
+            renderer.setSize(window.innerWidth * renderScale, window.innerHeight * renderScale);
+            flameUniforms.u_resolution.value.set(window.innerWidth * renderScale, window.innerHeight * renderScale);
+            blackwallUniforms.u_resolution.value.set(window.innerWidth * renderScale, window.innerHeight * renderScale);
         }
 
         window.addEventListener("mousemove", onMouseMove);
