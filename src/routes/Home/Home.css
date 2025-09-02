@@ -1,46 +1,58 @@
-.logo-home-link {
-    width: 64px;
-    height: 64px;
-    position: absolute;
-    top: 64px;
-    left: 64px;
-}
-
-#landing-name {
-    width: 64px;
-    height: 64px;
-    position: absolute;
-    top: 64px;
-    right: 64px;
-    text-align: center;
-}
-
-#landing-content {
-    gap: 28px;
-    padding: 188px 0;
-}
-
-#landing-content-top {
-    height: 132px;
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
-}
-
-
-
-/* WHERE TO PUT THIS?? */
 .hero-section {
-    height: 100vh;
     display: flex;
+    height: calc(100vh - 64px);
     padding: 64px 0 0 64px;
 }
 
 .hero-content {
-    width: 100%;
-    display: flex;
+    display: grid;
+    grid-template-columns: 1fr 3fr 1fr;
+    grid-template-rows: auto auto auto auto auto;
+    grid-template-areas:
+        "rp-logo . rp-name"
+        "date-time . ."
+        ". hero-title ."
+        ". hero-flavour ."
+        ". hero-deco .";
+    flex: 1;
     flex-direction: column;
+}
+
+.logo-home-link {
+    width: 64px;
+    height: 64px;
+}
+
+#landing-logo {
+    grid-area: rp-logo;
+}
+
+#landing-name {
+    grid-area: rp-name;
+    text-align: right;
+}
+
+#landing-time {
+    grid-area: date-time;
+    mix-blend-mode: difference;
+}
+
+#landing-title {
+    grid-area: hero-title;
+    margin: auto;
+    mix-blend-mode: difference;
+}
+
+#landing-subtitle {
+    grid-area: hero-flavour;
+    margin: auto;
+    text-align: center;
+}
+
+#landing-accents-bottom {
+    grid-area: hero-deco;
+    display: flex;
+    gap: 54px;
 }
 
 .hero-title {
@@ -52,14 +64,42 @@
 }
 
 .hero-side {
-    width: 64px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    align-items: flex-end;
+    align-items: center;
+    align-self: flex-end;
+    padding-bottom: 12px;
+    width: 64px;
+    height: 896px;
+    mix-blend-mode: difference;
 }
 
-.hero-accents-bottom {
+.rotation-wrapper {
+    width: 64px;
+    height: 256px;
+}
+
+#landing-side-flavour-text {
     display: flex;
-    gap: 54px;
+    justify-content: center;
+    flex-direction: column;
+}
+
+#landing-side-flavour-text p {
+    text-align: left;
+    white-space: nowrap;
+}
+
+#landing-side-text-red {
+    color: var(--c-BRND);
+}
+
+#landing-side-deco-text {
+    text-align: center;
+    font-size: 8px;
+}
+
+.side-decal {
+    width: 24px;
 }

@@ -16,13 +16,6 @@
   --f-TECH_SMALL: 12px 'Kode Mono', monospace;
   --f-TECH_TINY: 6px 'Kode Mono', monospace;
 
-  --mp-8px: 8px;
-  --mp-16px: 16px;
-  --mp-24px: 24px;
-  --mp-32px: 32px;
-  --mp-48px: 48px;
-  --mp-64px: 64px;
-
   --b-WDTH: 1px;
   --b-RADIUS: 8px;
 
@@ -61,4 +54,8 @@ ol {
 
 .tech-small {
   font: var(--f-TECH_SMALL);
+}
+
+.r90 {
+  rotate: 90deg;
 }

@@ -13,10 +13,11 @@ export default defineConfig({
             '@app': '/src/app',
             '@components': '/src/components',
             '@deco': '/src/components/DECO',
+            '@hooks': '/src/hooks',
             '@routes': '/src/routes',
         }
     },
     server: {
-        port: 5173,
+        port: 3000,
     },
 });
