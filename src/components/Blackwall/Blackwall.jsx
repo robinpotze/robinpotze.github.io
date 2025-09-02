@@ -1,8 +1,8 @@
 import { useEffect, useRef } from "react";
 import * as THREE from "three";
 
-import blackwallShader from "./BlackwallShader.js";
-import flameShader from "./FlameShader.js";
+import blackwallShader from "./BlackwallShader.jsx";
+import flameShader from "./FlameShader.jsx";
 
 import "./Blackwall.css";
 
