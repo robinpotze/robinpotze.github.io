@@ -1,6 +1,6 @@
 import dateTime from '@hooks/dateTime';
 
-// import BlackwallEffect from '@components/Blackwall/Blackwall';
+import BlackwallEffect from '@components/Blackwall/Blackwall';
 import RAD_GRID from '@components/DECO/RAD_GRID/RAD_GRID';
 
 import './Home.css';
@@ -9,7 +9,7 @@ export default function Home() {
 
     return (
         <div className='hero-section' id='landing-hero'>
-            {/* <BlackwallEffect onScrollTrigger={() => { "hero-section" }} /> */}
+            <BlackwallEffect onScrollTrigger={() => { "hero-section" }} />
             <div className='hero-content' id='landing-content'>
                 <a href='/' className='logo-home-link'><img src="img/logo/logo64.png" alt='robin potze logo' className='logo-header' id='logo-landing' /></a>
                 <p className='tech-small' id='landing-name'>ROBIN <br /> POTZE</p>

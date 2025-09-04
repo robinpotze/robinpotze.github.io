@@ -106,7 +106,6 @@ export default function BlackwallEffect() {
                 container.removeChild(renderer.domElement);
             }
 
-            // Dispose of WebGL resources
             geometry.dispose();
             flameMaterial.dispose();
             flameRenderTarget.dispose();
