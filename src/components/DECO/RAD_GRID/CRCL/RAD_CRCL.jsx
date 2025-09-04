@@ -1,3 +1,4 @@
+import { motion } from 'motion/react';
 import PropTypes from 'prop-types';
 
 export default function RAD_CRCL({ value }) {
@@ -22,7 +23,9 @@ export default function RAD_CRCL({ value }) {
                 stroke="var(--c-TRNS)"
                 strokeWidth={width}
             />
-            <circle
+            <motion.circle
+                animate={{ strokeDashoffset: circumference - progress }}
+                transition={{ type: "easeOut" }}
                 cx="6"
                 cy="6"
                 r={radius}
@@ -30,7 +33,6 @@ export default function RAD_CRCL({ value }) {
                 stroke="var(--c-LGHT)"
                 strokeWidth={width}
                 strokeDasharray={circumference}
-                strokeDashoffset={circumference - progress}
                 transform={`rotate(${value} 6 6)`}
             />
         </svg>

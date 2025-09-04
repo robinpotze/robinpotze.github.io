@@ -1,8 +1,8 @@
 import { useEffect, useRef } from "react";
 import * as THREE from "three";
 
-import blackwallShader from "./BlackwallShader.jsx";
-import flameShader from "./FlameShader.jsx";
+import BlackwallGLSL from "./shaderCode/Blackwall.glsl?raw";
+import FlameGLSL from "./shaderCode/Flame.glsl?raw";
 
 import "./Blackwall.css";
 
@@ -17,7 +17,7 @@ export default function BlackwallEffect() {
         const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
         const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
         const renderScale = 0.6;
-        
+
         renderer.setSize(window.innerWidth * renderScale, window.innerHeight * renderScale);
         renderer.domElement.style.width = "100vw";
         renderer.domElement.style.height = "100vh";
@@ -34,7 +34,7 @@ export default function BlackwallEffect() {
 
         const flameMaterial = new THREE.ShaderMaterial({
             uniforms: flameUniforms,
-            fragmentShader: flameShader,
+            fragmentShader: FlameGLSL,
             transparent: true,
         });
         const flameMesh = new THREE.Mesh(geometry, flameMaterial);
@@ -50,7 +50,7 @@ export default function BlackwallEffect() {
 
         const blackwallMaterial = new THREE.ShaderMaterial({
             uniforms: blackwallUniforms,
-            fragmentShader: blackwallShader,
+            fragmentShader: BlackwallGLSL,
             transparent: true,
         });
         const blackwallMesh = new THREE.Mesh(geometry, blackwallMaterial);

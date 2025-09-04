@@ -7,7 +7,7 @@ export default function randomNumberGenerator(min, max) {
     useEffect(() => {
         const interval = setInterval(() => {
             setRandomNumber(Math.floor(Math.random() * (max - min + 1)) + min);
-        }, 1000);
+        }, 856);
         return () => clearInterval(interval);
     }, [min, max]);
 

@@ -1,23 +1,26 @@
 import { useEffect, useState } from "react";
 
+const formatter = new Intl.DateTimeFormat('en-GB', {
+    dateStyle: 'short',
+    timeStyle: 'medium',
+    timeZone: 'Europe/Amsterdam'
+})
+
 export default function dateTime() {
     const [date, setDate] = useState('');
 
     useEffect(() => {
+        let animationFrame = 0;
         const updateDate = () => {
-            const now = new Date();
-            const amsTime = new Intl.DateTimeFormat('en-GB', {
-                dateStyle: 'short',
-                timeStyle: 'medium',
-                timeZone: 'Europe/Amsterdam',
-            }).format(now);
-            const milliseconds = now.getMilliseconds().toString().padEnd(3, '0');
+            const date = new Date()
+            const amsTime = formatter.format(date);
+            const milliseconds = date.getMilliseconds().toString().padStart(3, '0');
             setDate(`${amsTime}.${milliseconds}`);
+            animationFrame = requestAnimationFrame(updateDate);
         };
         updateDate();
-        const interval = setInterval(updateDate, 96);
 
-        return () => clearInterval(interval);
+        return () => cancelAnimationFrame(animationFrame);
     }, []);
 
     return date;

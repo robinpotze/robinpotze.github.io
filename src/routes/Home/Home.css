@@ -7,10 +7,10 @@
 .hero-content {
     display: grid;
     grid-template-columns: 1fr 3fr 1fr;
-    grid-template-rows: auto auto auto auto auto;
+    grid-template-rows: 1fr 1fr 1fr 1fr 1fr;
     grid-template-areas:
         "rp-logo . rp-name"
-        "date-time . ."
+        "quote . ."
         ". hero-title ."
         ". hero-flavour ."
         ". hero-deco .";
@@ -32,14 +32,19 @@
     text-align: right;
 }
 
-#landing-time {
-    grid-area: date-time;
+#landing-quote {
+    grid-area: quote;
     mix-blend-mode: difference;
+    background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' stroke='white' stroke-width='1' stroke-dasharray='32%2c 128%2c 128%2c 32%2c 128%2c 32%2c 128%2c 128' stroke-dashoffset='0' stroke-linecap='square'/%3e%3c/svg%3e");
+    padding: 16px;
+    width: 200px;
+    height: 200px;
+    font-size: small;
 }
 
 #landing-title {
     grid-area: hero-title;
-    margin: auto;
+    margin: 0 auto;
     mix-blend-mode: difference;
 }
 
@@ -52,7 +57,13 @@
 #landing-accents-bottom {
     grid-area: hero-deco;
     display: flex;
-    gap: 54px;
+    justify-content: space-between;
+}
+
+#landing-accent-decal {
+    margin: 0 0 auto 0;
+    width: 3vw;
+    aspect-ratio: 52/18;
 }
 
 .hero-title {
