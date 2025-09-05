@@ -1,9 +1,8 @@
-import React from "react";
 import PropTypes from 'prop-types';
 
 export default function RAD_TXT({ value }) {
     return (
-        <p className='tech-small' id={'rad-text-' + value}>{value}</p>
+        <p className='tech-small' id={'rad-text-' + value}>{value.toString().padStart(3, '0')}</p>
     );
 };
 

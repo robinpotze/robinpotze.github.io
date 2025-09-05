@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 import { useEffect, useState } from "react";
 
 export default function randomNumberGenerator(min, max) {
-    const [randomNumber, setRandomNumber] = useState(0);
+    const [randomNumber, setRandomNumber] = useState(Math.floor(Math.random() * (max - min + 1)) + min);
 
     useEffect(() => {
         const interval = setInterval(() => {
