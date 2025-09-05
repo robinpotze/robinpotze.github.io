@@ -12,8 +12,9 @@ export default defineConfig({
             '@': '/src',
             '@app': '/src/app',
             '@components': '/src/components',
-            '@deco': '/src/components/DECO',
+            '@deco': '/src/components/decoration',
             '@hooks': '/src/hooks',
+            '@interaction': '/src/components/interaction',
             '@routes': '/src/routes',
         }
     },

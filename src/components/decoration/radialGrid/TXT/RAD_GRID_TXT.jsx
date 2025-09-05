@@ -2,7 +2,7 @@ import randomNumberGenerator from '@hooks/randomNumberGenerator';
 
 import RAD_TXT from "./RAD_TXT";
 
-import '../RAD_GRID.css';
+import '../RadialGrid.css';
 
 export default function RAD_GRID_TXT() {
     return (

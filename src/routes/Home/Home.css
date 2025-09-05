@@ -35,10 +35,6 @@
 #landing-quote {
     grid-area: quote;
     mix-blend-mode: difference;
-    background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' stroke='grey' stroke-width='2' stroke-dasharray='32%2c 128%2c 128%2c 32%2c 128%2c 32%2c 128%2c 128' stroke-dashoffset='0' stroke-linecap='square'/%3e%3c/svg%3e");
-    padding: 16px;
-    width: 200px;
-    height: 200px;
     font-size: small;
 }
 
@@ -69,6 +65,7 @@
 .hero-title {
     font: var(--f-TITLE);
     color: var(--c-LGHT);
+    text-align: center;
     text-transform: uppercase;
     text-shadow: var(--s-TXT_SHDW);
     line-height: 0.7em;

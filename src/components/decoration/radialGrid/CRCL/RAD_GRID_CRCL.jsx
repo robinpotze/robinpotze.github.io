@@ -2,7 +2,7 @@ import randomNumberGenerator from '@hooks/randomNumberGenerator';
 
 import RAD_CRCL from "./RAD_CRCL";
 
-import '../RAD_GRID.css';
+import '../RadialGrid.css';
 
 export default function RAD_GRID_CRCL() {
     return (

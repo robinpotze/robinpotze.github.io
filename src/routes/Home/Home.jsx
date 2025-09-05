@@ -1,7 +1,9 @@
 import dateTime from '@hooks/dateTime';
 
-import BlackwallEffect from '@components/Blackwall/Blackwall';
-import RAD_GRID from '@components/DECO/RAD_GRID/RAD_GRID';
+import BlackwallEffect from '@components/blackwall/Blackwall';
+import RadialGrid from '@deco/radialGrid/RadialGrid';
+import RedoAnimText from '@deco/randomText/RedoAnimText';
+import ScrollDown from '@interaction/ScrollDown/ScrollDown';
 
 import './Home.css';
 
@@ -13,14 +15,14 @@ export default function Home() {
             <div className='hero-content' id='landing-content'>
                 <a href='/' className='logo-home-link'><img src="img/logo/logo64.png" alt='robin potze logo' className='logo-header' id='logo-landing' /></a>
                 <p className='tech-small' id='landing-name'>ROBIN <br /> POTZE</p>
-                <p className='tech-small' id='landing-quote'>| THOSE WHO DOUBT |<br />| CAST THEMSELVES|<br />| INTO A VOID |<br />| VOID OF AMBITION |<br />| VOID OF CREATION |<br />| VOID OF PROGRESS |<br />| AMBIGUOUS AMBIVALENCE |</p>
+                <p className='tech-small' id='landing-quote'>| THOSE WHO DOUBT |<br />| CAST THEMSELVES|<br />| INTO A VOID |<br /><RedoAnimText delay={0.5} /><br />| AMBIGUOUS AMBIVALENCE |</p>
                 <h1 className='hero-title' id='landing-title'>{dateTime()}</h1>
                 <div className='hero-subtitle' id='landing-subtitle'>
                     <p className='tech-small' id='landing-subtitle-text'>PRJNo::000 | C://PRJ/PF/CUSTOM | V1</p>
                     <p className='tech-small' id='landing-subtitle-text'>GRONINGEN | NL</p>
                 </div>
                 <div className='hero-accents-bottom' id='landing-accents-bottom'>
-                    <RAD_GRID type='CRCL' />
+                    <RadialGrid type='CRCL' />
                     <img className='hero-accent-decal' id='landing-accent-decal' src='img/icon/OFS.svg' alt='Offset cyberpunk dorito decal' />
                 </div>
             </div>
@@ -37,7 +39,7 @@ export default function Home() {
                 </div>
                 <img className='side-decal' src='img/icon/MORSE.svg' alt='robin potze in barcode' />
                 <img className='side-decal' src='img/icon/PILL.svg' alt='pill with four arrows point downwards' />
-                <img className='side-decal' src='img/icon/SCRL.svg' alt='Downward arrow' />
+                <ScrollDown className='side-decal' id='landing-side-scroll' />
             </div>
         </div>
     );
