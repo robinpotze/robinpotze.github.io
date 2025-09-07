@@ -1,0 +1,13 @@
+.top-nav {
+    height: 64px;
+    display: flex;
+    margin-right: 24px;
+}
+
+.nav-links {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-left: auto;
+    gap: 12px;
+}

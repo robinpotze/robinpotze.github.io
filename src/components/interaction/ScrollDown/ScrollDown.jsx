@@ -1,12 +1,14 @@
 import { motion } from "motion/react";
+import PropTypes from 'prop-types';
 
-const ScrollDown = (props) => {
+export default function ScrollDown({ color = "var(--c-LGHT)", width = 32, height = 64, speed = 1.2 }) {
+
     const lineVariants = {
         initial: { opacity: 0.2 },
         animate: {
             opacity: [0.2, 1, 0.2],
             transition: {
-                duration: 1.2,
+                duration: speed,
                 repeat: Infinity,
                 ease: "easeInOut",
             }
@@ -25,10 +27,10 @@ const ScrollDown = (props) => {
     return (
         <motion.svg
             xmlns="http://www.w3.org/2000/svg"
-            width="32"
-            height="64"
+            width={`${width}`}
+            height={`${height}`}
             fill="none"
-            viewBox="0 0 16 36"
+            viewBox={`0 0 ${width / 2} ${height / 1.5}`}
             variants={containerVariants}
             initial="initial"
             animate="animate"
@@ -36,38 +38,43 @@ const ScrollDown = (props) => {
             {/* Pulsing lines */}
             <motion.path
                 d="M5 .5h6"
-                stroke="var(--c-BRND)"
-                strokeWidth={1.5}
+                stroke={color}
+                strokeWidth={1}
                 variants={lineVariants}
             />
             <motion.path
                 d="M3.5 8.5h9"
-                stroke="var(--c-BRND)"
-                strokeWidth={1.5}
+                stroke={color}
+                strokeWidth={1}
                 variants={lineVariants}
             />
             <motion.path
                 d="M2 16.5h12"
-                stroke="var(--c-BRND)"
-                strokeWidth={1.5}
+                stroke={color}
+                strokeWidth={1}
                 variants={lineVariants}
             />
 
             {/* Arrow synced with last pulse */}
             <motion.path
                 d="M8 36 0 25h16z"
-                fill="var(--c-BRND)"
+                fill={color}
                 initial={{ y: 0 }}
-                animate={{ y: [0, 2, 0] }}
+                animate={{ y: [0, -2, 0] }}
                 transition={{
-                    duration: 1.2,
+                    duration: speed,
                     ease: "easeInOut",
                     repeat: Infinity,
-                    delay: 0.9, // syncs with last line pulse
+                    delay: speed / 2, // syncs with last line pulse
                 }}
             />
         </motion.svg>
     );
 };
 
-export default ScrollDown;
+ScrollDown.propTypes = {
+    color: PropTypes.string,
+    width: PropTypes.number,
+    height: PropTypes.number,
+    speed: PropTypes.number,
+};

@@ -1,10 +1,8 @@
-.hero-section {
-    display: flex;
-    height: calc(100vh - 64px);
+#landing-hero {
     padding: 64px 0 0 64px;
 }
 
-.hero-content {
+#landing-content {
     display: grid;
     grid-template-columns: 1fr 3fr 1fr;
     grid-template-rows: 1fr 1fr 1fr 1fr 1fr;
@@ -14,17 +12,13 @@
         ". hero-title ."
         ". hero-flavour ."
         ". hero-deco .";
-    flex: 1;
-    flex-direction: column;
+    mix-blend-mode: difference;
 }
 
-.logo-home-link {
-    width: 64px;
-    height: 64px;
-}
-
-#landing-logo {
-    grid-area: rp-logo;
+#landing-home-link {
+    display: block;
+    width: fit-content;
+    height: fit-content;
 }
 
 #landing-name {
@@ -34,14 +28,13 @@
 
 #landing-quote {
     grid-area: quote;
-    mix-blend-mode: difference;
-    font-size: small;
 }
 
 #landing-title {
     grid-area: hero-title;
     margin: 0 auto;
-    mix-blend-mode: difference;
+    text-align: center;
+    line-height: 0.7em;
 }
 
 #landing-subtitle {
@@ -58,32 +51,20 @@
 
 #landing-accent-decal {
     margin: 0 0 auto 0;
-    width: 3vw;
+    width: 4rem;
     aspect-ratio: 52/18;
 }
 
-.hero-title {
-    font: var(--f-TITLE);
-    color: var(--c-LGHT);
-    text-align: center;
-    text-transform: uppercase;
-    text-shadow: var(--s-TXT_SHDW);
-    line-height: 0.7em;
-}
-
-.hero-side {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+#landing-side {
     align-items: center;
+    justify-content: space-between;
     align-self: flex-end;
-    padding-bottom: 12px;
-    width: 64px;
+    padding: 0 0 16px 0;
     height: 896px;
     mix-blend-mode: difference;
 }
 
-.rotation-wrapper {
+#landing-side-rotation-wrapper {
     width: 64px;
     height: 256px;
 }
@@ -99,15 +80,14 @@
     white-space: nowrap;
 }
 
-#landing-side-text-red {
+#landing-side-text-brand {
     color: var(--c-BRND);
 }
 
 #landing-side-deco-text {
     text-align: center;
-    font-size: 8px;
 }
 
-.side-decal {
-    width: 24px;
+#landing-side-scroll {
+    padding: 0 0 12px 0
 }
