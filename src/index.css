@@ -8,10 +8,10 @@
   --c-TRNS: rgba(0, 0, 0, 0);
   --c-GOLD: radial-gradient(90deg. #FFBB00 0%, #A95B17 100%);
 
-  --f-TITLE: 4em "Orbitron", sans-serif;
+  --f-TITLE: 4em 'Kode Mono', monospace;
   --f-HEADER: 4rem "Orbitron", sans-serif;
   --f-FUNCTIONAL: 1rem 'Kode Mono', monospace;
-  --f-PARAGRAPH: .9rem 'Alata', sans-serif;
+  --f-PARAGRAPH: .9rem 'Orbitron', sans-serif;
   --f-TECH_SMALL: .75rem 'Kode Mono', monospace;
   --f-TECH_TINY: .5rem 'Kode Mono', monospace;
 
@@ -56,6 +56,7 @@ h1 {
 
 h3 {
   font: var(--f-FUNCTIONAL);
+  text-transform: uppercase;
 }
 
 p {
@@ -98,13 +99,6 @@ p {
 .hero-section {
   display: flex;
   height: calc(100vh - 64px);
-}
-
-.hero-banner {
-  position: fixed;
-  width: 100%;
-  height: 100%;
-  z-index: -1;
 }
 
 .hero-side {

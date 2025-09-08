@@ -1,7 +1,14 @@
 .top-nav {
+    position: sticky;
+    top: 0;
     height: 64px;
-    display: flex;
     margin-right: 24px;
+    display: flex;
+    z-index: 1;
+}
+
+.logo-home-link {
+    background-color: var(--c-BRND);
 }
 
 .nav-links {
@@ -10,4 +17,14 @@
     align-items: center;
     margin-left: auto;
     gap: 12px;
+}
+
+.nav-link {
+    font: var(--f-FUNCTIONAL);
+    color: var(--c-LGHT);
+    text-decoration: none;
+}
+
+.nav-link-divider {
+    color: var(--c-BRND)
 }
