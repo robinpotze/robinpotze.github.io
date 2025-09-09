@@ -15,8 +15,8 @@ export default function Home() {
                 <BlackwallEffect onScrollTrigger={() => { "hero-section" }} />
                 <div className='hero-content' id='landing-content'>
                     <a href='/' className='logo-home-link' id='landing-home-link'><img src="img/logo/logo64.png" alt='robin potze logo' className='logo-header' id='landing-logo' /></a>
-                    <p className='tech-small' id='landing-name'>ROBIN <br /> POTZE</p>
-                    <p className='tech-small' id='landing-quote'>| THOSE WHO DOUBT |<br />| CAST THEMSELVES|<br />| INTO A VOID |<br /><RedoAnimText delay={0.5} /><br />| AMBIGUOUS AMBIVALENCE |</p>
+                    <p className='tech-info' id='landing-name'>ROBIN <br /> POTZE</p>
+                    <p className='tech-info' id='landing-quote'>| THOSE WHO DOUBT |<br />| CAST THEMSELVES|<br />| INTO A VOID |<br /><RedoAnimText delay={0.5} /><br />| AMBIGUOUS AMBIVALENCE |</p>
                     <h1 className='hero-title' id='landing-title'>{dateTime()}</h1>
                     <div id='landing-subtitle'>
                         <h3 className='hero-subtitle' id='landing-subtitle-text-upper'>PRJNo::000 | C://PRJ/PF/CUSTOM | V1</h3>
@@ -30,8 +30,8 @@ export default function Home() {
                 <div className='hero-side' id='landing-side'>
                     <div className='rotation-wrapper' id='landing-side-rotation-wrapper'>
                         <div className='flavour-text r90' id='landing-side-flavour-text'>
-                            <p className='tech-small' id='landing-side-text'>assertThat(AMBIGUOUS.AMBIVALENCE)</p>
-                            <p className='tech-small' id='landing-side-text-brand'>willReturn(“ESCAPE WILL MAKE ME GOD”)</p>
+                            <p className='tech-info' id='landing-side-text'>assertThat(AMBIGUOUS.AMBIVALENCE)</p>
+                            <p className='tech-info' id='landing-side-text-brand'>willReturn(“ESCAPE WILL MAKE ME GOD”)</p>
                         </div>
                     </div>
                     <div className='icon-text r90' id='landing-side-divider'>

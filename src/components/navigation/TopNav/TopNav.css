@@ -7,7 +7,7 @@
     z-index: 1;
 }
 
-.logo-home-link {
+.top-nav .logo-home-link {
     background-color: var(--c-BRND);
 }
 
