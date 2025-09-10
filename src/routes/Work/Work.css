@@ -1,70 +1,18 @@
-.hero-banner {
-    position: fixed;
-    object-fit: cover;
-    width: 100%;
-    height: 100%;
-    z-index: -1;
-    top: 0;
-}
-
-#work-hero-side {
-    mix-blend-mode: difference;
-}
-
-.icon-array-vertical {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 8px;
-    padding: 0 4px;
-}
-
-#work-hero-side-skills {
-    height: 230px;
-}
-
-.text-array {
-    display: flex;
-    flex-direction: column;
-    flex-wrap: wrap;
-    justify-content: end;
-    align-items: center;
-    gap: 4px;
-    padding: 0 12px;
-}
-
-.text-array p {
-    height: fit-content;
-    width: fit-content;
-}
-
-.hero-side-text {
-    display: flex;
-    align-items: baseline;
-    gap: 4px;
-}
-
-#work-hero-content {
-    display: flex;
-    justify-content: end;
-    align-items: end;
-}
-
-.hero-title-wrapper {
-    display: flex;
-    gap: 8px;
-}
-
 .work-section {
     background-color: var(--c-DRK);
-    height: 500px;
 }
 
-.text-top-margin {
+.work-header {
     display: flex;
     flex-direction: column;
     gap: 32px;
-    padding: 96px 96px 0 96px; 
+    padding: 96px 96px 0 96px;
+}
+
+.work-header-content {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
 }
 
 .header-line {
@@ -80,4 +28,21 @@
 
 .header-line-subtitle img {
     height: 16px;
+}
+
+.work-full-width {
+    margin-top: 96px;
+    width: 100vw;
+}
+
+.work-double {
+    margin-top: 96px;
+    width: 100vw;
+    display: flex;
+    justify-content: space-between;
+}
+
+.work-double img {
+    object-fit: cover;
+    max-width: calc(50vw - 12px);
 }
