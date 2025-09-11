@@ -19,8 +19,8 @@ export default function Home() {
                     <p className='tech-info' id='landing-quote'>| THOSE WHO DOUBT |<br />| CAST THEMSELVES|<br />| INTO A VOID |<br /><RedoAnimText delay={0.5} /><br />| AMBIGUOUS AMBIVALENCE |</p>
                     <h1 className='hero-title' id='landing-title'>{dateTime()}</h1>
                     <div id='landing-subtitle'>
-                        <h3 className='hero-subtitle' id='landing-subtitle-text-upper'>PRJNo::000 | C://PRJ/PF/CUSTOM | V1</h3>
-                        <h3 className='hero-subtitle' id='landing-subtitle-text-lower'>GRONINGEN | NL</h3>
+                        <p className='tech-small' id='landing-subtitle-text-upper'>PRJNo::000 | C://PRJ/PF/CUSTOM | V1</p>
+                        <p className='tech-small' id='landing-subtitle-text-lower'>GRONINGEN | NL</p>
                     </div>
                     <div className='hero-accents-bottom' id='landing-accents-bottom'>
                         <RadialGrid type='CRCL' />
