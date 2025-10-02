@@ -25,6 +25,10 @@
     text-decoration: none;
 }
 
+.nav-link:hover {
+    color: var(--c-BRND);
+}
+
 .nav-link-divider {
     color: var(--c-BRND)
 }

@@ -13,6 +13,7 @@ export default defineConfig({
             '@app': '/src/app',
             '@components': '/src/components',
             '@deco': '/src/components/decoration',
+            '@effects': '/src/components/effects',
             '@hooks': '/src/hooks',
             '@interaction': '/src/components/interaction',
             '@navigation': '/src/components/navigation',

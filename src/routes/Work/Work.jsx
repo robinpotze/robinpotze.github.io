@@ -3,8 +3,10 @@ import { useEffect, useState } from 'react';
 import TopNav from '@navigation/TopNav/TopNav';
 import Hero from '@components/hero/hero';
 
-import './Work.css';
 import DashLine from '../../components/decoration/dashLine/DashLine';
+import GradualBlur from '@effects/GradualBlur/GradualBlur';
+
+import './Work.css';
 
 export default function Work() {
 
@@ -23,7 +25,7 @@ export default function Work() {
         <div className='work-page' id={entry.title.replace(/\s+/g, '-') + '-page'}>
             <TopNav />
             <Hero content={entry} />
-            <div className='work-section'>
+            <section className='work-section'>
                 <div className='work-header'>
                     <div className='work-synopsis'>
                         <h2>Synopsis</h2>
@@ -54,7 +56,18 @@ export default function Work() {
                     <DashLine direction="Vertical" />
                     <img src='/img/work/lsdjam/CassetteRoom.png' alt='A retro-futurist room with a VR setup in the middle.' />
                 </div>
-            </div>
+            </section>
+
+            <GradualBlur
+                target="page"
+                position="bottom"
+                height="6rem"
+                strength={2}
+                divCount={5}
+                curve="bezier"
+                exponential={true}
+                opacity={1}
+            />
         </div >
     );
 }

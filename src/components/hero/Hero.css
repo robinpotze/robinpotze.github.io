@@ -1,3 +1,7 @@
+#work-hero-section {
+    height: 90vh;
+}
+
 .hero-banner {
     position: fixed;
     object-fit: cover;
@@ -53,4 +57,6 @@
 .hero-title-wrapper {
     display: flex;
     gap: 8px;
+    margin: 0 1rem 1rem 0;
+    mix-blend-mode: difference;
 }
