@@ -1,0 +1,8 @@
+.scroll-reveal-text {
+    font: var(--f-PARAGRAPH);
+    text-transform: none;
+}
+
+.word {
+    display: inline-block;
+}
