@@ -6,7 +6,8 @@ const formatter = new Intl.DateTimeFormat('en-GB', {
     timeZone: 'Europe/Amsterdam'
 })
 
-export default function dateTime() {
+// Named as a proper hook to match React conventions
+export default function useDateTime() {
     const [date, setDate] = useState('');
 
     useEffect(() => {

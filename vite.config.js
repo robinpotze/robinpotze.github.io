@@ -14,10 +14,10 @@ export default defineConfig({
             '@components': '/src/components',
             '@deco': '/src/components/decoration',
             '@effects': '/src/components/effects',
+            '@features': '/src/components/features',
             '@hooks': '/src/hooks',
-            '@interaction': '/src/components/interaction',
-            '@navigation': '/src/components/navigation',
             '@routes': '/src/routes',
+            '@utils': '/src/utils',
         }
     },
     server: {

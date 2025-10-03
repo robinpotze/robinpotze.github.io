@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 
-import ScrollDown from '@interaction/ScrollDown/ScrollDown';
+import ScrollDown from '@deco/ScrollDown/ScrollDown';
 
 import "./Hero.css"
 

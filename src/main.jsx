@@ -1,36 +1,55 @@
-import React from 'react';
+import React, { Suspense, lazy } from 'react';
 import ReactDOM from 'react-dom/client';
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import AppProvider from '@app/store';
 
-import Home from './routes/Home/Home';
-import Contact from './routes/Contact/Contact';
-import Work from './routes/Work/Work';
-import Info from './routes/Info/Info';
+const Home = lazy(() => import('@routes/Home/Home.jsx'));
+const Work = lazy(() => import('@routes/Work/Work.jsx'));
+const Info = lazy(() => import('@routes/Info/Info.jsx'));
+const Contact = lazy(() => import('@routes/Contact/Contact.jsx'));
 
 import './index.css';
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Home />,
+    element: (
+      <Suspense fallback={<div />}>
+        <Home />
+      </Suspense>
+    ),
   },
   {
     path: "/work",
-    element: <Work />,
+    element: (
+      <Suspense fallback={<div />}>
+        <Work />
+      </Suspense>
+    ),
   },
   {
     path: "/info",
-    element: <Info />,
+    element: (
+      <Suspense fallback={<div />}>
+        <Info />
+      </Suspense>
+    ),
   },
   {
     path: "/contact",
-    element: <Contact />,
+    element: (
+      <Suspense fallback={<div />}>
+        <Contact />
+      </Suspense>
+    ),
   }
 ]);
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <AppProvider>
+      <RouterProvider router={router} />
+    </AppProvider>
   </React.StrictMode>
 );

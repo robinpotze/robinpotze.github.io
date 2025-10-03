@@ -1,14 +1,8 @@
-import { useEffect, useState } from 'react';
-
-import TopNav from '@navigation/TopNav/TopNav';
-import Hero from '@components/hero/hero';
-
-import DashLine from '../../components/decoration/dashLine/DashLine';
-import GradualBlur from '@effects/GradualBlur/GradualBlur';
-import ScrollReveal from '../../components/effects/ScrollReveal/ScrollReveal';
+import { TopNav, Hero } from '@features';
+import { DashLine } from '@deco';
+import { GradualBlur, ScrollReveal } from '@effects';
 
 import './Work.css';
-
 
 export default function Work() {
 
@@ -58,7 +52,16 @@ export default function Work() {
                         <img src='/img/icon/PLS.svg' />
                         <p className='tech-small'>LVL::001 - HIBERNATION</p>
                     </div>
-                    <p>Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.</p>
+                    <ScrollReveal>
+                        Lorem ipsum dolor sit amet consectetur adipiscing elit.
+                        Quisque faucibus ex sapien vitae pellentesque sem placerat.
+                        In id cursus mi pretium tellus duis convallis.
+                        Tempus leo eu aenean sed diam urna tempor.
+                        Pulvinar vivamus fringilla lacus nec metus bibendum egestas.
+                        Iaculis massa nisl malesuada lacinia integer nunc posuere.
+                        Ut hendrerit semper vel class aptent taciti sociosqu.
+                        Ad litora torquent per conubia nostra inceptos himenaeos
+                    </ScrollReveal>
                 </div>
                 <div className='work-double'>
                     <img src='/img/work/lsdjam/CasetteWire.png' alt='The wireframe of the CassetteRoom scene' />
