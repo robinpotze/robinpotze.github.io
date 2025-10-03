@@ -8,6 +8,7 @@ import { useDateTime } from '@hooks';
 import './Home.css';
 
 export default function Home() {
+
     return (
         <div className='landing-page'>
             <div className='hero-section' id='landing-hero'>
