@@ -1,4 +1,4 @@
-import { TopNav, Hero } from '@features';
+import { TopNav, Hero, StaggeredMenu } from '@features';
 import { DashLine } from '@deco';
 import { GradualBlur, ScrollReveal } from '@effects';
 
@@ -17,9 +17,25 @@ export default function Work() {
         banner: "/img/work/lsdjam/Corridor.png"
     };
 
+    const menuItems = [
+        { label: 'Work', ariaLabel: 'See my work', link: '/work' },
+        { label: 'About', ariaLabel: 'Learn about me', link: '/about' },
+        { label: 'Contact', ariaLabel: 'Get in touch', link: '/contact' }
+    ];
+
+    const socialItems = [
+        { label: 'Artstation', link: 'https://twitter.com' },
+        { label: 'GitHub', link: 'https://github.com' },
+        { label: 'LinkedIn', link: 'https://linkedin.com' }
+    ];
+
     return (
         <div className='work-page' id={entry.title.replace(/\s+/g, '-') + '-page'}>
-            <TopNav />
+            <StaggeredMenu
+                position="right"
+                items={menuItems}
+                socialItems={socialItems}
+            />
             <Hero content={entry} />
             <section className='work-section'>
                 <div className='work-header'>
