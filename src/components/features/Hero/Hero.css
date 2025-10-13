@@ -1,5 +1,13 @@
-#work-hero-section {
-    height: 90vh;
+.hero-section {
+    display: flex;
+    height: 100vh;
+}
+
+.hero-content {
+    flex: 1;
+    display: flex;
+    justify-content: end;
+    align-items: end;
 }
 
 .hero-banner {
@@ -11,7 +19,13 @@
     top: 0;
 }
 
-#work-hero-side {
+.hero-side {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 0 4rem 0;
+    width: 64px;
     mix-blend-mode: difference;
 }
 
@@ -23,10 +37,6 @@
     padding: 0 4px;
 }
 
-#work-hero-side-skills {
-    height: 230px;
-}
-
 .text-array {
     display: flex;
     flex-direction: column;
@@ -35,6 +45,7 @@
     align-items: center;
     gap: 4px;
     padding: 0 12px;
+    height: 230px;
 }
 
 .text-array p {
@@ -48,15 +59,9 @@
     gap: 4px;
 }
 
-#work-hero-content {
-    display: flex;
-    justify-content: end;
-    align-items: end;
-}
-
 .hero-title-wrapper {
     display: flex;
     gap: 8px;
-    margin: 0 1rem 1rem 0;
+    margin: 0 0 4rem 0;
     mix-blend-mode: difference;
 }

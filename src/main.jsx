@@ -7,6 +7,7 @@ const Home = lazy(() => import('@routes/Home/Home.jsx'));
 const Work = lazy(() => import('@routes/Work/Work.jsx'));
 const Info = lazy(() => import('@routes/Info/Info.jsx'));
 const Contact = lazy(() => import('@routes/Contact/Contact.jsx'));
+const Entry = lazy(() => import('@routes/Entry/Entry.jsx'));
 
 import './index.css';
 
@@ -24,6 +25,14 @@ const router = createBrowserRouter([
     element: (
       <Suspense fallback={<div />}>
         <Work />
+      </Suspense>
+    ),
+  },
+  {
+    path: "/work/:title",
+    element: (
+      <Suspense fallback={<Work />}>
+        <Entry />
       </Suspense>
     ),
   },

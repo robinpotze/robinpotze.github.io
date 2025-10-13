@@ -107,21 +107,3 @@ p {
   width: fit-content;
   height: fit-content;
 }
-
-.hero-section {
-  display: flex;
-  height: calc(100vh - 64px);
-}
-
-.hero-side {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-between;
-  padding: 16px 0;
-  width: 64px;
-}
-
-.hero-content {
-  flex: 1;
-}
