@@ -1,82 +1,129 @@
-.work-section {
-    background-color: var(--c-DRK);
+.work-overview {
+    padding: 48px 64px;
+    min-height: 100vh;
+    background: linear-gradient(180deg, rgba(2, 6, 23, 1) 0%, rgba(3, 9, 30, 1) 100%);
+    color: #e6eef8;
 }
 
-.work-header {
+.work-title {
+    font-size: 48px;
+    margin: 0 0 32px 8px;
+    letter-spacing: -1px;
+}
+
+.work-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+}
+
+.work-card-wrap {
+    perspective: 900px;
+}
+
+.work-card {
+    display: block;
+    width: 100%;
+    height: 260px;
+    border-radius: 16px;
+    overflow: hidden;
+    position: relative;
+    transform-origin: center;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    will-change: transform;
+}
+
+.work-card:hover {
+    box-shadow: 0 20px 50px rgba(2, 6, 23, 0.6);
+}
+
+.work-card-content {
+    position: absolute;
+    inset: 0;
     display: flex;
     flex-direction: column;
-    gap: 32px;
-    padding: 0 96px;
-    margin: 0 auto;
-    max-width: 60%;
+    justify-content: flex-end;
+    padding: 18px;
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0) 40%, rgba(0, 0, 0, 0.45) 100%);
 }
 
-.work-synopsis {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    margin-top: 96px;
+.work-card-content h3 {
+    margin: 0;
+    font-size: 20px;
 }
 
-.work-synopsis-subtitle {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    text-transform: uppercase;
+.card-bg {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center center;
+    transform-origin: center;
+    transition: transform 0.6s cubic-bezier(.2, .8, .2, 1), filter 0.4s ease;
+    filter: saturate(1.05) contrast(1.02) brightness(0.95);
 }
 
-.work-synopsis-subtitle img {
-    height: 16px;
+.work-card:hover .card-bg {
+    transform: scale(1.04) translateZ(0);
+    filter: saturate(1.15) contrast(1.05) brightness(1);
 }
 
-.work-header-chapter {
-    display: flex;
-    align-items: center;
-    gap: 4px;
-    padding: 0 4px;
-    background-color: var(--c-LGHT);
-    color: var(--c-DRK)
+.work-card-content .synopsis {
+    margin: 6px 0 0 0;
+    font-size: 13px;
+    opacity: 0.85;
 }
 
-.work-header-chapter img {
-    height: 24px;
-    mix-blend-mode: difference;
+.card-bg-wrap {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    background-size: cover;
+    background-position: center center;
+    pointer-events: none;
+    /* allow clicks to reach the link */
 }
 
-.work-full {
-    margin-top: 96px;
-    width: 100vw;
-    height: 80vh;
-}
-
-.work-full img {
-    object-fit: cover;
+.pixel-card-inner {
+    position: relative;
     width: 100%;
     height: 100%;
+    display: block;
+    z-index: 1;
+    /* above background */
+    pointer-events: auto;
+    /* allow pixel card interactions */
 }
 
-.work-double {
-    margin-top: 96px;
-    width: 100vw;
-    display: flex;
-    justify-content: space-between;
-    height: 60vh;
+.pixel-card-inner .pixel-canvas {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
 }
 
-.work-double img {
-    object-fit: cover;
-    width: calc(50vw - 12px);
-    height: 100%;
+.card-bg-wrap::before {
+    /* keep a subtle overlay for mood */
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0.0) 40%, rgba(0, 0, 0, 0.25) 100%);
+    z-index: 0;
+    pointer-events: none;
 }
 
-.work-full-thin {
-    margin-top: 96px;
-    width: 100vw;
-    height: 40vh;
+.tech-small {
+    margin-top: 8px;
+    font-size: 12px;
+    opacity: 0.7;
 }
 
-.work-full-thin img {
-    object-fit: cover;
-    width: 100%;
-    height: 100%;
+/* Parallax variables populated by MouseEffects */
+:root {
+    --mouse-x: 0.5;
+    --mouse-y: 0.5;
+    --mouse-cx: 0;
+    --mouse-cy: 0;
+}
+
+.work-card {
+    transform: rotateX(calc(var(--mouse-cy) * 6deg)) rotateY(calc(var(--mouse-cx) * 6deg));
 }

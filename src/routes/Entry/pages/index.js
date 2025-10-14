@@ -1,5 +1,5 @@
 import LsdJam, { Data as LsdJamData } from './LsdJam/LsdJam';
-import DayDrinkingDay, { Data as DayDrinkingDayData } from './DayDrinkingDay/DayDrinkingDay';
+import DayDrinkingDay, { Data as DayDrinkingDayData } from './Ld58/Ld58';
 
 export const pages = {
     'lsdjam': { Component: LsdJam, data: LsdJamData },

@@ -13,7 +13,7 @@ export const Data = {
     banner: "/img/work/ld58/Wallpaper 1080p.png"
 }
 
-export default function DayDrinkingDay() {
+export default function Ld58() {
     return (
         <div>
             <div className='work-full'>
@@ -29,7 +29,7 @@ export default function DayDrinkingDay() {
                     <p className='tech-small'>SALVATION:::CONSUMPTION</p>
                 </div>
                 <ScrollReveal>
-                    The TV was the centerpiece of the bachelor pad, a glowing rectangle that promised escape and entertainment. It was a relic from a bygone era, yet it still held a certain charm. The flickering images on the screen provided a backdrop to the endless cycle of day drinking and cap collecting, a reminder of the outside world that was both tantalizing and distant. Filled with content to distract the modern man from the crushing weight of his own existence, the television was both a blessing and a curse. 
+                    The TV was the centerpiece of the bachelor pad, a glowing rectangle that promised escape and entertainment. It was a relic from a bygone era, yet it still held a certain charm. The flickering images on the screen provided a backdrop to the endless cycle of day drinking and cap collecting, a reminder of the outside world that was both tantalizing and distant. Filled with content to distract the modern man from the crushing weight of his own existence, the television was both a blessing and a curse.
                 </ScrollReveal>
             </div>
             <div className='work-double'>

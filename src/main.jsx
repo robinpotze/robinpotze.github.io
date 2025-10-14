@@ -1,6 +1,11 @@
-import React, { Suspense, lazy } from 'react';
+import React, { Suspense, lazy, useEffect } from 'react';
 import ReactDOM from 'react-dom/client';
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import Lenis from '@studio-freight/lenis';
+import TransitionProvider, { useTransition } from './components/Transition/TransitionProvider.jsx';
+import ShaderTransition from './components/ShaderTransition/ShaderTransition.jsx';
+import AutoTransitionEnd from './components/Transition/AutoTransitionEnd.jsx';
+
 import AppProvider from '@app/store';
 
 const Home = lazy(() => import('@routes/Home/Home.jsx'));
@@ -10,6 +15,28 @@ const Contact = lazy(() => import('@routes/Contact/Contact.jsx'));
 const Entry = lazy(() => import('@routes/Entry/Entry.jsx'));
 
 import './index.css';
+
+export default function Layout({ children }) {
+  useEffect(() => {
+    const lenis = new Lenis({
+      lerp: 0.1,
+      smoothWheel: true,
+    });
+
+    let mounted = true;
+    function raf(time) {
+      if (!mounted) return;
+      lenis.raf(time);
+      requestAnimationFrame(raf);
+    }
+    requestAnimationFrame(raf);
+    return () => {
+      mounted = false;
+    };
+  }, []);
+
+  return <main>{children}</main>;
+}
 
 const router = createBrowserRouter([
   {
@@ -58,7 +85,16 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <AppProvider>
-      <RouterProvider router={router} />
+      <TransitionProvider>
+        <ShaderTransitionWrapper />
+        <AutoTransitionEnd />
+        <RouterProvider router={router} />
+      </TransitionProvider>
     </AppProvider>
   </React.StrictMode>
 );
+
+function ShaderTransitionWrapper() {
+  const { active, duration } = useTransition();
+  return <ShaderTransition active={active} duration={duration} />;
+}

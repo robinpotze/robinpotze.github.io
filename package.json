@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@studio-freight/lenis": "^1.0.42",
     "gsap": "^3.13.0",
     "mathjs": "^14.8.1",
     "motion": "^12.23.12",
