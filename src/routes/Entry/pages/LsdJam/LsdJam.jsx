@@ -5,7 +5,7 @@ export const Data = {
     id: 1,
     title: "LSD JAM",
     synopsis: "Where games meet drugs",
-    description: "LSD Jam is a game jam I organized in April 2024 together with a friend. The theme was LSD, and the goal was to create a game that explores the relationship between games and drugs. The jam was a huge success, with over 50 participants from all over the world. The winning game was 'Corridor', a first-person exploration game that takes place in a surreal, drug-induced world. I created the branding, website, and promotional materials for the jam, as well as participating as a game developer.",
+    description: "LSD Jam is a game jam I participated in during April 2024 together with Cyril Ojoga. The theme was LSD, and the goal was to create a game that makes the player question which of the realities they experience is their actual life. The game takes the player through a series of realities, dying and waking up after a short series of events in each one. I created the 3D art, Textures, level layouts and lighting setups for the jam, as well as the promotional material. The game was made in Unity, and the 3D art was created in Blender.",
     client: "TRIPADVISORS",
     year: 2024,
     software: ["Illustrator", "Unity", "Blender"],

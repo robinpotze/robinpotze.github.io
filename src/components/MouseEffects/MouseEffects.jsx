@@ -7,7 +7,6 @@ export default function MouseEffects() {
             const y = e.clientY / window.innerHeight;
             document.documentElement.style.setProperty('--mouse-x', x);
             document.documentElement.style.setProperty('--mouse-y', y);
-            // also set centered values for cards
             document.documentElement.style.setProperty('--mouse-cx', (x - 0.5) * 2);
             document.documentElement.style.setProperty('--mouse-cy', (y - 0.5) * 2);
         };

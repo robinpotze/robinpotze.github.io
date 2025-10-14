@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react';
 import * as THREE from 'three';
 import { useTransition } from '../Transition/TransitionProvider';
+import TransitionGLSL from "./shaderCode/Transition.glsl?raw";
 
 export default function ShaderTransition({ active = false, duration = 800 }) {
     const mountRef = useRef(null);
@@ -45,98 +46,7 @@ export default function ShaderTransition({ active = false, duration = 800 }) {
                     gl_Position = vec4(position, 1.0);
                 }
             `,
-            fragmentShader: `
-                varying vec2 vUv;
-                uniform float uTime;
-                uniform float uProgress;
-                uniform vec2 uResolution;
-                uniform vec2 uRectCenter;
-                uniform vec2 uRectSize;
-                uniform sampler2D uThumb;
-                uniform float uUseThumb;
-                uniform sampler2D uDispMap;
-                uniform float uUseDisp;
-                uniform float uStrength;
-
-                // Simplex / FBM noise helpers
-                float hash(vec2 p) { return fract(sin(dot(p, vec2(127.1,311.7))) * 43758.5453123); }
-                float noise(vec2 p){
-                    vec2 i = floor(p);
-                    vec2 f = fract(p);
-                    float a = hash(i);
-                    float b = hash(i + vec2(1.0, 0.0));
-                    float c = hash(i + vec2(0.0, 1.0));
-                    float d = hash(i + vec2(1.0, 1.0));
-                    vec2 u = f * f * (3.0 - 2.0 * f);
-                    return mix(a, b, u.x) + (c - a)*u.y*(1.0 - u.x) + (d - b)*u.x*u.y;
-                }
-
-                float fbm(vec2 p) {
-                    float v = 0.0;
-                    float amp = 0.5;
-                    for (int i = 0; i < 5; i++) {
-                        v += amp * noise(p);
-                        p *= 2.0;
-                        amp *= 0.5;
-                    }
-                    return v;
-                }
-
-                void main() {
-                    vec2 uv = vUv;
-
-                        // animated noise value
-                        float n = fbm(uv * 6.0 + uTime * 0.4);
-
-                        // displacement source: either external displacement map or procedural noise
-                        float dispSrc = n;
-                        if (uUseDisp > 0.5) {
-                            // sample displacement map (assume single-channel in red)
-                            dispSrc = texture2D(uDispMap, uv).r;
-                        }
-
-                        // displacement by selected source, scaled by progress
-                        float disp = (dispSrc - 0.5) * uStrength * uProgress;
-                        vec2 displaced = uv + vec2(disp * 0.6, disp * -0.6);
-
-                    // dissolve threshold using another noise sample
-                    float dissolveNoise = fbm(displaced * 12.0 + uTime * 1.3);
-                    // bias noise influence so at low uProgress there's effectively no alpha
-                    float noiseInfluence = mix(0.05, 0.45, uProgress);
-
-                    // compute distance of current fragment to the rect center (in UV space)
-                    vec2 rectCenterUV = uRectCenter;
-                    vec2 rectHalf = uRectSize * 0.5;
-                    // distance normalized to rect size (0 at center, >1 outside)
-                    vec2 d = (uv - rectCenterUV) / max(rectHalf, vec2(0.001));
-                    float distToRect = length(d);
-
-                    // falloff based on distance so effect is stronger near the rect
-                    float falloff = smoothstep(1.6, 0.0, distToRect);
-
-                    float threshold = clamp(uProgress * falloff + (dissolveNoise - 0.5) * noiseInfluence, 0.0, 1.0);
-
-                        // compose color: darkblue background and subtle cyan tint
-                        vec3 base = vec3(0.02, 0.06, 0.12);
-                        vec3 tint = vec3(0.05, 0.22, 0.38);
-                        vec3 col = mix(base, tint, clamp(n * 1.2, 0.0, 1.0));
-
-                        // sample thumbnail texture if available
-                        vec4 thumbCol = vec4(0.0);
-                        if (uUseThumb > 0.5) {
-                            // when sampling the thumbnail, map vUv directly
-                            thumbCol = texture2D(uThumb, vUv);
-                        }
-
-                        // alpha tracks threshold directly: 0 when uProgress==0, ~1 when uProgress==1
-                        float alpha = smoothstep(0.0, 1.0, threshold);
-
-                        // blend thumbnail into final color when present (use alpha to blend)
-                        vec3 finalCol = mix(col, thumbCol.rgb, thumbCol.a * mix(0.0, 1.0, uProgress));
-
-                        gl_FragColor = vec4(finalCol, alpha);
-                }
-            `
+            fragmentShader: TransitionGLSL
         });
 
         materialRef.current = material;

@@ -1,24 +1,23 @@
-const modules = import.meta.glob('./*/**.{jsx,js}', { eager: true });
+const modules = import.meta.glob('./**/*.{jsx,js}', { eager: true });
 
-function normalizeSlug(s) {
+function normalizeKey(s) {
     return String(s || '')
         .toLowerCase()
-        .replace(/\s+/g, '') // remove spaces
-        .replace(/[^a-z0-9\-]/g, ''); // keep alphanum and dash
+        .replace(/[\s-]+/g, '')
+        .replace(/[^a-z0-9]/g, '');
 }
 
 const pages = Object.entries(modules).reduce((acc, [path, mod]) => {
-    const parts = path.split('/');
-    const folder = parts[1];
-    if (!folder) return acc;
-    const Component = mod.default || null;
-    const data = mod.Data || mod.data || {};
+    const Component = mod && mod.default ? mod.default : null;
+    const data = (mod && (mod.Data || mod.data)) || {};
 
-    // prefer an explicit slug in the module's Data, then normalized title, then folder name
-    const slugFromData = data.slug || (data.title ? normalizeSlug(data.title) : null);
-    const slug = slugFromData || normalizeSlug(folder);
+    if (!Component) return acc;
 
-    acc[slug] = { Component, data };
+    const filename = String(path).split('/').pop().replace(/\.[^/.]+$/, '');
+    const sourceName = data && data.title ? data.title : (Component.name || filename);
+    const key = normalizeKey(sourceName);
+
+    acc[key] = { Component, data };
     return acc;
 }, {});
 

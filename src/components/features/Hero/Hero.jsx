@@ -7,15 +7,14 @@ import "./Hero.css"
 
 export default function Hero({ content }) {
 
-    // prepare variants for Motion
     const bannerVars = {
         hidden: { opacity: 0, scale: 1.02 },
         visible: { opacity: 1, scale: 1, transition: { duration: 0.7, ease: [0.2, 0.9, 0.2, 1] } }
     };
 
     const sideVars = {
-        hidden: { opacity: 0, y: 12 },
-        visible: (i = 0) => ({ opacity: 1, y: 0, transition: { duration: 0.6, delay: 0.08 + i * 0.06, ease: [0.2, 0.9, 0.2, 1] } })
+        hidden: { opacity: 0, x: 12 },
+        visible: (i = 0) => ({ opacity: 1, x: 0, transition: { duration: 0.6, delay: 0.08 + i * 0.06, ease: [0.2, 0.9, 0.2, 1] } })
     };
 
     const titleVars = {
