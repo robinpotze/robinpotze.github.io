@@ -10,7 +10,7 @@ export const Data = {
     year: 2025,
     software: ["Figma", "Unity", "Blender"],
     skills: ["Figma", "Unity", "Blender"],
-    banner: "/img/work/ld58/Wallpaper 1080p.png"
+    banner: "/img/work/ld58/Wallpaper.png"
 }
 
 export default function Ld58() {

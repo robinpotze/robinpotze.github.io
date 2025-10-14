@@ -1,14 +1,41 @@
 import PropTypes from 'prop-types';
+import { motion } from 'framer-motion';
 
 import ScrollDown from '@deco/ScrollDown/ScrollDown';
 
 import "./Hero.css"
 
 export default function Hero({ content }) {
+
+    // prepare variants for Motion
+    const bannerVars = {
+        hidden: { opacity: 0, scale: 1.02 },
+        visible: { opacity: 1, scale: 1, transition: { duration: 0.7, ease: [0.2, 0.9, 0.2, 1] } }
+    };
+
+    const sideVars = {
+        hidden: { opacity: 0, y: 12 },
+        visible: (i = 0) => ({ opacity: 1, y: 0, transition: { duration: 0.6, delay: 0.08 + i * 0.06, ease: [0.2, 0.9, 0.2, 1] } })
+    };
+
+    const titleVars = {
+        hidden: { opacity: 0, y: 8 },
+        visible: { opacity: 1, y: 0, transition: { duration: 0.6, delay: 0.18, ease: [0.2, 0.9, 0.2, 1] } }
+    };
+
     return (
         <div className='hero-section' id='work-hero-section'>
-            <img className='hero-banner' id={content.title.replace(/\s+/g, '-') + '-hero-banner'} src={content.banner} alt={content.title.replace(/\s+/g, '-') + 'hero banner'} />
-            <div className='hero-side' id='work-hero-side'>
+            <motion.img
+                className='hero-banner'
+                id={content.title.replace(/\s+/g, '-') + '-hero-banner'}
+                src={content.banner}
+                alt={content.title.replace(/\s+/g, '-') + 'hero banner'}
+                variants={bannerVars}
+                initial='hidden'
+                animate={'visible'}
+            />
+
+            <motion.div className='hero-side' id='work-hero-side' variants={sideVars} custom={0} initial='hidden' animate={'visible'}>
                 <div className="icon-array-vertical" id='work-hero-icons'>
                     {content.software.map((software) => (
                         <img className='hero-side-decal' key={software} src={`/img/software/${software}.svg`} alt={`${software}-logo`} />
@@ -26,14 +53,15 @@ export default function Hero({ content }) {
                 </div>
                 <p className='tech-small tr90' id='work-hero-side-deco-text'>{content.year}</p>
                 <ScrollDown />
-            </div>
-            <div className='hero-content' id='work-hero-content'>
-                <div className='hero-title-wrapper' id='work-hero-title-wrapper'>
+            </motion.div>
+
+            <motion.div className='hero-content' id='work-hero-content' variants={sideVars} custom={1} initial='hidden' animate={'visible'}>
+                <motion.div className='hero-title-wrapper' id='work-hero-title-wrapper' variants={titleVars} initial='hidden' animate={'visible'}>
                     <img className='hero-title-decal' id='work-hero-decal' src='/img/icon/PLS.svg' alt='Plus Sign' />
                     <h2 id='work-hero-title'>{content.title.replace(/\s+/g, '_')}</h2>
                     <img className='hero-title-decal' id='work-hero-decal' src='/img/icon/PLS.svg' alt='Plus Sign' />
-                </div>
-            </div>
+                </motion.div>
+            </motion.div>
         </div>
     );
 }

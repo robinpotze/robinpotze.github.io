@@ -91,38 +91,7 @@ function getEffectiveSpeed(value, reducedMotion) {
     }
 }
 
-const VARIANTS = {
-    default: {
-        activeColor: null,
-        gap: 5,
-        speed: 35,
-        colors: '#f8fafc,#f1f5f9,#cbd5e1',
-        noFocus: false
-    },
-    blue: {
-        activeColor: '#e0f2fe',
-        gap: 10,
-        speed: 25,
-        colors: '#e0f2fe,#7dd3fc,#0ea5e9',
-        noFocus: false
-    },
-    yellow: {
-        activeColor: '#fef08a',
-        gap: 3,
-        speed: 20,
-        colors: '#fef08a,#fde047,#eab308',
-        noFocus: false
-    },
-    pink: {
-        activeColor: '#fecdd3',
-        gap: 6,
-        speed: 80,
-        colors: '#fecdd3,#fda4af,#e11d48',
-        noFocus: true
-    }
-};
-
-export default function PixelCard({ variant = 'default', gap, speed, colors, noFocus, className = '', children }) {
+export default function PixelCard({ gap = 6, speed = 100, noFocus = true, className = '', children }) {
     const containerRef = useRef(null);
     const canvasRef = useRef(null);
     const pixelsRef = useRef([]);
@@ -130,11 +99,7 @@ export default function PixelCard({ variant = 'default', gap, speed, colors, noF
     const timePreviousRef = useRef(performance.now());
     const reducedMotion = useRef(window.matchMedia('(prefers-reduced-motion: reduce)').matches).current;
 
-    const variantCfg = VARIANTS[variant] || VARIANTS.default;
-    const finalGap = gap ?? variantCfg.gap;
-    const finalSpeed = speed ?? variantCfg.speed;
-    const finalColors = colors ?? variantCfg.colors;
-    const finalNoFocus = noFocus ?? variantCfg.noFocus;
+    const finalNoFocus = noFocus
 
     const initPixels = () => {
         if (!containerRef.current || !canvasRef.current) return;
@@ -149,10 +114,10 @@ export default function PixelCard({ variant = 'default', gap, speed, colors, noF
         canvasRef.current.style.width = `${width}px`;
         canvasRef.current.style.height = `${height}px`;
 
-        const colorsArray = finalColors.split(',');
+        const colorsArray = ['#eeeeee', '#2ad0d5', '#d52a2a'];
         const pxs = [];
-        for (let x = 0; x < width; x += parseInt(finalGap, 10)) {
-            for (let y = 0; y < height; y += parseInt(finalGap, 10)) {
+        for (let x = 0; x < width; x += parseInt(gap, 10)) {
+            for (let y = 0; y < height; y += parseInt(gap, 10)) {
                 const color = colorsArray[Math.floor(Math.random() * colorsArray.length)];
 
                 const dx = x - width / 2;
@@ -160,7 +125,7 @@ export default function PixelCard({ variant = 'default', gap, speed, colors, noF
                 const distance = Math.sqrt(dx * dx + dy * dy);
                 const delay = reducedMotion ? 0 : distance;
 
-                pxs.push(new Pixel(canvasRef.current, ctx, x, y, color, getEffectiveSpeed(finalSpeed, reducedMotion), delay));
+                pxs.push(new Pixel(canvasRef.current, ctx, x, y, color, getEffectiveSpeed(speed, reducedMotion), delay));
             }
         }
         pixelsRef.current = pxs;
@@ -222,7 +187,7 @@ export default function PixelCard({ variant = 'default', gap, speed, colors, noF
             cancelAnimationFrame(animationRef.current);
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [finalGap, finalSpeed, finalColors, finalNoFocus]);
+    }, [finalNoFocus]);
 
     return (
         <div

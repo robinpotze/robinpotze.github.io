@@ -15,19 +15,19 @@ export default function Work() {
         <div className='work-overview' id='work-overview'>
             <MouseEffects />
 
-            <motion.h1 className="work-title" initial={{ opacity: 0, y: -12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}>
+            <motion.h2 className="work-title" initial={{ opacity: 0, y: -12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}>
                 Work
-            </motion.h1>
+            </motion.h2>
 
             <div className="work-grid">
-                {entries.map(([slug, { Component, data }], i) => {
+                {entries.map(([slug, { data }], i) => {
                     const to = `/work/${slug}`;
                     return (
                         <motion.div key={slug} className="work-card-wrap" whileHover={{ scale: 1.02 }} initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.12 + i * 0.05 }}>
-                            <AnimatedLink to={to} className="work-card" style={{ ['--i']: i }} duration={700} {...(data?.dispMap ? { 'data-disp': data.dispMap } : {})}>
+                            <AnimatedLink to={to} className="work-card" style={{ ['--i']: i }} duration={400} {...(data?.dispMap ? { 'data-disp': data.dispMap } : {})}>
                                 <div className="card-bg-wrap" style={data?.banner ? { backgroundImage: `url(${data.banner})` } : {}}>
                                     {data?.banner && <img className="card-thumb" src={data.banner} alt="thumb" style={{ display: 'none' }} />}
-                                    <PixelCard variant="pink" className="pixel-card-inner">
+                                    <PixelCard variant="default" className="pixel-card-inner">
                                         <div className="work-card-content">
                                             <h3>{data?.title || slug}</h3>
                                             <p className="synopsis">{data?.synopsis || ''}</p>
