@@ -9,7 +9,8 @@ import './Entry.css';
 export default function Entry() {
 
     const { title } = useParams();
-    const { Component: PageComponent, data } = pages[title] || {};
+    const normalizedTitle = title.toLowerCase().replace(/\s+/g, '').replace(/-/g, '');
+    const { Component: PageComponent, data } = pages[normalizedTitle] || {};
 
     if (!PageComponent || !data) {
         return <div className='work-page' id='work-overview'>

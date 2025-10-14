@@ -64,7 +64,7 @@
 }
 
 .work-double img {
-    object-fit: cover;
+    object-fit: contain;
     width: calc(50vw - 12px);
     height: 100%;
 }

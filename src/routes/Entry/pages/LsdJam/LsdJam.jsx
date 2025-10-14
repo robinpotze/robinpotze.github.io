@@ -9,10 +9,9 @@ export const Data = {
     client: "TRIPADVISORS",
     year: 2024,
     software: ["Illustrator", "Unity", "Blender"],
-    skills: ["Adobe Illustrator", "Figma", "Unity", "Blender", "Unreal Engine"],
+    skills: ["Adobe Illustrator", "Figma", "Unity", "Blender"],
     banner: "/img/work/lsdjam/Corridor.png"
 }
-
 
 export default function LsdJam() {
     return (

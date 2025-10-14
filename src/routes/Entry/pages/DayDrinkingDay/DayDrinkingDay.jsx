@@ -7,36 +7,35 @@ export const Data = {
     synopsis: "They said I'd never amount to anything, but thanks to the power of day drinking, I've achieved god-tier cap collection and total emotional detachment.",
     description: "Crash on the couch, crack cold ones, and turn cap-popping into peak performance. Collect, sort, and frame every shiny trophy in this chill, juicy parody about achieving God-Tier Cap Collection & Total Emotional Detachment one satisfying pop at a time.",
     client: "LUDUM DRUNKS",
-    year: 2024,
-    software: ["Illustrator", "Unity", "Blender"],
-    skills: ["Adobe Illustrator", "Figma", "Unity", "Blender", "Unreal Engine"],
-    banner: "/img/work/lsdjam/Corridor.png"
+    year: 2025,
+    software: ["Figma", "Unity", "Blender"],
+    skills: ["Figma", "Unity", "Blender"],
+    banner: "/img/work/ld58/Wallpaper 1080p.png"
 }
-
 
 export default function DayDrinkingDay() {
     return (
         <div>
             <div className='work-full'>
-                <img src='/img/work/lsdjam/hibernation.png' className='img-full-width' alt='A retro-futurist room with a VR setup in the middle.' />
+                <img src='/img/work/ld58/Styleframe.png' className='img-full-width' alt='An 80s inspired interior of a bachelor with one goal in mind: collecting.' />
             </div>
             <div className='work-full-thin'>
-                <img src='/img/work/lsdjam/SpaceShip.png' />
+                <img src='/img/work/ld58/Styleframe2.png' />
             </div>
             <div className='work-header'>
                 <div className='work-header-chapter'>
-                    <h3>THE COMMAND ROOM</h3>
+                    <h3>TELEVISION</h3>
                     <img src='/img/icon/PLS.svg' />
-                    <p className='tech-small'>LVL::001 - HIBERNATION</p>
+                    <p className='tech-small'>SALVATION:::CONSUMPTION</p>
                 </div>
                 <ScrollReveal>
-                    Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos
+                    The TV was the centerpiece of the bachelor pad, a glowing rectangle that promised escape and entertainment. It was a relic from a bygone era, yet it still held a certain charm. The flickering images on the screen provided a backdrop to the endless cycle of day drinking and cap collecting, a reminder of the outside world that was both tantalizing and distant. Filled with content to distract the modern man from the crushing weight of his own existence, the television was both a blessing and a curse. 
                 </ScrollReveal>
             </div>
             <div className='work-double'>
-                <img src='/img/work/lsdjam/CasetteWire.png' alt='The wireframe of the CassetteRoom scene' />
+                <img src='/img/work/ld58/LOGO.png' alt='The wireframe of the CassetteRoom scene' />
                 <DashLine direction="Vertical" />
-                <img src='/img/work/lsdjam/CassetteRoom.png' alt='A retro-futurist room with a VR setup in the middle.' />
+                <img src='/img/work/ld58/Thumbnail.png' alt='A retro-futurist room with a VR setup in the middle.' />
             </div>
         </div>
     );
