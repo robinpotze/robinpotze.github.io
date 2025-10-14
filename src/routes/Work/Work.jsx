@@ -1,10 +1,13 @@
-import { PixelCard } from '@features';
+import { PixelCard, StaggeredMenu } from '@features';
 import { pages as autogenPages } from '../Entry/pages/autogen';
 import AnimatedLink from '@components/Transition/AnimatedLink';
 import { motion } from 'framer-motion';
 import MouseEffects from '@components/MouseEffects/MouseEffects';
+import { Suspense, lazy } from 'react';
+const BlackwallEffect = lazy(() => import('@components/Blackwall/Blackwall'));
 
 import './Work.css';
+import { im } from 'mathjs';
 
 function WorkCard({ pageKey, data = {}, index = 0 }) {
     const bannerStyle = data.banner ? { backgroundImage: `url(${data.banner})` } : undefined;
@@ -68,12 +71,14 @@ export default function Work() {
 
     return (
         <div className='work-overview' id='work-overview'>
+            {/* <StaggeredMenu /> */}
+            <Suspense fallback={<div className="fixed inset-0 -z-10 pointer-events-none" />}>
+                <BlackwallEffect onScrollTrigger={() => { "hero-section" }} />
+            </Suspense>
             <MouseEffects />
-
             <motion.h2 className="work-title" initial={{ opacity: 0, y: -12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}>
                 Work
             </motion.h2>
-
             <div className="work-pages">
                 {items.map((item, i) => (
                     <WorkCard key={item.key} pageKey={item.key} data={item.data} index={i} />

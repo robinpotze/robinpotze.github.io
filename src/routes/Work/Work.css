@@ -1,6 +1,6 @@
 .work-overview {
     height: 100vh;
-    background: linear-gradient(180deg, var(--c-DRK) 80%, var(--c-BRND_TRNS) 100%);
+    background: linear-gradient(180deg, var(--c-DRK) 70%, var(--c-BRND_TRNS) 100%);
     color: var(--c-LGHT);
 }
 

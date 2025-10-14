@@ -8,7 +8,7 @@ export default function MouseEffects() {
             document.documentElement.style.setProperty('--mouse-x', x);
             document.documentElement.style.setProperty('--mouse-y', y);
             document.documentElement.style.setProperty('--mouse-cx', (x - 0.5) * 2);
-            document.documentElement.style.setProperty('--mouse-cy', (y - 0.5) * 2);
+            document.documentElement.style.setProperty('--mouse-cy', (y - 0.5) * -2);
         };
 
         window.addEventListener('mousemove', handleMove);
