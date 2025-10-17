@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
 import * as THREE from 'three';
-import { useTransition } from '../Transition/TransitionProvider';
-import TransitionGLSL from "./shaderCode/Transition.glsl?raw";
+import { useTransition } from '@core/transitions';
+import TransitionGLSL from "@shaders/Transition.glsl?raw";
 
 export default function ShaderTransition({ active = false, duration = 800 }) {
     const mountRef = useRef(null);

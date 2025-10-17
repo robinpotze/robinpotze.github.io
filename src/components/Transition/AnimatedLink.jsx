@@ -1,6 +1,5 @@
-import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { useTransition } from './TransitionProvider';
+import { useTransition } from '@core/transitions';
 
 export default function AnimatedLink({ to, children, className = '', delay = 50, duration = 700, ...props }) {
     const navigate = useNavigate();

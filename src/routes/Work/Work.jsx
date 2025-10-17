@@ -2,12 +2,11 @@ import { PixelCard, StaggeredMenu } from '@features';
 import { pages as autogenPages } from '../Entry/pages/autogen';
 import AnimatedLink from '@components/Transition/AnimatedLink';
 import { motion } from 'framer-motion';
-import MouseEffects from '@components/MouseEffects/MouseEffects';
+import { MouseEffects } from '@effects';
 import { Suspense, lazy } from 'react';
-const BlackwallEffect = lazy(() => import('@components/Blackwall/Blackwall'));
-
 import './Work.css';
-import { im } from 'mathjs';
+
+const BlackwallEffect = lazy(() => import('@effects/Blackwall/Blackwall'));
 
 function WorkCard({ pageKey, data = {}, index = 0 }) {
     const bannerStyle = data.banner ? { backgroundImage: `url(${data.banner})` } : undefined;

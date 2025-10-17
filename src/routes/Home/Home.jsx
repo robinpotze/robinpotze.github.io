@@ -1,9 +1,9 @@
 import { Suspense, lazy } from 'react';
 import { Link } from 'react-router-dom';
-
-const BlackwallEffect = lazy(() => import('@components/Blackwall/Blackwall'));
 import { RadialGrid, RedoAnimText, ScrollDown } from '@deco';
 import { useDateTime } from '@hooks';
+
+const BlackwallEffect = lazy(() => import('@effects/Blackwall/Blackwall'));
 
 import './Home.css';
 

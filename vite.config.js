@@ -14,9 +14,12 @@ export default defineConfig({
             '@components': '/src/components',
             '@deco': '/src/components/decoration',
             '@effects': '/src/components/effects',
-            '@features': '/src/components/features',
+            '@layout': '/src/components/layout',
+            '@core': '/src/core',
+            '@features': '/src/features',
             '@hooks': '/src/hooks',
             '@routes': '/src/routes',
+            '@shaders': '/src/shaders',
             '@utils': '/src/utils',
         }
     },

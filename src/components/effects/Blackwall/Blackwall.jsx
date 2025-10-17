@@ -1,9 +1,7 @@
 import { useEffect, useRef } from "react";
 import * as THREE from "three";
-
-import BlackwallGLSL from "./shaderCode/Blackwall.glsl?raw";
-import FlameGLSL from "./shaderCode/Flame.glsl?raw";
-
+import BlackwallGLSL from "@shaders/Blackwall.glsl?raw";
+import FlameGLSL from "@shaders/Flame.glsl?raw";
 import "./Blackwall.css";
 
 export default function BlackwallEffect() {
