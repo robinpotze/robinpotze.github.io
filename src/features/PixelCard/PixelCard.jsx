@@ -186,8 +186,7 @@ export default function PixelCard({ gap = 6, speed = 100, noFocus = true, classN
             observer.disconnect();
             cancelAnimationFrame(animationRef.current);
         };
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [finalNoFocus]);
+    }, [finalNoFocus, gap, speed]);
 
     return (
         <div

@@ -1,9 +1,11 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { useTransition } from '@core/transitions';
+import useViewport from '@hooks/useViewport';
 
 export default function AnimatedLink({ to, children, className = '', delay = 50, duration = 700, ...props }) {
     const navigate = useNavigate();
     const { start } = useTransition();
+    const { width, height } = useViewport();
 
     const onClick = async (e) => {
         if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return;
@@ -22,8 +24,8 @@ export default function AnimatedLink({ to, children, className = '', delay = 50,
                 centerY: rect.y + rect.height / 2
             },
             viewport: {
-                width: window.innerWidth,
-                height: window.innerHeight
+                width,
+                height
             }
         };
 

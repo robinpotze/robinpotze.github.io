@@ -2,20 +2,24 @@ import { useEffect, useRef } from 'react';
 import * as THREE from 'three';
 import { useTransition } from '@core/transitions';
 import TransitionGLSL from "@shaders/Transition.glsl?raw";
+import useViewport from '@hooks/useViewport';
 
 export default function ShaderTransition({ active = false, duration = 800 }) {
     const mountRef = useRef(null);
     const materialRef = useRef(null);
     const startTimeRef = useRef(null);
     const animRef = useRef(null);
+    const rendererRef = useRef(null);
+    const { width, height, devicePixelRatio } = useViewport();
 
     useEffect(() => {
         const mount = mountRef.current;
         if (!mount) return;
 
         const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
-        renderer.setPixelRatio(window.devicePixelRatio || 1);
-        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(devicePixelRatio || 1);
+        renderer.setSize(width, height);
+        rendererRef.current = renderer;
         renderer.domElement.style.pointerEvents = 'none';
         renderer.domElement.style.position = 'fixed';
         renderer.domElement.style.inset = '0';
@@ -54,9 +58,12 @@ export default function ShaderTransition({ active = false, duration = 800 }) {
         const quad = new THREE.Mesh(new THREE.PlaneGeometry(2, 2), material);
         scene.add(quad);
 
+        // viewport-driven resize is handled by separate effect; keep a no-op here for safety
         const onResize = () => {
-            renderer.setSize(window.innerWidth, window.innerHeight);
-            material.uniforms.uResolution.value.set(window.innerWidth, window.innerHeight);
+            const r = rendererRef.current;
+            if (!r) return;
+            r.setSize(width, height);
+            material.uniforms.uResolution.value.set(width, height);
         };
         window.addEventListener('resize', onResize);
 
@@ -75,8 +82,18 @@ export default function ShaderTransition({ active = false, duration = 800 }) {
             mount.removeChild(renderer.domElement);
             material.dispose();
             renderer.dispose();
+            rendererRef.current = null;
         };
     }, []);
+
+    // update renderer size when viewport changes
+    useEffect(() => {
+        const renderer = rendererRef.current;
+        if (!renderer || !materialRef.current) return;
+        renderer.setPixelRatio(devicePixelRatio || 1);
+        renderer.setSize(width, height);
+        materialRef.current.uniforms.uResolution.value.set(width, height);
+    }, [width, height, devicePixelRatio]);
 
     // update rect uniforms when payload is set in TransitionProvider
     const { payload } = useTransition();

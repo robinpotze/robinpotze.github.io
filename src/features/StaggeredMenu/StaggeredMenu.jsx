@@ -1,5 +1,5 @@
 import React, { useCallback, useLayoutEffect, useRef, useState } from 'react';
-import { gsap } from 'gsap';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import './StaggeredMenu.css';
 
@@ -29,7 +29,6 @@ export const StaggeredMenu = ({
     const openRef = useRef(false);
     const panelRef = useRef(null);
     const preLayersRef = useRef(null);
-    const preLayerElsRef = useRef([]);
     const plusHRef = useRef(null);
     const plusVRef = useRef(null);
     const iconRef = useRef(null);
@@ -37,249 +36,78 @@ export const StaggeredMenu = ({
     const textWrapRef = useRef(null);
     const [textLines, setTextLines] = useState(['Menu', 'Close']);
 
-    const openTlRef = useRef(null);
-    const closeTweenRef = useRef(null);
-    const spinTweenRef = useRef(null);
-    const textCycleAnimRef = useRef(null);
-    const colorTweenRef = useRef(null);
     const toggleBtnRef = useRef(null);
     const busyRef = useRef(false);
-    const itemEntranceTweenRef = useRef(null);
 
+    // Motion handles initial placement via `initial` props; keep effect to set initial button color
     useLayoutEffect(() => {
-        const ctx = gsap.context(() => {
-            const panel = panelRef.current;
-            const preContainer = preLayersRef.current;
-            const plusH = plusHRef.current;
-            const plusV = plusVRef.current;
-            const icon = iconRef.current;
-            const textInner = textInnerRef.current;
-            if (!panel || !plusH || !plusV || !icon || !textInner) return;
+        if (toggleBtnRef.current) toggleBtnRef.current.style.color = menuButtonColor;
+    }, [menuButtonColor]);
 
-            let preLayers = [];
-            if (preContainer) {
-                preLayers = Array.from(preContainer.querySelectorAll('.sm-prelayer'));
-            }
-            preLayerElsRef.current = preLayers;
-
-            const offscreen = position === 'left' ? -100 : 100;
-            gsap.set([panel, ...preLayers], { xPercent: offscreen });
-            gsap.set(plusH, { transformOrigin: '50% 50%', rotate: 0 });
-            gsap.set(plusV, { transformOrigin: '50% 50%', rotate: 90 });
-            gsap.set(icon, { rotate: 0, transformOrigin: '50% 50%' });
-            gsap.set(textInner, { yPercent: 0 });
-            if (toggleBtnRef.current) gsap.set(toggleBtnRef.current, { color: menuButtonColor });
-        });
-        return () => ctx.revert();
-    }, [menuButtonColor, position]);
-
-    const buildOpenTimeline = useCallback(() => {
-        const panel = panelRef.current;
-        const layers = preLayerElsRef.current;
-        if (!panel) return null;
-
-        openTlRef.current?.kill();
-        if (closeTweenRef.current) {
-            closeTweenRef.current.kill();
-            closeTweenRef.current = null;
+    // prelayer colors/array used for rendering and timing
+    const rawLayers = colors && colors.length ? colors.slice(0, 4) : ['#1e1e22', '#35353c'];
+    const arr = (() => {
+        const a = [...rawLayers];
+        if (a.length >= 3) {
+            const mid = Math.floor(a.length / 2);
+            a.splice(mid, 1);
         }
-        itemEntranceTweenRef.current?.kill();
+        return a;
+    })();
 
-        const itemEls = Array.from(panel.querySelectorAll('.sm-panel-itemLabel'));
-        const numberEls = Array.from(panel.querySelectorAll('.sm-panel-list[data-numbering] .sm-panel-item'));
-        const socialTitle = panel.querySelector('.sm-socials-title');
-        const socialLinks = Array.from(panel.querySelectorAll('.sm-socials-link'));
+    // Motion variants for sequencing
+    const offscreen = position === 'left' ? '-100%' : '100%';
+    const prelayerVariant = i => ({
+        closed: { x: offscreen },
+        open: { x: '0%', transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1], delay: i * 0.07 } }
+    });
 
-        const layerStates = layers.map(el => ({ el, start: Number(gsap.getProperty(el, 'xPercent')) }));
-        const panelStart = Number(gsap.getProperty(panel, 'xPercent'));
+    const totalPrelayers = arr.length + 2; // extra start + arr + extra end
+    const panelDelay = totalPrelayers ? (totalPrelayers - 1) * 0.07 + 0.08 : 0;
 
-        if (itemEls.length) {
-            gsap.set(itemEls, { yPercent: 140, rotate: 10 });
-        }
-        if (numberEls.length) {
-            gsap.set(numberEls, { '--sm-num-opacity': 0 });
-        }
-        if (socialTitle) {
-            gsap.set(socialTitle, { opacity: 0 });
-        }
-        if (socialLinks.length) {
-            gsap.set(socialLinks, { y: 25, opacity: 0 });
-        }
+    const panelVariant = {
+        closed: { x: offscreen, transition: { duration: 0.32, ease: [0.55, 0.06, 0.68, 0.19] } },
+        open: { x: '0%', transition: { duration: 0.65, ease: [0.22, 1, 0.36, 1], delay: panelDelay } }
+    };
 
-        const tl = gsap.timeline({ paused: true });
+    const listVariant = {
+        closed: {},
+        open: i => ({ transition: { staggerChildren: 0.1, delayChildren: i } })
+    };
 
-        layerStates.forEach((ls, i) => {
-            tl.fromTo(ls.el, { xPercent: ls.start }, { xPercent: 0, duration: 0.5, ease: 'power4.out' }, i * 0.07);
-        });
-        const lastTime = layerStates.length ? (layerStates.length - 1) * 0.07 : 0;
-        const panelInsertTime = lastTime + (layerStates.length ? 0.08 : 0);
-        const panelDuration = 0.65;
-        tl.fromTo(
-            panel,
-            { xPercent: panelStart },
-            { xPercent: 0, duration: panelDuration, ease: 'power4.out' },
-            panelInsertTime
-        );
+    const itemVariant = {
+        closed: { y: '140%', rotate: 5 },
+        open: { y: '0%', rotate: 0, transition: { duration: 0.9, ease: [0.22, 1, 0.36, 1] } }
+    };
 
-        if (itemEls.length) {
-            const itemsStartRatio = 0.15;
-            const itemsStart = panelInsertTime + panelDuration * itemsStartRatio;
-            tl.to(
-                itemEls,
-                {
-                    yPercent: 0,
-                    rotate: 0,
-                    duration: 1,
-                    ease: 'power4.out',
-                    stagger: { each: 0.1, from: 'start' }
-                },
-                itemsStart
-            );
-            if (numberEls.length) {
-                tl.to(
-                    numberEls,
-                    {
-                        duration: 0.6,
-                        ease: 'power2.out',
-                        '--sm-num-opacity': 1,
-                        stagger: { each: 0.08, from: 'start' }
-                    },
-                    itemsStart + 0.1
-                );
-            }
-        }
+    const socialLinkVariant = {
+        closed: { y: 25, opacity: 0 },
+        open: { y: 0, opacity: 1, transition: { duration: 0.55 } }
+    };
 
-        if (socialTitle || socialLinks.length) {
-            const socialsStart = panelInsertTime + panelDuration * 0.4;
-            if (socialTitle) {
-                tl.to(
-                    socialTitle,
-                    {
-                        opacity: 1,
-                        duration: 0.5,
-                        ease: 'power2.out'
-                    },
-                    socialsStart
-                );
-            }
-            if (socialLinks.length) {
-                tl.to(
-                    socialLinks,
-                    {
-                        y: 0,
-                        opacity: 1,
-                        duration: 0.55,
-                        ease: 'power3.out',
-                        stagger: { each: 0.08, from: 'start' },
-                        onComplete: () => {
-                            gsap.set(socialLinks, { clearProps: 'opacity' });
-                        }
-                    },
-                    socialsStart + 0.04
-                );
-            }
-        }
-
-        openTlRef.current = tl;
-        return tl;
-    }, []);
-
-    const playOpen = useCallback(() => {
-        if (busyRef.current) return;
-        busyRef.current = true;
-        const tl = buildOpenTimeline();
-        if (tl) {
-            tl.eventCallback('onComplete', () => {
-                busyRef.current = false;
-            });
-            tl.play(0);
-        } else {
-            busyRef.current = false;
-        }
-    }, [buildOpenTimeline]);
-
-    const playClose = useCallback(() => {
-        openTlRef.current?.kill();
-        openTlRef.current = null;
-        itemEntranceTweenRef.current?.kill();
-
-        const panel = panelRef.current;
-        const layers = preLayerElsRef.current;
-        if (!panel) return;
-
-        const all = [...layers, panel];
-        closeTweenRef.current?.kill();
-        const offscreen = position === 'left' ? -100 : 100;
-        closeTweenRef.current = gsap.to(all, {
-            xPercent: offscreen,
-            duration: 0.32,
-            ease: 'power3.in',
-            overwrite: 'auto',
-            onComplete: () => {
-                const itemEls = Array.from(panel.querySelectorAll('.sm-panel-itemLabel'));
-                if (itemEls.length) {
-                    gsap.set(itemEls, { yPercent: 140, rotate: 10 });
-                }
-                const numberEls = Array.from(panel.querySelectorAll('.sm-panel-list[data-numbering] .sm-panel-item'));
-                if (numberEls.length) {
-                    gsap.set(numberEls, { '--sm-num-opacity': 0 });
-                }
-                const socialTitle = panel.querySelector('.sm-socials-title');
-                const socialLinks = Array.from(panel.querySelectorAll('.sm-socials-link'));
-                if (socialTitle) gsap.set(socialTitle, { opacity: 0 });
-                if (socialLinks.length) gsap.set(socialLinks, { y: 25, opacity: 0 });
-                busyRef.current = false;
-            }
-        });
-    }, [position]);
+    // Lock duration for toggles
+    const ANIM_DURATION_MS = 400;
 
     const animateIcon = useCallback(opening => {
-        const icon = iconRef.current;
-        if (!icon) return;
-        spinTweenRef.current?.kill();
-        if (opening) {
-            spinTweenRef.current = gsap.to(icon, { rotate: 225, duration: 0.8, ease: 'power4.out', overwrite: 'auto' });
-        } else {
-            spinTweenRef.current = gsap.to(icon, { rotate: 0, duration: 0.35, ease: 'power3.inOut', overwrite: 'auto' });
-        }
+        // handled by Motion animate prop on the icon element
     }, []);
 
     const animateColor = useCallback(
         opening => {
             const btn = toggleBtnRef.current;
             if (!btn) return;
-            colorTweenRef.current?.kill();
             if (changeMenuColorOnOpen) {
                 const targetColor = opening ? openMenuButtonColor : menuButtonColor;
-                colorTweenRef.current = gsap.to(btn, {
-                    color: targetColor,
-                    delay: 0.18,
-                    duration: 0.3,
-                    ease: 'power2.out'
-                });
+                setTimeout(() => (btn.style.color = targetColor), 180);
             } else {
-                gsap.set(btn, { color: menuButtonColor });
+                btn.style.color = menuButtonColor;
             }
         },
         [openMenuButtonColor, menuButtonColor, changeMenuColorOnOpen]
     );
 
-    React.useEffect(() => {
-        if (toggleBtnRef.current) {
-            if (changeMenuColorOnOpen) {
-                const targetColor = openRef.current ? openMenuButtonColor : menuButtonColor;
-                gsap.set(toggleBtnRef.current, { color: targetColor });
-            } else {
-                gsap.set(toggleBtnRef.current, { color: menuButtonColor });
-            }
-        }
-    }, [changeMenuColorOnOpen, menuButtonColor, openMenuButtonColor]);
-
+    const [textShift, setTextShift] = useState(0);
     const animateText = useCallback(opening => {
-        const inner = textInnerRef.current;
-        if (!inner) return;
-        textCycleAnimRef.current?.kill();
-
         const currentLabel = opening ? 'Menu' : 'Close';
         const targetLabel = opening ? 'Close' : 'Menu';
         const cycles = 3;
@@ -292,32 +120,23 @@ export const StaggeredMenu = ({
         if (last !== targetLabel) seq.push(targetLabel);
         seq.push(targetLabel);
         setTextLines(seq);
-
-        gsap.set(inner, { yPercent: 0 });
         const lineCount = seq.length;
         const finalShift = ((lineCount - 1) / lineCount) * 100;
-        textCycleAnimRef.current = gsap.to(inner, {
-            yPercent: -finalShift,
-            duration: 0.5 + lineCount * 0.07,
-            ease: 'power4.out'
-        });
+        setTextShift(finalShift);
     }, []);
 
     const toggleMenu = useCallback(() => {
+        if (busyRef.current) return;
+        busyRef.current = true;
         const target = !openRef.current;
         openRef.current = target;
         setOpen(target);
-        if (target) {
-            onMenuOpen?.();
-            playOpen();
-        } else {
-            onMenuClose?.();
-            playClose();
-        }
+        if (target) onMenuOpen?.(); else onMenuClose?.();
         animateIcon(target);
         animateColor(target);
         animateText(target);
-    }, [playOpen, playClose, animateIcon, animateColor, animateText, onMenuOpen, onMenuClose]);
+        setTimeout(() => (busyRef.current = false), ANIM_DURATION_MS);
+    }, [animateIcon, animateColor, animateText, onMenuOpen, onMenuClose]);
 
     return (
         <div
@@ -328,13 +147,36 @@ export const StaggeredMenu = ({
         >
             <div ref={preLayersRef} className="sm-prelayers" aria-hidden="true">
                 {(() => {
-                    const raw = colors && colors.length ? colors.slice(0, 4) : ['#1e1e22', '#35353c'];
-                    let arr = [...raw];
-                    if (arr.length >= 3) {
-                        const mid = Math.floor(arr.length / 2);
-                        arr.splice(mid, 1);
-                    }
-                    return arr.map((c, i) => <div key={i} className="sm-prelayer" style={{ background: c }} />);
+                    const extraStart = rawLayers[0] || '#1e1e22';
+                    const extraEnd = rawLayers[rawLayers.length - 1] || '#35353c';
+                    return [
+                        <motion.div
+                            key={`pre-extra-start`}
+                            className="sm-prelayer"
+                            style={{ background: extraStart }}
+                            initial="closed"
+                            animate={open ? 'open' : 'closed'}
+                            variants={prelayerVariant(0)}
+                        />,
+                        ...arr.map((c, i) => (
+                            <motion.div
+                                key={`pre-${i}`}
+                                className="sm-prelayer"
+                                style={{ background: c }}
+                                initial="closed"
+                                animate={open ? 'open' : 'closed'}
+                                variants={prelayerVariant(i + 1)}
+                            />
+                        )),
+                        <motion.div
+                            key={`pre-extra-end`}
+                            className="sm-prelayer"
+                            style={{ background: extraEnd }}
+                            initial="closed"
+                            animate={open ? 'open' : 'closed'}
+                            variants={prelayerVariant(arr.length + 1)}
+                        />
+                    ];
                 })()}
             </div>
             <header className="staggered-menu-header" aria-label="Main navigation header">
@@ -348,54 +190,85 @@ export const StaggeredMenu = ({
                     type="button"
                 >
                     <span ref={textWrapRef} className="sm-toggle-textWrap" aria-hidden="true">
-                        <span ref={textInnerRef} className="sm-toggle-textInner">
+                        <motion.span
+                            ref={textInnerRef}
+                            className="sm-toggle-textInner"
+                            animate={{ y: `-${textShift}%` }}
+                            transition={{ duration: 0.5 + (textLines.length * 0.07), ease: [0.22, 1, 0.36, 1] }}
+                        >
                             {textLines.map((l, i) => (
                                 <span className="sm-toggle-line" key={i}>
                                     {l}
                                 </span>
                             ))}
-                        </span>
+                        </motion.span>
                     </span>
-                    <span ref={iconRef} className="sm-icon" aria-hidden="true">
+                    <motion.span
+                        ref={iconRef}
+                        className="sm-icon"
+                        aria-hidden="true"
+                        animate={{ rotate: open ? 225 : 0 }}
+                        transition={{ duration: open ? 0.8 : 0.35, ease: [0.22, 1, 0.36, 1] }}
+                    >
                         <span ref={plusHRef} className="sm-icon-line" />
                         <span ref={plusVRef} className="sm-icon-line sm-icon-line-v" />
-                    </span>
+                    </motion.span>
                 </button>
             </header>
-
-            <aside id="staggered-menu-panel" ref={panelRef} className="staggered-menu-panel" aria-hidden={!open}>
-                <div className="sm-panel-inner">
-                    <ul className="sm-panel-list" role="list" data-numbering={true}>
-                        {items && items.length ? (
-                            items.map((it, idx) => (
-                                <li className="sm-panel-itemWrap" key={it.label + idx}>
-                                    <Link className="sm-panel-item" to={it.link} aria-label={it.ariaLabel} data-index={idx + 1}>
-                                        <span className="sm-panel-itemLabel">{it.label}</span>
-                                    </Link>
+            <AnimatePresence>
+                <motion.aside
+                    id="staggered-menu-panel"
+                    ref={panelRef}
+                    className="staggered-menu-panel"
+                    aria-hidden={!open}
+                    initial="closed"
+                    animate={open ? 'open' : 'closed'}
+                    exit="closed"
+                    variants={panelVariant}
+                >
+                    <div className="sm-panel-inner">
+                        <motion.ul
+                            className="sm-panel-list"
+                            role="list"
+                            data-numbering={true}
+                            variants={listVariant}
+                            custom={0.15}
+                            initial="closed"
+                            animate={open ? 'open' : 'closed'}
+                        >
+                            {items && items.length ? (
+                                items.map((it, idx) => (
+                                    <motion.li className="sm-panel-itemWrap" key={it.label + idx} variants={itemVariant}>
+                                        <Link className="sm-panel-item" to={it.link} aria-label={it.ariaLabel} data-index={idx + 1}>
+                                            <span className="sm-panel-itemLabel">{it.label}</span>
+                                        </Link>
+                                    </motion.li>
+                                ))
+                            ) : (
+                                <li className="sm-panel-itemWrap" aria-hidden="true">
+                                    <span className="sm-panel-item">
+                                        <span className="sm-panel-itemLabel">No items</span>
+                                    </span>
                                 </li>
-                            ))
-                        ) : (
-                            <li className="sm-panel-itemWrap" aria-hidden="true">
-                                <span className="sm-panel-item">
-                                    <span className="sm-panel-itemLabel">No items</span>
-                                </span>
-                            </li>
-                        )}
-                    </ul>
-                    <div className="sm-socials" aria-label="Social links">
-                        <h3 className="sm-socials-title">Socials</h3>
-                        <ul className="sm-socials-list" role="list">
-                            {socialItems.map((s, i) => (
-                                <li key={s.label + i} className="sm-socials-item">
-                                    <a href={s.link} target="_blank" rel="noopener noreferrer" className="sm-socials-link">
-                                        {s.label}
-                                    </a>
-                                </li>
-                            ))}
-                        </ul>
+                            )}
+                        </motion.ul>
+                        <div className="sm-socials" aria-label="Social links">
+                            <motion.h3 className="sm-socials-title" initial={{ opacity: 0 }} animate={{ opacity: open ? 1 : 0 }}>
+                                Socials
+                            </motion.h3>
+                            <motion.ul className="sm-socials-list" role="list">
+                                {socialItems.map((s, i) => (
+                                    <motion.li key={s.label + i} className="sm-socials-item" variants={socialLinkVariant} initial="closed" animate={open ? 'open' : 'closed'}>
+                                        <a href={s.link} target="_blank" rel="noopener noreferrer" className="sm-socials-link">
+                                            {s.label}
+                                        </a>
+                                    </motion.li>
+                                ))}
+                            </motion.ul>
+                        </div>
                     </div>
-                </div>
-            </aside>
+                </motion.aside>
+            </AnimatePresence>
         </div>
     );
 };
