@@ -14,72 +14,51 @@ export default function Home() {
     const { start } = useTransition();
 
     useEffect(() => {
-        async function goToWork() {
-            if (busyRef.current) return;
-            busyRef.current = true;
-
-            // compute a payload from the hero content so the shader can focus on that rect
+        const buildBootPayload = () => {
             const heroEl = document.getElementById('landing-content');
             const viewport = { width: window.innerWidth, height: window.innerHeight };
-            let payload = { viewport };
-            if (heroEl) {
-                const rect = heroEl.getBoundingClientRect();
-                payload.rect = {
-                    centerX: rect.left + rect.width / 2,
-                    centerY: rect.top + rect.height / 2,
-                    width: rect.width,
-                    height: rect.height
+            const rectData = () => {
+                if (!heroEl) {
+                    return {
+                        centerX: viewport.width / 2,
+                        centerY: viewport.height / 2,
+                        width: Math.min(viewport.width * 0.8, 960),
+                        height: Math.min(viewport.height * 0.25, 340),
+                    };
+                }
+                const r = heroEl.getBoundingClientRect();
+                return {
+                    centerX: r.left + r.width / 2,
+                    centerY: r.top + r.height / 2,
+                    width: r.width,
+                    height: r.height,
                 };
-            }
+            };
+            return { mode: 'boot', viewport, rect: rectData() };
+        };
 
-            // Use hero rect only; no scrolling or spacer injection
-            payload.rect = payload.rect ?? {};
-            payload.viewport = viewport;
-            payload.mode = 'boot';
-            if (heroEl) {
-                const rect = heroEl.getBoundingClientRect();
-                payload.rect.centerX = rect.left + rect.width / 2;
-                payload.rect.centerY = rect.top + rect.height / 2;
-                payload.rect.width = rect.width;
-                payload.rect.height = rect.height;
-            } else {
-                // fallback center rectangle
-                payload.rect.centerX = viewport.width / 2;
-                payload.rect.centerY = viewport.height / 2;
-                payload.rect.width = Math.min(viewport.width * 0.8, 960);
-                payload.rect.height = Math.min(viewport.height * 0.25, 340);
-            }
-
-            try {
-                // cinematic longer duration; start immediately
-                await start({ out: 1600, payload });
-            } catch (e) { }
-
+        async function navigateToWork() {
+            if (busyRef.current) return;
+            busyRef.current = true;
+            const payload = buildBootPayload();
+            try { await start({ out: 1600, payload }); } catch { }
             navigate('/work');
-            // AutoTransitionEnd will call end() after navigation; release busy lock shortly after
-            setTimeout(() => (busyRef.current = false), 1000);
+            setTimeout(() => { busyRef.current = false; }, 1000);
         }
 
-        function onWheel(e) {
-            if (e.deltaY > 20) goToWork();
-        }
-
+        // Input handlers
+        const onWheel = (e) => { if (e.deltaY > 20) navigateToWork(); };
         let touchStartY = null;
-        function onTouchStart(e) {
-            touchStartY = e.touches ? e.touches[0].clientY : null;
-        }
-        function onTouchEnd(e) {
+        const onTouchStart = (e) => { touchStartY = e.touches ? e.touches[0].clientY : null; };
+        const onTouchEnd = (e) => {
             if (touchStartY == null) return;
             const endY = e.changedTouches ? e.changedTouches[0].clientY : null;
-            if (endY != null && touchStartY - endY > 50) goToWork();
+            if (endY != null && touchStartY - endY > 50) navigateToWork();
             touchStartY = null;
-        }
-
-        function onKey(e) {
-            if (e.key === 'ArrowDown' || e.key === 'PageDown' || e.key === ' ') {
-                goToWork();
-            }
-        }
+        };
+        const onKey = (e) => {
+            if (['ArrowDown', 'PageDown', ' '].includes(e.key)) navigateToWork();
+        };
 
         window.addEventListener('wheel', onWheel, { passive: true });
         window.addEventListener('touchstart', onTouchStart, { passive: true });

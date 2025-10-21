@@ -12,7 +12,11 @@ function dispatchLocationChange() {
     window.dispatchEvent(evt);
     // also notify listeners directly
     for (const l of Array.from(listeners)) {
-        try { l(); } catch (e) { /* ignore listener errors */ }
+        try {
+            l();
+        } catch {
+            // ignore listener errors
+        }
     }
 }
 
@@ -25,7 +29,9 @@ function wrapHistoryMethod(method) {
 }
 
 export function start() {
-    if (typeof window === 'undefined' || started) return;
+    if (typeof window === 'undefined' || started) {
+        return;
+    }
     origPush = window.history.pushState;
     origReplace = window.history.replaceState;
     window.history.pushState = wrapHistoryMethod('pushState');
@@ -34,9 +40,15 @@ export function start() {
 }
 
 export function stop() {
-    if (!started) return;
-    if (origPush) window.history.pushState = origPush;
-    if (origReplace) window.history.replaceState = origReplace;
+    if (!started) {
+        return;
+    }
+    if (origPush) {
+        window.history.pushState = origPush;
+    }
+    if (origReplace) {
+        window.history.replaceState = origReplace;
+    }
     origPush = null;
     origReplace = null;
     started = false;

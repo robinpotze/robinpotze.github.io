@@ -1,15 +1,12 @@
 import React, { createContext, useCallback, useState } from 'react';
 
-const TransitionContext = createContext({
-    active: false,
-    duration: 800,
-    payload: null,
-    start: async (opts = {}) => { },
-    end: (inn = 600) => { },
-    restartBoot: (opts = {}) => { },
-    startBoot: async (opts = {}) => ({ outPromise: Promise.resolve(), coveragePromise: Promise.resolve() }),
-    waitForBootCoverage: async () => { }
-});
+/**
+ * Transition context shape.
+ * active: transition currently animating (generic shader or boot) out phase.
+ * duration: current active phase duration in ms.
+ * payload: metadata the shaders use (rect, viewport, mode, etc.).
+ */
+const TransitionContext = createContext(null);
 
 export function useTransition() {
     const ctx = React.useContext(TransitionContext);
@@ -17,43 +14,44 @@ export function useTransition() {
     return ctx;
 }
 
+// Small timeout promise utility.
+function sleep(ms) {
+    return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
 export default function TransitionProvider({ children }) {
     const [active, setActive] = useState(false);
     const [duration, setDuration] = useState(800);
     const [payload, setPayload] = useState(null);
 
-    const start = useCallback((opts = {}) => {
-        const out = typeof opts === 'number' ? opts : opts.out ?? 600;
-        setDuration(out);
-        setPayload(opts.payload ?? null);
+    /**
+     * Start a standard (non-boot) transition.
+     * Accepts either a number (duration) or an options object: { out, payload }.
+     * Returns a promise resolving after the out duration elapses.
+     */
+    const start = useCallback((options = {}) => {
+        const outDuration = typeof options === 'number' ? options : options.out ?? 600;
+        setDuration(outDuration);
+        setPayload(typeof options === 'object' ? options.payload ?? null : null);
         setActive(true);
-        return new Promise((resolve) => {
-            setTimeout(resolve, out);
-        });
+        return sleep(outDuration);
     }, []);
 
-    const end = useCallback((inn = 600) => {
-        setDuration(inn);
+    /**
+     * Begin the inward (hide) phase of a transition. Clears payload slightly after animation end.
+     */
+    const end = useCallback((inDuration = 600) => {
+        setDuration(inDuration);
         setActive(false);
-        setTimeout(() => setPayload(null), inn + 20);
+        // Allow shader a couple frames to read payload during in-phase.
+        setTimeout(() => setPayload(null), inDuration + 20);
     }, []);
 
-    // Replay boot out phase without discarding existing boot payload (if any).
-    // If no boot payload currently, optionally synthesize one.
-    const restartBoot = useCallback((opts = {}) => {
-        setActive(true);
-        const out = opts.out ?? duration;
-        setDuration(out);
-        setPayload((prev) => {
-            if (prev?.mode === 'boot') return { ...prev, cycle: (prev.cycle || 0) + 1 };
-            return { mode: 'boot', rect: prev?.rect || null, viewport: prev?.viewport || { width: window.innerWidth, height: window.innerHeight }, cycle: 1 };
-        });
-        return new Promise((resolve) => setTimeout(resolve, out));
-    }, [duration]);
-
-    // Promise that resolves once the boot coverage event fires (after start/resume)
+    /**
+     * Wait for the custom boot coverage event fired by BootTransition when coverage threshold reached.
+     * Always attaches a one-off listener even if event may already have fired on a previous cycle.
+     */
     const waitForBootCoverage = useCallback(() => {
-        // If already active and coverage maybe emitted, we still attach once.
         return new Promise((resolve) => {
             const handler = (e) => {
                 window.removeEventListener('boot:coverage', handler);
@@ -63,22 +61,58 @@ export default function TransitionProvider({ children }) {
         });
     }, []);
 
-    // Start a boot transition and return both the out completion and coverage promises.
-    const startBoot = useCallback((opts = {}) => {
-        const out = opts.out ?? duration;
-        // Provide/augment payload
-        const newPayload = { ...(opts.payload || {}), mode: 'boot' };
-        setDuration(out);
-        setPayload(newPayload);
-        setActive(true);
-        const outPromise = new Promise((resolve) => setTimeout(resolve, out));
-        const coveragePromise = waitForBootCoverage();
-        return { outPromise, coveragePromise };
-    }, [duration, waitForBootCoverage]);
-
-    return (
-        <TransitionContext.Provider value={{ active, duration, payload, start, end, restartBoot, startBoot, waitForBootCoverage }}>
-            {children}
-        </TransitionContext.Provider>
+    /**
+     * Start a boot transition. Returns { outPromise, coveragePromise } so callers can await the moment
+     * content is fully covered (coveragePromise) versus the complete out duration.
+     */
+    const startBoot = useCallback(
+        (options = {}) => {
+            const outDuration = options.out ?? duration;
+            const newPayload = { ...(options.payload || {}), mode: 'boot' };
+            setDuration(outDuration);
+            setPayload(newPayload);
+            setActive(true);
+            return {
+                outPromise: sleep(outDuration),
+                coveragePromise: waitForBootCoverage(),
+            };
+        },
+        [duration, waitForBootCoverage]
     );
+
+    /**
+     * Replay the boot transition out phase (used for restart animations) preserving existing payload
+     * when possible and incrementing a cycle counter consumed by BootTransition.
+     */
+    const restartBoot = useCallback(
+        (options = {}) => {
+            setActive(true);
+            const outDuration = options.out ?? duration;
+            setDuration(outDuration);
+            setPayload((prev) => {
+                if (prev?.mode === 'boot') return { ...prev, cycle: (prev.cycle || 0) + 1 };
+                return {
+                    mode: 'boot',
+                    rect: prev?.rect || null,
+                    viewport: prev?.viewport || { width: window.innerWidth, height: window.innerHeight },
+                    cycle: 1,
+                };
+            });
+            return sleep(outDuration);
+        },
+        [duration]
+    );
+
+    const value = {
+        active,
+        duration,
+        payload,
+        start,
+        end,
+        restartBoot,
+        startBoot,
+        waitForBootCoverage,
+    };
+
+    return <TransitionContext.Provider value={value}>{children}</TransitionContext.Provider>;
 }
