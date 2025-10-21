@@ -1,80 +1,72 @@
-import { PixelCard, StaggeredMenu } from '@features';
+import { PixelCard } from '@features';
 import { pages as autogenPages } from '../Entry/pages/autogen';
-import AnimatedLink from '@components/Transition/AnimatedLink';
+import { useWorkCardTransition } from '@hooks';
 import { motion } from 'framer-motion';
 import { MouseEffects } from '@effects';
-import { Suspense, lazy } from 'react';
+import { StaggeredMenu } from '@features';
+import { Suspense, lazy, useMemo } from 'react';
 import './Work.css';
 
 const BlackwallEffect = lazy(() => import('@effects/Blackwall/Blackwall'));
 
+function parseDate(val) {
+    if (val == null && val !== 0) return -Infinity;
+    const n = Number(val);
+    if (Number.isFinite(n) && String(val).length === 4) return new Date(n, 0, 1).getTime();
+    const p = Date.parse(String(val));
+    return Number.isFinite(p) ? p : -Infinity;
+}
+
+function buildSortedItems(pages) {
+    return Object.entries(pages || {})
+        .map(([key, val]) => ({ key, data: (val && val.data) || {} }))
+        .sort((a, b) => {
+            const aDate = parseDate(a.data.date ?? a.data.year);
+            const bDate = parseDate(b.data.date ?? b.data.year);
+            if (aDate !== bDate) return bDate - aDate;
+            return (a.data.id || 0) - (b.data.id || 0);
+        });
+}
+
 function WorkCard({ pageKey, data = {}, index = 0 }) {
-    const bannerStyle = data.banner ? { backgroundImage: `url(${data.banner})` } : undefined;
+    const { trigger } = useWorkCardTransition({ to: `/work/${pageKey}`, data, duration: 400, delay: 50 });
+    const banner = data.banner;
+    const dispAttr = data?.dispMap ? { 'data-disp': data.dispMap } : {};
+    const idLabel = `PRJ_${(data.id || index).toString().padStart(3, '0')}`;
 
     return (
-        <motion.div
-            key={pageKey}
-            className="work-card-wrap"
-            whileHover={{ scale: 1.02 }}
+        <motion.article
+            className="work-card"
+            style={{ '--i': index, ...(banner ? { backgroundImage: `url(${banner})` } : {}) }}
+            whileHover={{ scale: 1.02, zIndex: index + 5 }}
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 + index * 0.05 }}
+            onClick={(e) => { e.preventDefault(); trigger(e.currentTarget); }}
+            {...dispAttr}
         >
-            <AnimatedLink
-                to={`/work/${pageKey}`}
-                className="work-card"
-                style={{ ['--i']: index }}
-                duration={400}
-                {...(data?.dispMap ? { 'data-disp': data.dispMap } : {})}
-            >
-                <div className="card-bg-wrap" style={bannerStyle}>
-                    {data?.banner && (
-                        <img className="card-thumb" src={data.banner} alt={`${data.title || pageKey} thumbnail`} style={{ display: 'none' }} />
-                    )}
-                    <PixelCard variant="default" className="pixel-card-inner">
-                        <div className="work-card-content">
-                            <span className='tech-small'>PRJ_{data.id.toString().padStart(3, '0')}</span>
-                            <h3>{data?.title || pageKey}</h3>
-                            <p className="synopsis">{data?.synopsis || ''}</p>
-                            <span className="tech-small">{data?.year || ''}</span>
-                        </div>
-                    </PixelCard>
+            <PixelCard variant="default" className="pixel-card-inner">
+                <div className="work-card-content">
+                    <span className='tech-small'>{idLabel}</span>
+                    <h3>{data?.title || pageKey}</h3>
+                    <p className="synopsis">{data?.synopsis || ''}</p>
+                    <span className="tech-small">{data?.year || ''}</span>
                 </div>
-            </AnimatedLink>
-        </motion.div>
+            </PixelCard>
+        </motion.article>
     );
 }
 
 export default function Work() {
-    const items = Object.entries(autogenPages || {}).map(([key, val]) => ({
-        key,
-        data: (val && val.data) || {},
-    }));
-
-    function parseDateValue(val) {
-        if (!val && val !== 0) return -Infinity;
-        const asNumber = Number(val);
-        if (Number.isFinite(asNumber) && String(val).length === 4) {
-            return new Date(asNumber, 0, 1).getTime();
-        }
-        const parsed = Date.parse(String(val));
-        return Number.isFinite(parsed) ? parsed : -Infinity;
-    }
-
-    items.sort((a, b) => {
-        const aDate = parseDateValue(a.data.date ?? a.data.year);
-        const bDate = parseDateValue(b.data.date ?? b.data.year);
-        if (aDate !== bDate) return bDate - aDate;
-        return a.data.id - b.data.id;
-    });
+    const items = useMemo(() => buildSortedItems(autogenPages), []);
 
     return (
         <div className='work-overview' id='work-overview'>
-            {/* <StaggeredMenu /> */}
+            <StaggeredMenu />
+            <MouseEffects />
             <Suspense fallback={<div className="fixed inset-0 -z-10 pointer-events-none" />}>
                 <BlackwallEffect onScrollTrigger={() => { "hero-section" }} />
             </Suspense>
-            <MouseEffects />
             <motion.h2 className="work-title" initial={{ opacity: 0, y: -12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}>
                 Work
             </motion.h2>

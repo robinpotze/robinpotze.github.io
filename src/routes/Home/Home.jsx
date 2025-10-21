@@ -1,5 +1,6 @@
-import { Suspense, lazy } from 'react';
-import { Link } from 'react-router-dom';
+import { Suspense, lazy, useEffect, useRef } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { useTransition } from '@core/transitions';
 import { RadialGrid, RedoAnimText, ScrollDown } from '@deco';
 import { useDateTime } from '@hooks';
 
@@ -8,6 +9,91 @@ const BlackwallEffect = lazy(() => import('@effects/Blackwall/Blackwall'));
 import './Home.css';
 
 export default function Home() {
+    const navigate = useNavigate();
+    const busyRef = useRef(false);
+    const { start } = useTransition();
+
+    useEffect(() => {
+        async function goToWork() {
+            if (busyRef.current) return;
+            busyRef.current = true;
+
+            // compute a payload from the hero content so the shader can focus on that rect
+            const heroEl = document.getElementById('landing-content');
+            const viewport = { width: window.innerWidth, height: window.innerHeight };
+            let payload = { viewport };
+            if (heroEl) {
+                const rect = heroEl.getBoundingClientRect();
+                payload.rect = {
+                    centerX: rect.left + rect.width / 2,
+                    centerY: rect.top + rect.height / 2,
+                    width: rect.width,
+                    height: rect.height
+                };
+            }
+
+            // Use hero rect only; no scrolling or spacer injection
+            payload.rect = payload.rect ?? {};
+            payload.viewport = viewport;
+            payload.mode = 'boot';
+            if (heroEl) {
+                const rect = heroEl.getBoundingClientRect();
+                payload.rect.centerX = rect.left + rect.width / 2;
+                payload.rect.centerY = rect.top + rect.height / 2;
+                payload.rect.width = rect.width;
+                payload.rect.height = rect.height;
+            } else {
+                // fallback center rectangle
+                payload.rect.centerX = viewport.width / 2;
+                payload.rect.centerY = viewport.height / 2;
+                payload.rect.width = Math.min(viewport.width * 0.8, 960);
+                payload.rect.height = Math.min(viewport.height * 0.25, 340);
+            }
+
+            try {
+                // cinematic longer duration; start immediately
+                await start({ out: 1600, payload });
+            } catch (e) { }
+
+            navigate('/work');
+            // AutoTransitionEnd will call end() after navigation; release busy lock shortly after
+            setTimeout(() => (busyRef.current = false), 1000);
+        }
+
+        function onWheel(e) {
+            if (e.deltaY > 20) goToWork();
+        }
+
+        let touchStartY = null;
+        function onTouchStart(e) {
+            touchStartY = e.touches ? e.touches[0].clientY : null;
+        }
+        function onTouchEnd(e) {
+            if (touchStartY == null) return;
+            const endY = e.changedTouches ? e.changedTouches[0].clientY : null;
+            if (endY != null && touchStartY - endY > 50) goToWork();
+            touchStartY = null;
+        }
+
+        function onKey(e) {
+            if (e.key === 'ArrowDown' || e.key === 'PageDown' || e.key === ' ') {
+                goToWork();
+            }
+        }
+
+        window.addEventListener('wheel', onWheel, { passive: true });
+        window.addEventListener('touchstart', onTouchStart, { passive: true });
+        window.addEventListener('touchend', onTouchEnd, { passive: true });
+        window.addEventListener('keydown', onKey);
+
+        return () => {
+            window.removeEventListener('wheel', onWheel);
+            window.removeEventListener('touchstart', onTouchStart);
+            window.removeEventListener('touchend', onTouchEnd);
+            window.removeEventListener('keydown', onKey);
+        };
+    }, [navigate, start]);
+
 
     return (
         <div className='landing-page'>

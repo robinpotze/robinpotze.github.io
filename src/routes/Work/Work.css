@@ -5,6 +5,9 @@
 }
 
 .work-pages {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
     width: 90%;
     justify-self: center;
     justify-content: center;

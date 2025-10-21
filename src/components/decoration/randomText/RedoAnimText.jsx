@@ -1,4 +1,4 @@
-import { animate, motion, useMotionValue, useTransform } from "motion/react";
+import { animate, motion, useMotionValue, useTransform } from "framer-motion";
 import PropTypes from "prop-types";
 import { useEffect } from "react";
 

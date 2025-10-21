@@ -138,10 +138,12 @@ export const StaggeredMenu = ({
         setTimeout(() => (busyRef.current = false), ANIM_DURATION_MS);
     }, [animateIcon, animateColor, animateText, onMenuOpen, onMenuClose]);
 
+    const wrapperStyle = accentColor ? { ['--sm-accent']: accentColor } : undefined;
+
     return (
         <div
             className={(className ? className + ' ' : '') + 'staggered-menu-wrapper' + (isFixed ? ' fixed-wrapper' : '')}
-            style={accentColor ? { ['--sm-accent']: accentColor } : undefined}
+            style={wrapperStyle}
             data-position={position}
             data-open={open || undefined}
         >

@@ -1,4 +1,4 @@
-import { motion } from "motion/react";
+import { motion } from "framer-motion";
 import PropTypes from 'prop-types';
 
 export default function ScrollDown({ color = "var(--c-LGHT)", width = 32, height = 64, speed = 1.2 }) {
@@ -18,7 +18,7 @@ export default function ScrollDown({ color = "var(--c-LGHT)", width = 32, height
     const containerVariants = {
         animate: {
             transition: {
-                staggerChildren: 0.3, // pulse flows downward
+                staggerChildren: 0.3,
                 repeat: Infinity,
             }
         }
@@ -55,7 +55,6 @@ export default function ScrollDown({ color = "var(--c-LGHT)", width = 32, height
                 variants={lineVariants}
             />
 
-            {/* Arrow synced with last pulse */}
             <motion.path
                 d="M8 36 0 25h16z"
                 fill={color}
@@ -65,7 +64,7 @@ export default function ScrollDown({ color = "var(--c-LGHT)", width = 32, height
                     duration: speed,
                     ease: "easeInOut",
                     repeat: Infinity,
-                    delay: speed / 2, // syncs with last line pulse
+                    delay: speed / 2,
                 }}
             />
         </motion.svg>

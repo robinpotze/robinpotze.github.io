@@ -93,7 +93,6 @@ export default function BlackwallEffect({
         let lastFrame = 0;
         const targetFPS = 30;
 
-        // read the current scale from the ref
         let currentScale = currentScaleRef.current;
 
         function tryApplyScale(scale) {
@@ -114,7 +113,6 @@ export default function BlackwallEffect({
             const bufferWidth = Math.max(1, Math.floor(cssW * currentScale));
             const bufferHeight = Math.max(1, Math.floor(cssH * currentScale));
             renderer.setPixelRatio(window.devicePixelRatio || 1);
-            // pass internal buffer size (will be multiplied by pixelRatio internally)
             // use updateStyle=false so the canvas CSS size we set remains the full viewport
             renderer.setSize(bufferWidth, bufferHeight, false);
             // apply render target resize immediately for scale changes so uniforms match the buffer
@@ -134,10 +132,8 @@ export default function BlackwallEffect({
             lastFrame = now;
             const elapsed = (now - startTime) * 0.001;
 
-            // track frame times for FPS sampling via hook
             const newScale = adaptive.sampleFrame(dt);
             if (newScale != null) {
-                // apply the scale change immediately
                 tryApplyScale(newScale);
             }
 
@@ -149,11 +145,8 @@ export default function BlackwallEffect({
             renderer.setRenderTarget(null);
 
             renderer.render(scene, camera);
-
-            // adaptive adjustments are handled by the hook's sampler
         }
 
-        // apply initial scale
         tryApplyScale(currentScaleRef.current);
 
         animate();
@@ -193,7 +186,6 @@ export default function BlackwallEffect({
             const h = Math.max(1, Math.floor(cssH * currentScaleRef.current));
             renderer.setPixelRatio(window.devicePixelRatio || 1);
             // update the renderer internal buffer size immediately
-            // use updateStyle=false so the canvas CSS size remains the full viewport
             renderer.setSize(w, h, false);
 
             // debounce the expensive renderTarget resize and uniform updates
