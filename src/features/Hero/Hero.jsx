@@ -1,9 +1,9 @@
-import PropTypes from 'prop-types';
 import { motion } from 'framer-motion';
+import PropTypes from 'prop-types';
 
 import ScrollDown from '@deco/ScrollDown/ScrollDown';
 
-import "./Hero.css"
+import "./Hero.css";
 
 export default function Hero({ content }) {
 

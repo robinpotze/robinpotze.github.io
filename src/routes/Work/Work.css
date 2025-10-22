@@ -28,6 +28,7 @@
     transition: transform 0.25s ease, box-shadow 0.25s ease;
     will-change: transform;
     color: var(--c-LGHT);
+    cursor: pointer;
 }
 
 .work-card:hover {

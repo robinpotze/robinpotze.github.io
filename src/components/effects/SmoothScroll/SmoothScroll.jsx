@@ -1,22 +1,20 @@
-import { useEffect } from 'react';
-import Lenis from '@studio-freight/lenis';
+import useLenisScroll from '@core/scroll/useLenisScroll';
 
-export default function SmoothScroll({ children }) {
-    useEffect(() => {
-        const lenis = new Lenis({ lerp: 1, smoothWheel: true });
-        // expose instance so pages can programmatically scroll while Lenis is active
-        try { window.lenis = lenis; } catch (e) { /* ignore in non-browser env */ }
-        let mounted = true;
-
-        function raf(time) {
-            if (!mounted) return;
-            lenis.raf(time);
-            requestAnimationFrame(raf);
-        }
-
-        requestAnimationFrame(raf);
-        return () => { mounted = false; try { window.lenis = null; } catch (e) { } };
-    }, []);
+export default function SmoothScroll({
+    children,
+    lerp = 0.1,
+    duration = 1.2,
+    smoothWheel = true,
+    wheelMultiplier = 1,
+    touchMultiplier = 2,
+}) {
+    useLenisScroll({
+        lerp,
+        duration,
+        smoothWheel,
+        wheelMultiplier,
+        touchMultiplier,
+    });
 
     return <>{children}</>;
 }

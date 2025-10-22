@@ -1,15 +1,24 @@
-import { useParams } from 'react-router-dom';
-import { Hero, StaggeredMenu } from '@features';
+import useLenisScroll from '@core/scroll/useLenisScroll';
 import { DashLine } from '@deco';
 import { GradualBlur, ScrollReveal } from '@effects';
+import { Hero, StaggeredMenu } from '@features';
+import { useParams } from 'react-router-dom';
 import { pages } from './pages';
 
 import './Entry.css';
 
 export default function Entry() {
+    // Initialize Lenis smooth scroll for Entry pages
+    useLenisScroll({
+        lerp: 0.1,
+        duration: 1.2,
+        smoothWheel: true,
+        wheelMultiplier: 1,
+        touchMultiplier: 2,
+    });
 
     const { title } = useParams();
-    const normalizedTitle = title.toLowerCase().replace(/\s+/g, '').replace(/-/g, '');
+    const normalizedTitle = title.toLowerCase().replaceAll(/\s+/g, '').replaceAll(/-/g, '');
     const { Component: PageComponent, data } = pages[normalizedTitle] || {};
 
     if (!PageComponent || !data) {
@@ -20,7 +29,7 @@ export default function Entry() {
     }
 
     return (
-        <div className='work-page' id={data.title.replace(/\s+/g, '-') + '-page'}>
+        <div className='work-page' id={data.title.replaceAll(/\s+/g, '-') + '-page'}>
             <StaggeredMenu />
             <Hero content={data} />
             <section className='work-section'>
@@ -29,7 +38,7 @@ export default function Entry() {
                         <h2>Synopsis</h2>
                         <DashLine direction="Horizontal" />
                         <div className='work-synopsis-subtitle'>
-                            <img src='/img/icon/CRS.svg' />
+                            <img src='/img/icon/CRS.svg' alt='Cross symbol divider' />
                             <p className='tech-small'>{data.synopsis}</p>
                         </div>
                     </div>

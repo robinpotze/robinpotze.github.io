@@ -1,13 +1,10 @@
-import { PixelCard } from '@features';
-import { pages as autogenPages } from '../Entry/pages/autogen';
+import { PixelCard, StaggeredMenu } from '@features';
 import { useWorkCardTransition } from '@hooks';
 import { motion } from 'framer-motion';
-import { MouseEffects } from '@effects';
-import { StaggeredMenu } from '@features';
-import { Suspense, lazy, useMemo } from 'react';
+import PropTypes from 'prop-types';
+import { useMemo } from 'react';
+import { pages as autogenPages } from '../Entry/pages/autogen';
 import './Work.css';
-
-const BlackwallEffect = lazy(() => import('@effects/Blackwall/Blackwall'));
 
 function parseDate(val) {
     if (val == null && val !== 0) return -Infinity;
@@ -19,7 +16,7 @@ function parseDate(val) {
 
 function buildSortedItems(pages) {
     return Object.entries(pages || {})
-        .map(([key, val]) => ({ key, data: (val && val.data) || {} }))
+        .map(([key, val]) => ({ key, data: val?.data || {} }))
         .sort((a, b) => {
             const aDate = parseDate(a.data.date ?? a.data.year);
             const bDate = parseDate(b.data.date ?? b.data.year);
@@ -63,10 +60,6 @@ export default function Work() {
     return (
         <div className='work-overview' id='work-overview'>
             <StaggeredMenu />
-            <MouseEffects />
-            <Suspense fallback={<div className="fixed inset-0 -z-10 pointer-events-none" />}>
-                <BlackwallEffect onScrollTrigger={() => { "hero-section" }} />
-            </Suspense>
             <motion.h2 className="work-title" initial={{ opacity: 0, y: -12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}>
                 Work
             </motion.h2>
@@ -78,3 +71,9 @@ export default function Work() {
         </div >
     );
 }
+
+WorkCard.propTypes = {
+    pageKey: PropTypes.string.isRequired,
+    data: PropTypes.object.isRequired,
+    index: PropTypes.number.isRequired,
+};
