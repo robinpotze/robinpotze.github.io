@@ -1,0 +1,1 @@
+import{j as t}from"./index-Is_D4heu.js";function e(){return t.jsxs("div",{className:"contact-page",children:[t.jsx("h1",{children:"Contact Page"}),t.jsx("p",{children:"This is the contact page."})]})}export{e as default};
