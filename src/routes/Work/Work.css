@@ -103,7 +103,3 @@
     --mouse-cx: 0;
     --mouse-cy: 0;
 }
-
-.work-card {
-    transform: rotateX(calc(var(--mouse-cy) * 6deg)) rotateY(calc(var(--mouse-cx) * 6deg));
-}

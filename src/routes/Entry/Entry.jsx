@@ -8,7 +8,6 @@ import { pages } from './pages';
 import './Entry.css';
 
 export default function Entry() {
-    // Initialize Lenis smooth scroll for Entry pages
     useLenisScroll({
         lerp: 0.1,
         duration: 1.2,
@@ -18,7 +17,7 @@ export default function Entry() {
     });
 
     const { title } = useParams();
-    const normalizedTitle = title.toLowerCase().replaceAll(/\s+/g, '').replaceAll(/-/g, '');
+    const normalizedTitle = title.toLowerCase().replaceAll(/[\s-]+/g, '');
     const { Component: PageComponent, data } = pages[normalizedTitle] || {};
 
     if (!PageComponent || !data) {

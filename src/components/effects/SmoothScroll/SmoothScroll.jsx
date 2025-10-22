@@ -1,4 +1,5 @@
 import useLenisScroll from '@core/scroll/useLenisScroll';
+import PropTypes from 'prop-types';
 
 export default function SmoothScroll({
     children,
@@ -18,3 +19,12 @@ export default function SmoothScroll({
 
     return <>{children}</>;
 }
+
+SmoothScroll.propTypes = {
+    children: PropTypes.node.isRequired,
+    lerp: PropTypes.number,
+    duration: PropTypes.number,
+    smoothWheel: PropTypes.bool,
+    wheelMultiplier: PropTypes.number,
+    touchMultiplier: PropTypes.number,
+};
