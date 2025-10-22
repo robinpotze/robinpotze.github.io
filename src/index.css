@@ -14,7 +14,7 @@
   --f-H3: 1.5rem "Orbitron", sans-serif;
   --f-FUNCTIONAL: 1rem 'Kode Mono', monospace;
   --f-PARAGRAPH: 1rem 'Roboto', sans-serif;
-  --f-TECH_SMALL: .9rem 'Kode Mono', monospace;
+  --f-TECH_SMALL: .75rem 'Kode Mono', monospace;
   --f-TECH_TINY: .5rem 'Kode Mono', monospace;
   --f-INFO: .75rem 'Kode Mono', monospace;
 
@@ -77,7 +77,6 @@ p {
 
 .tech-small {
   font: var(--f-TECH_SMALL);
-  max-width: 100%;
 }
 
 .tech-tiny {
