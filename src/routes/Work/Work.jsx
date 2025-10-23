@@ -1,10 +1,14 @@
-import { PixelCard, StaggeredMenu } from '@features';
+import { NavigationMenu } from '@features';
+import { Suspense, lazy } from 'react';
 import { useWorkCardTransition } from '@hooks';
 import { motion } from 'framer-motion';
 import PropTypes from 'prop-types';
 import { useMemo } from 'react';
 import { pages as autogenPages } from '../Entry/pages/autogen';
 import './Work.css';
+
+// Lazy loaded heavy interaction component
+const PixelCard = lazy(() => import('@components/interactive/PixelCard/PixelCard.jsx'));
 
 function parseDate(val) {
     if (val == null && val !== 0) return -Infinity;
@@ -42,14 +46,16 @@ function WorkCard({ pageKey, data = {}, index = 0 }) {
             onClick={(e) => { e.preventDefault(); trigger(e.currentTarget); }}
             {...dispAttr}
         >
-            <PixelCard variant="default" className="pixel-card-inner">
-                <div className="work-card-content">
-                    <span className='tech-small'>{idLabel}</span>
-                    <h3>{data?.title || pageKey}</h3>
-                    <p className="synopsis">{data?.synopsis || ''}</p>
-                    <span className="tech-small">{data?.year || ''}</span>
-                </div>
-            </PixelCard>
+            <Suspense fallback={<div className="pixel-card-fallback" />}>
+                <PixelCard variant="default" className="pixel-card-inner">
+                    <div className="work-card-content">
+                        <span className='tech-small'>{idLabel}</span>
+                        <h3>{data?.title || pageKey}</h3>
+                        <p className="synopsis">{data?.synopsis || ''}</p>
+                        <span className="tech-small">{data?.year || ''}</span>
+                    </div>
+                </PixelCard>
+            </Suspense>
         </motion.article>
     );
 }
@@ -59,7 +65,7 @@ export default function Work() {
 
     return (
         <div className='work-overview' id='work-overview'>
-            <StaggeredMenu />
+            <NavigationMenu />
             <motion.h2 className="work-title" initial={{ opacity: 0, y: -12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}>
                 Work
             </motion.h2>

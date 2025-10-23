@@ -1,11 +1,9 @@
 import { motion } from 'framer-motion';
 import PropTypes from 'prop-types';
+import { ScrollDown } from '@components';
+import "./ProjectHero.css";
 
-import ScrollDown from '@deco/ScrollDown/ScrollDown';
-
-import "./Hero.css";
-
-export default function Hero({ content }) {
+export default function ProjectHero({ content }) {
 
     const bannerVars = {
         hidden: { opacity: 0, scale: 1.02 },
@@ -65,6 +63,6 @@ export default function Hero({ content }) {
     );
 }
 
-Hero.propTypes = {
+ProjectHero.propTypes = {
     content: PropTypes.object.isRequired,
 }

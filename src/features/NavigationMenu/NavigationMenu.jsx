@@ -1,9 +1,9 @@
 import React, { useCallback, useLayoutEffect, useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import './StaggeredMenu.css';
+import './NavigationMenu.css';
 
-export const StaggeredMenu = ({
+export const NavigationMenu = ({
     position = 'right',
     colors = ['var(--c-LGHT)', 'var(--c-BRND)'],
     items = [
@@ -275,4 +275,4 @@ export const StaggeredMenu = ({
     );
 };
 
-export default StaggeredMenu;
+export default NavigationMenu;

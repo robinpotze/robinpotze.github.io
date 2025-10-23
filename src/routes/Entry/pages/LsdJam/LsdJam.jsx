@@ -1,5 +1,4 @@
-import { ScrollReveal } from '@effects';
-import { DashLine } from '@deco';
+import { ScrollReveal, DashLine } from '@components';
 
 export const Data = {
     id: 1,

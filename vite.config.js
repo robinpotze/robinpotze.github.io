@@ -4,7 +4,16 @@ import { defineConfig } from 'vite';
 export default defineConfig({
     base: '/',
     build: {
-        outDir: 'dist'
+        outDir: 'dist',
+        rollupOptions: {
+            output: {
+                manualChunks: {
+                    react: ['react', 'react-dom'],
+                    router_motion: ['react-router-dom', 'framer-motion'],
+                    three: ['three', '@react-three/fiber', '@react-three/drei']
+                }
+            }
+        }
     },
     plugins: [react()],
     resolve: {
@@ -12,9 +21,6 @@ export default defineConfig({
             '@': '/src',
             '@app': '/src/app',
             '@components': '/src/components',
-            '@deco': '/src/components/decoration',
-            '@effects': '/src/components/effects',
-            '@layout': '/src/components/layout',
             '@core': '/src/core',
             '@features': '/src/features',
             '@hooks': '/src/hooks',

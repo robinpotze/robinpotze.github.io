@@ -1,7 +1,6 @@
 import useLenisScroll from '@core/scroll/useLenisScroll';
-import { DashLine } from '@deco';
-import { GradualBlur, ScrollReveal } from '@effects';
-import { Hero, StaggeredMenu } from '@features';
+import { DashLine, GradualBlur, ScrollReveal } from '@components';
+import { ProjectHero, NavigationMenu } from '@features';
 import { useParams } from 'react-router-dom';
 import { pages } from './pages';
 
@@ -29,8 +28,8 @@ export default function Entry() {
 
     return (
         <div className='work-page' id={data.title.replaceAll(/\s+/g, '-') + '-page'}>
-            <StaggeredMenu />
-            <Hero content={data} />
+            <NavigationMenu />
+            <ProjectHero content={data} />
             <section className='work-section'>
                 <div className='work-header'>
                     <div className='work-synopsis'>
