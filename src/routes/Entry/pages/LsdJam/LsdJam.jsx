@@ -19,7 +19,7 @@ export default function LsdJam() {
                 <img src='/img/work/lsdjam/hibernation.png' className='img-full-width' alt='A retro-futurist room with a VR setup in the middle.' />
             </div>
             <div className='work-full-thin'>
-                <img src='/img/work/lsdjam/SpaceShip.png' alt='low fidelity render of a spaceship bridge.'/>
+                <img src='/img/work/lsdjam/SpaceShip.png' alt='low fidelity render of a spaceship bridge.' />
             </div>
             <div className='work-header'>
                 <div className='work-header-chapter'>
