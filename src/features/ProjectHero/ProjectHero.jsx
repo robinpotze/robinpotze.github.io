@@ -40,15 +40,15 @@ export default function ProjectHero({ content }) {
                 </div>
                 <div className='text-array' id='work-hero-side-skills'>
                     {content.skills.map((skill) => (
-                        <p className='tech-info tr90' key={skill} id={`hero-side-skill-${skill.toLowerCase().replace(/\s+/g, '-')}`}>{skill.toLowerCase().replace(/\s+/g, '_') + "_/"}</p>
+                        <p className='tr90' key={skill} id={`hero-side-skill-${skill.toLowerCase().replace(/\s+/g, '-')}`}>{skill.toLowerCase().replace(/\s+/g, '_') + "_/"}</p>
                     ))}
                 </div>
                 <img className='hero-side-decal' src='/img/icon/CRS.svg' alt='A Cross Divider' />
                 <div className='hero-side-text' id='work-project-code'>
-                    <p className='tech-small tr90' id='work-hero-project-id'>{"PRJ_" + content.id.toString().padStart(3, "0") + ":::"}</p>
-                    <p className='tech-small tr90' id='work-hero-project-client'>{content.client}</p>
+                    <p className='functional tr90' id='work-hero-project-id'>{"PRJ_" + content.id.toString().padStart(3, "0") + ":::"}</p>
+                    <p className='functional tr90' id='work-hero-project-client'>{content.client}</p>
                 </div>
-                <p className='tech-small tr90' id='work-hero-side-deco-text'>{content.year}</p>
+                <p className='functional tr90' id='work-hero-side-deco-text'>{content.year}</p>
                 <ScrollDown />
             </motion.div>
 

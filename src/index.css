@@ -12,11 +12,10 @@
   --f-TITLE: 4em 'Kode Mono', monospace;
   --f-HEADER: 3rem "Orbitron", sans-serif;
   --f-H3: 1.5rem "Orbitron", sans-serif;
-  --f-FUNCTIONAL: 1rem 'Kode Mono', monospace;
   --f-PARAGRAPH: 1rem 'Roboto', sans-serif;
-  --f-TECH_SMALL: .75rem 'Kode Mono', monospace;
-  --f-TECH_TINY: .5rem 'Kode Mono', monospace;
-  --f-INFO: .75rem 'Kode Mono', monospace;
+  --f-FUNCTIONAL: 1rem 'Kode Mono', monospace;
+  --f-FUNCTIONAL_SMALL: .75rem 'Kode Mono', monospace;
+  --f-FUNCTIONAL_TINY: .5rem 'Kode Mono', monospace;
 
   --s-SHDW: 0px 0px 20px var(--c-DRK_TRNS);
 }
@@ -68,16 +67,16 @@ p {
   font: var(--f-PARAGRAPH);
 }
 
-.tech-info {
-  font: var(--f-INFO)
+.functional {
+  font: var(--f-FUNCTIONAL);
 }
 
-.tech-small {
-  font: var(--f-TECH_SMALL);
+.functional-small {
+  font: var(--f-FUNCTIONAL_SMALL);
 }
 
-.tech-tiny {
-  font: var(--f-TECH_TINY);
+.functional-tiny {
+  font: var(--f-FUNCTIONAL_TINY);
 }
 
 .r90 {

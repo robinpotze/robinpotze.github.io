@@ -36,21 +36,18 @@
 .sm-toggle {
     display: inline-flex;
     align-items: center;
-    gap: 0.3rem;
+    gap: 0.5rem;
     background: transparent;
     border: none;
     cursor: pointer;
     color: var(--c-LGHT);
     font: var(--f-FUNCTIONAL);
-    font-weight: 500;
-    line-height: 1;
     transition: color 0.25s;
 }
 
 .sm-toggle-textWrap {
     position: relative;
     display: inline-block;
-    margin-right: 0.5rem;
 }
 
 .sm-glitch-stack {
@@ -157,7 +154,6 @@
     flex: 1;
     display: flex;
     flex-direction: column;
-    gap: 1.25rem;
 }
 
 .sm-panel-list {
@@ -166,12 +162,7 @@
     padding: 0;
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
-}
-
-.sm-panel-itemWrap {
-    overflow: hidden;
-    line-height: 1;
+    gap: 1rem;
 }
 
 .sm-panel-item {
@@ -185,12 +176,17 @@
     text-transform: uppercase;
     text-decoration: none;
     display: inline-block;
-    padding-right: 1.4em;
-    transition: color 0.25s;
+    transition: color 0.3s;
 }
 
 .sm-panel-item:hover {
     color: var(--c-BRND);
+}
+
+.sm-panel-item-bg {
+    position: relative;
+    height: 100%;
+    overflow: hidden;
 }
 
 .sm-panel-list[data-numbering] {
@@ -201,9 +197,7 @@
     counter-increment: smItem;
     content: counter(smItem, decimal-leading-zero);
     position: absolute;
-    top: 0.1em;
-    right: 2.8em;
-    font-size: 18px;
+    font-size: 1rem;
     font-weight: 400;
     color: var(--c-BRND);
     letter-spacing: 0;
@@ -213,16 +207,13 @@
 
 .sm-socials {
     margin-top: auto;
-    padding-top: 2rem;
     display: flex;
     flex-direction: column;
-    gap: 0.75rem;
+    gap: 0.5rem;
 }
 
 .sm-socials h3 {
-    margin: 0;
-    font-size: 1rem;
-    font-weight: 500;
+    font: var(--f-FUNCTIONAL);
     color: var(--c-BRND);
 }
 
@@ -236,12 +227,9 @@
 }
 
 .sm-socials a {
-    font: var(--f-PARAGRAPH);
-    font-weight: 500;
+    font: var(--f-FUNCTIONAL);
     color: var(--c-LGHT);
-    text-decoration: none;
-    padding: 2px 0;
-    transition: color 0.3s ease, opacity 0.3s ease;
+    transition: color 0.2s ease, opacity 0.2s ease;
 }
 
 .sm-socials a:hover {
@@ -250,11 +238,11 @@
 
 .sm-socials a:focus-visible {
     outline: 2px solid var(--c-BRND);
-    outline-offset: 3px;
+    outline-offset: .25rem;
 }
 
 .sm-socials ul:hover a {
-    opacity: 0.35;
+    opacity: 0.4;
 }
 
 .sm-socials ul:hover a:hover,
@@ -263,7 +251,7 @@
 }
 
 .sm-socials ul:focus-within a {
-    opacity: 0.35;
+    opacity: 0.4;
 }
 
 /* Mobile */

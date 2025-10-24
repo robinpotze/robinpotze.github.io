@@ -59,19 +59,19 @@ export const NavigationMenu = () => {
             mainText.start({
                 opacity: [0, 0.2, 0.7, 0.4, 1],
                 x: [0, 2, -1, 3, 0],
-                transition: { duration: 0.25 }
+                transition: { duration: 0.2 }
             }),
             glitchR.start({
                 opacity: [0.6, 0.9, 0.3, 0.7, 0],
                 x: [2, -3, 4, -2, 0],
                 y: [0, 1, -2, 1, 0],
-                transition: { duration: 0.25 }
+                transition: { duration: 0.2 }
             }),
             glitchB.start({
                 opacity: [0.5, 0.8, 0.4, 0.6, 0],
                 x: [-2, 3, -4, 2, 0],
                 y: [1, -1, 2, -1, 0],
-                transition: { duration: 0.25 }
+                transition: { duration: 0.2 }
             })
         ]);
     }, [glitchR, glitchB, mainText]);
@@ -108,7 +108,7 @@ export const NavigationMenu = () => {
                         style={{ background: color }}
                         initial={{ x: '100%' }}
                         animate={{ x: open ? '0%' : '100%' }}
-                        transition={{ duration: 0.4, ease, delay: i * 0.07 }}
+                        transition={{ duration: 0.2, ease, delay: i * 0.07 }}
                     />
                 ))}
             </div>
@@ -149,7 +149,7 @@ export const NavigationMenu = () => {
                     <motion.span
                         className="sm-icon"
                         aria-hidden="true"
-                        animate={{ rotate: open ? 270 : 0 }}
+                        animate={{ rotate: open ? 90 : 0 }}
                         transition={{ duration: open ? 0.6 : 0.35, ease }}
                     >
                         <motion.img
@@ -177,12 +177,17 @@ export const NavigationMenu = () => {
                     initial={{ x: '100%' }}
                     animate={{ x: open ? '0%' : '100%' }}
                     transition={{
-                        duration: open ? 0.65 : 0.32,
+                        duration: open ? 0.3 : 0.2,
                         ease: open ? ease : [0.55, 0.06, 0.68, 0.19],
                         delay: open ? 0.22 : 0
                     }}
                 >
                     <div className="sm-panel-inner">
+                        <motion.div className='sm-panel-logo' initial={{ opacity: 0 }} animate={{ opacity: open ? 1 : 0 }} >
+                            <Link to="/" className="sm-panel-logo-link">
+                                <img src="/img/logo/logo.svg" alt="Logo" />
+                            </Link>
+                        </motion.div>
                         <motion.ul
                             className="sm-panel-list"
                             data-numbering={true}
@@ -193,17 +198,19 @@ export const NavigationMenu = () => {
                             }}
                         >
                             {MENU_ITEMS.map((item, i) => (
-                                <motion.li
-                                    key={i}
-                                    variants={{
-                                        closed: { y: '140%', rotate: 5 },
-                                        open: { y: '0%', rotate: 0, transition: { duration: 0.9, ease } }
-                                    }}
-                                >
-                                    <Link to={item.link} className="sm-panel-item" data-index={i + 1}>
-                                        {item.label}
-                                    </Link>
-                                </motion.li>
+                                <div className="sm-panel-item-bg" key={i}>
+                                    <motion.li
+                                        key={i}
+                                        variants={{
+                                            closed: { y: '140%', rotate: 5 },
+                                            open: { y: '0%', rotate: 0, transition: { duration: 0.9, ease } }
+                                        }}
+                                    >
+                                        <Link to={item.link} className="sm-panel-item" data-index={i + 1}>
+                                            {item.label}
+                                        </Link>
+                                    </motion.li>
+                                </div>
                             ))}
                         </motion.ul>
 
@@ -220,7 +227,7 @@ export const NavigationMenu = () => {
                                         key={i}
                                         initial={{ y: 25, opacity: 0 }}
                                         animate={open ? { y: 0, opacity: 1 } : { y: 25, opacity: 0 }}
-                                        transition={{ duration: 0.55 }}
+                                        transition={{ duration: 0.3 }}
                                     >
                                         <a href={social.link} target="_blank" rel="noopener noreferrer">
                                             {social.label}
