@@ -91,7 +91,7 @@ function getEffectiveSpeed(value, reducedMotion) {
     }
 }
 
-export default function PixelCard({ gap = 6, speed = 100, noFocus = true, className = '', children }) {
+export default function PixelCard({ gap = 6, speed = 200, noFocus = true, className = '', children }) {
     const containerRef = useRef(null);
     const canvasRef = useRef(null);
     const pixelsRef = useRef([]);

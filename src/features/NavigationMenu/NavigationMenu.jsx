@@ -1,272 +1,233 @@
 import React, { useCallback, useLayoutEffect, useRef, useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, useAnimation } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import './NavigationMenu.css';
 
-export const NavigationMenu = ({
-    position = 'right',
-    colors = ['var(--c-LGHT)', 'var(--c-BRND)'],
-    items = [
-        { label: 'Work', ariaLabel: 'See my work', link: '/work' },
-        { label: 'About', ariaLabel: 'Learn about me', link: '/about' },
-        { label: 'Contact', ariaLabel: 'Get in touch', link: '/contact' }
-    ],
-    socialItems = [
-        { label: 'Artstation', link: 'https://twitter.com' },
-        { label: 'GitHub', link: 'https://github.com' },
-        { label: 'LinkedIn', link: 'https://linkedin.com' }
-    ],
-    className,
-    menuButtonColor = 'var(--c-LGHT)',
-    openMenuButtonColor = 'var(--c-BRND)',
-    accentColor = 'var(--c-BRND)',
-    changeMenuColorOnOpen = true,
-    isFixed = true,
-    onMenuOpen,
-    onMenuClose
-}) => {
+const MENU_ITEMS = [
+    { label: 'Work', link: '/work' },
+    { label: 'About', link: '/about' },
+    { label: 'Contact', link: '/contact' }
+];
+const SOCIALS = [
+    { label: 'Artstation', link: 'https://twitter.com' },
+    { label: 'GitHub', link: 'https://github.com' },
+    { label: 'LinkedIn', link: 'https://linkedin.com' }
+];
+
+const BG_COLORS = ['var(--c-LGHT)', 'var(--c-BRND)'];
+const BTN_COLOR = 'var(--c-LGHT)';
+const BTN_COLOR_OPEN = 'var(--c-BRND)';
+
+export const NavigationMenu = () => {
     const [open, setOpen] = useState(false);
-    const openRef = useRef(false);
-    const panelRef = useRef(null);
-    const preLayersRef = useRef(null);
-    const plusHRef = useRef(null);
-    const plusVRef = useRef(null);
-    const iconRef = useRef(null);
-    const textInnerRef = useRef(null);
-    const textWrapRef = useRef(null);
-    const [textLines, setTextLines] = useState(['Menu', 'Close']);
+    const [label, setLabel] = useState('Menu');
+    const buttonRef = useRef(null);
+    const busy = useRef(false);
 
-    const toggleBtnRef = useRef(null);
-    const busyRef = useRef(false);
+    const glitchR = useAnimation();
+    const glitchB = useAnimation();
+    const mainText = useAnimation();
 
-    // Motion handles initial placement via `initial` props; keep effect to set initial button color
     useLayoutEffect(() => {
-        if (toggleBtnRef.current) toggleBtnRef.current.style.color = menuButtonColor;
-    }, [menuButtonColor]);
-
-    // prelayer colors/array used for rendering and timing
-    const rawLayers = colors && colors.length ? colors.slice(0, 4) : ['#1e1e22', '#35353c'];
-    const arr = (() => {
-        const a = [...rawLayers];
-        if (a.length >= 3) {
-            const mid = Math.floor(a.length / 2);
-            a.splice(mid, 1);
-        }
-        return a;
-    })();
-
-    // Motion variants for sequencing
-    const offscreen = position === 'left' ? '-100%' : '100%';
-    const prelayerVariant = i => ({
-        closed: { x: offscreen },
-        open: { x: '0%', transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1], delay: i * 0.07 } }
-    });
-
-    const totalPrelayers = arr.length + 2; // extra start + arr + extra end
-    const panelDelay = totalPrelayers ? (totalPrelayers - 1) * 0.07 + 0.08 : 0;
-
-    const panelVariant = {
-        closed: { x: offscreen, transition: { duration: 0.32, ease: [0.55, 0.06, 0.68, 0.19] } },
-        open: { x: '0%', transition: { duration: 0.65, ease: [0.22, 1, 0.36, 1], delay: panelDelay } }
-    };
-
-    const listVariant = {
-        closed: {},
-        open: i => ({ transition: { staggerChildren: 0.1, delayChildren: i } })
-    };
-
-    const itemVariant = {
-        closed: { y: '140%', rotate: 5 },
-        open: { y: '0%', rotate: 0, transition: { duration: 0.9, ease: [0.22, 1, 0.36, 1] } }
-    };
-
-    const socialLinkVariant = {
-        closed: { y: 25, opacity: 0 },
-        open: { y: 0, opacity: 1, transition: { duration: 0.55 } }
-    };
-
-    // Lock duration for toggles
-    const ANIM_DURATION_MS = 400;
-
-    const animateIcon = useCallback(opening => {
-        // handled by Motion animate prop on the icon element
+        if (buttonRef.current) buttonRef.current.style.color = BTN_COLOR;
     }, []);
 
-    const animateColor = useCallback(
-        opening => {
-            const btn = toggleBtnRef.current;
-            if (!btn) return;
-            if (changeMenuColorOnOpen) {
-                const targetColor = opening ? openMenuButtonColor : menuButtonColor;
-                setTimeout(() => (btn.style.color = targetColor), 180);
-            } else {
-                btn.style.color = menuButtonColor;
+    const runGlitch = useCallback(async (newLabel) => {
+        await Promise.all([
+            mainText.start({
+                opacity: [1, 0.3, 0.8, 0.2, 0],
+                x: [0, -2, 1, -3, 0],
+                transition: { duration: 0.2 }
+            }),
+            glitchR.start({
+                opacity: [0, 0.8, 0.4, 0.9, 0.6],
+                x: [0, 3, -2, 4, 2],
+                y: [0, -1, 1, -2, 0],
+                transition: { duration: 0.2 }
+            }),
+            glitchB.start({
+                opacity: [0, 0.7, 0.5, 0.8, 0.5],
+                x: [0, -3, 2, -4, -2],
+                y: [0, 1, -1, 2, 1],
+                transition: { duration: 0.2 }
+            })
+        ]);
+
+        setLabel(newLabel);
+
+        await Promise.all([
+            mainText.start({
+                opacity: [0, 0.2, 0.7, 0.4, 1],
+                x: [0, 2, -1, 3, 0],
+                transition: { duration: 0.25 }
+            }),
+            glitchR.start({
+                opacity: [0.6, 0.9, 0.3, 0.7, 0],
+                x: [2, -3, 4, -2, 0],
+                y: [0, 1, -2, 1, 0],
+                transition: { duration: 0.25 }
+            }),
+            glitchB.start({
+                opacity: [0.5, 0.8, 0.4, 0.6, 0],
+                x: [-2, 3, -4, 2, 0],
+                y: [1, -1, 2, -1, 0],
+                transition: { duration: 0.25 }
+            })
+        ]);
+    }, [glitchR, glitchB, mainText]);
+
+    const toggle = useCallback(() => {
+        if (busy.current) return;
+        busy.current = true;
+
+        const willOpen = !open;
+        setOpen(willOpen);
+        runGlitch(willOpen ? 'Close' : 'Menu');
+
+        setTimeout(() => {
+            if (buttonRef.current) {
+                buttonRef.current.style.color = willOpen ? BTN_COLOR_OPEN : BTN_COLOR;
             }
-        },
-        [openMenuButtonColor, menuButtonColor, changeMenuColorOnOpen]
-    );
+        }, 180);
 
-    const [textShift, setTextShift] = useState(0);
-    const animateText = useCallback(opening => {
-        const currentLabel = opening ? 'Menu' : 'Close';
-        const targetLabel = opening ? 'Close' : 'Menu';
-        const cycles = 3;
-        const seq = [currentLabel];
-        let last = currentLabel;
-        for (let i = 0; i < cycles; i++) {
-            last = last === 'Menu' ? 'Close' : 'Menu';
-            seq.push(last);
-        }
-        if (last !== targetLabel) seq.push(targetLabel);
-        seq.push(targetLabel);
-        setTextLines(seq);
-        const lineCount = seq.length;
-        const finalShift = ((lineCount - 1) / lineCount) * 100;
-        setTextShift(finalShift);
-    }, []);
+        setTimeout(() => { busy.current = false; }, 500);
+    }, [open, runGlitch]);
 
-    const toggleMenu = useCallback(() => {
-        if (busyRef.current) return;
-        busyRef.current = true;
-        const target = !openRef.current;
-        openRef.current = target;
-        setOpen(target);
-        if (target) onMenuOpen?.(); else onMenuClose?.();
-        animateIcon(target);
-        animateColor(target);
-        animateText(target);
-        setTimeout(() => (busyRef.current = false), ANIM_DURATION_MS);
-    }, [animateIcon, animateColor, animateText, onMenuOpen, onMenuClose]);
-
-    const wrapperStyle = accentColor ? { ['--sm-accent']: accentColor } : undefined;
+    const ease = [0.22, 1, 0.36, 1];
 
     return (
         <div
-            className={(className ? className + ' ' : '') + 'staggered-menu-wrapper' + (isFixed ? ' fixed-wrapper' : '')}
-            style={wrapperStyle}
-            data-position={position}
+            className="staggered-menu-wrapper fixed-wrapper"
             data-open={open || undefined}
         >
-            <div ref={preLayersRef} className="sm-prelayers" aria-hidden="true">
-                {(() => {
-                    const extraStart = rawLayers[0] || '#1e1e22';
-                    const extraEnd = rawLayers[rawLayers.length - 1] || '#35353c';
-                    return [
-                        <motion.div
-                            key={`pre-extra-start`}
-                            className="sm-prelayer"
-                            style={{ background: extraStart }}
-                            initial="closed"
-                            animate={open ? 'open' : 'closed'}
-                            variants={prelayerVariant(0)}
-                        />,
-                        ...arr.map((c, i) => (
-                            <motion.div
-                                key={`pre-${i}`}
-                                className="sm-prelayer"
-                                style={{ background: c }}
-                                initial="closed"
-                                animate={open ? 'open' : 'closed'}
-                                variants={prelayerVariant(i + 1)}
-                            />
-                        )),
-                        <motion.div
-                            key={`pre-extra-end`}
-                            className="sm-prelayer"
-                            style={{ background: extraEnd }}
-                            initial="closed"
-                            animate={open ? 'open' : 'closed'}
-                            variants={prelayerVariant(arr.length + 1)}
-                        />
-                    ];
-                })()}
+            <div className="sm-prelayers" aria-hidden="true">
+                {BG_COLORS.map((color, i) => (
+                    <motion.div
+                        key={i}
+                        className="sm-prelayer"
+                        style={{ background: color }}
+                        initial={{ x: '100%' }}
+                        animate={{ x: open ? '0%' : '100%' }}
+                        transition={{ duration: 0.4, ease, delay: i * 0.07 }}
+                    />
+                ))}
             </div>
-            <header className="staggered-menu-header" aria-label="Main navigation header">
+
+            <header className="staggered-menu-header">
                 <button
-                    ref={toggleBtnRef}
+                    ref={buttonRef}
                     className="sm-toggle"
+                    onClick={toggle}
                     aria-label={open ? 'Close menu' : 'Open menu'}
                     aria-expanded={open}
-                    aria-controls="staggered-menu-panel"
-                    onClick={toggleMenu}
-                    type="button"
                 >
-                    <span ref={textWrapRef} className="sm-toggle-textWrap" aria-hidden="true">
-                        <motion.span
-                            ref={textInnerRef}
-                            className="sm-toggle-textInner"
-                            animate={{ y: `-${textShift}%` }}
-                            transition={{ duration: 0.5 + (textLines.length * 0.07), ease: [0.22, 1, 0.36, 1] }}
-                        >
-                            {textLines.map((l, i) => (
-                                <span className="sm-toggle-line" key={i}>
-                                    {l}
-                                </span>
-                            ))}
-                        </motion.span>
+                    <span className="sm-toggle-textWrap">
+                        <span className="sm-glitch-stack">
+                            <motion.span
+                                className="sm-glitch-layer main"
+                                animate={mainText}
+                            >
+                                {label}
+                            </motion.span>
+                            <motion.span
+                                className="sm-glitch-layer red"
+                                animate={glitchR}
+                                aria-hidden="true"
+                            >
+                                {label}
+                            </motion.span>
+                            <motion.span
+                                className="sm-glitch-layer blue"
+                                animate={glitchB}
+                                aria-hidden="true"
+                            >
+                                {label}
+                            </motion.span>
+                        </span>
                     </span>
+
                     <motion.span
-                        ref={iconRef}
                         className="sm-icon"
                         aria-hidden="true"
-                        animate={{ rotate: open ? 225 : 0 }}
-                        transition={{ duration: open ? 0.8 : 0.35, ease: [0.22, 1, 0.36, 1] }}
+                        animate={{ rotate: open ? 270 : 0 }}
+                        transition={{ duration: open ? 0.6 : 0.35, ease }}
                     >
-                        <span ref={plusHRef} className="sm-icon-line" />
-                        <span ref={plusVRef} className="sm-icon-line sm-icon-line-v" />
+                        <motion.img
+                            src="/img/icon/PLS.svg"
+                            alt=""
+                            className="sm-icon-img"
+                            animate={{ opacity: open ? 0 : 1, scale: open ? 0.6 : 1 }}
+                            transition={{ duration: 0.28 }}
+                        />
+                        <motion.img
+                            src="/img/icon/CRS.svg"
+                            alt=""
+                            className="sm-icon-img"
+                            animate={{ opacity: open ? 1 : 0, scale: open ? 1 : 0.6 }}
+                            transition={{ duration: 0.32 }}
+                        />
                     </motion.span>
                 </button>
             </header>
+
             <AnimatePresence>
                 <motion.aside
-                    id="staggered-menu-panel"
-                    ref={panelRef}
                     className="staggered-menu-panel"
                     aria-hidden={!open}
-                    initial="closed"
-                    animate={open ? 'open' : 'closed'}
-                    exit="closed"
-                    variants={panelVariant}
+                    initial={{ x: '100%' }}
+                    animate={{ x: open ? '0%' : '100%' }}
+                    transition={{
+                        duration: open ? 0.65 : 0.32,
+                        ease: open ? ease : [0.55, 0.06, 0.68, 0.19],
+                        delay: open ? 0.22 : 0
+                    }}
                 >
                     <div className="sm-panel-inner">
                         <motion.ul
                             className="sm-panel-list"
-                            role="list"
                             data-numbering={true}
-                            variants={listVariant}
-                            custom={0.15}
                             initial="closed"
                             animate={open ? 'open' : 'closed'}
+                            variants={{
+                                open: { transition: { staggerChildren: 0.1, delayChildren: 0.15 } }
+                            }}
                         >
-                            {items && items.length ? (
-                                items.map((it, idx) => (
-                                    <motion.li className="sm-panel-itemWrap" key={it.label + idx} variants={itemVariant}>
-                                        <Link className="sm-panel-item" to={it.link} aria-label={it.ariaLabel} data-index={idx + 1}>
-                                            <span className="sm-panel-itemLabel">{it.label}</span>
-                                        </Link>
-                                    </motion.li>
-                                ))
-                            ) : (
-                                <li className="sm-panel-itemWrap" aria-hidden="true">
-                                    <span className="sm-panel-item">
-                                        <span className="sm-panel-itemLabel">No items</span>
-                                    </span>
-                                </li>
-                            )}
+                            {MENU_ITEMS.map((item, i) => (
+                                <motion.li
+                                    key={i}
+                                    variants={{
+                                        closed: { y: '140%', rotate: 5 },
+                                        open: { y: '0%', rotate: 0, transition: { duration: 0.9, ease } }
+                                    }}
+                                >
+                                    <Link to={item.link} className="sm-panel-item" data-index={i + 1}>
+                                        {item.label}
+                                    </Link>
+                                </motion.li>
+                            ))}
                         </motion.ul>
-                        <div className="sm-socials" aria-label="Social links">
-                            <motion.h3 className="sm-socials-title" initial={{ opacity: 0 }} animate={{ opacity: open ? 1 : 0 }}>
+
+                        <div className="sm-socials">
+                            <motion.h3
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: open ? 1 : 0 }}
+                            >
                                 Socials
                             </motion.h3>
-                            <motion.ul className="sm-socials-list" role="list">
-                                {socialItems.map((s, i) => (
-                                    <motion.li key={s.label + i} className="sm-socials-item" variants={socialLinkVariant} initial="closed" animate={open ? 'open' : 'closed'}>
-                                        <a href={s.link} target="_blank" rel="noopener noreferrer" className="sm-socials-link">
-                                            {s.label}
+                            <ul>
+                                {SOCIALS.map((social, i) => (
+                                    <motion.li
+                                        key={i}
+                                        initial={{ y: 25, opacity: 0 }}
+                                        animate={open ? { y: 0, opacity: 1 } : { y: 25, opacity: 0 }}
+                                        transition={{ duration: 0.55 }}
+                                    >
+                                        <a href={social.link} target="_blank" rel="noopener noreferrer">
+                                            {social.label}
                                         </a>
                                     </motion.li>
                                 ))}
-                            </motion.ul>
+                            </ul>
                         </div>
                     </div>
                 </motion.aside>

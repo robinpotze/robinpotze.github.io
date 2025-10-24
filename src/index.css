@@ -18,9 +18,6 @@
   --f-TECH_TINY: .5rem 'Kode Mono', monospace;
   --f-INFO: .75rem 'Kode Mono', monospace;
 
-  --b-WDTH: 1px;
-  --b-RADIUS: 8px;
-
   --s-SHDW: 0px 0px 20px var(--c-DRK_TRNS);
 }
 

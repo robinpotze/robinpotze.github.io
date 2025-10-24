@@ -3,10 +3,9 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useTransition } from '@core/transitions';
 import { RadialGrid, RedoAnimText, ScrollDown } from '@components';
 import { useDateTime } from '@hooks';
+import './Home.css';
 
 const BlackwallEffect = lazy(() => import('@components/effects/Blackwall/Blackwall.jsx'));
-
-import './Home.css';
 
 export default function Home() {
     const navigate = useNavigate();
@@ -46,7 +45,6 @@ export default function Home() {
             setTimeout(() => { busyRef.current = false; }, 1000);
         }
 
-        // Input handlers
         const onWheel = (e) => { if (e.deltaY > 20) navigateToWork(); };
         let touchStartY = null;
         const onTouchStart = (e) => { touchStartY = e.touches ? e.touches[0].clientY : null; };
@@ -91,7 +89,7 @@ export default function Home() {
                     </div>
                     <div className='hero-accents-bottom' id='landing-accents-bottom'>
                         <RadialGrid type='CRCL' />
-                        <img className='hero-accent-decal' id='landing-accent-decal' src='img/icon/OFS.svg' alt='Offset cyberpunk dorito decal' />
+                        <img className='hero-accent-decal' id='landing-accent-decal' src='img/decal/OFS.svg' alt='Offset cyberpunk dorito decal' />
                     </div>
                 </div>
                 <div className='hero-side' id='landing-side'>
@@ -105,8 +103,8 @@ export default function Home() {
                         <img className='hero-side-decal' src='img/icon/CRS.svg' alt='divider' />
                         <p className='tech-tiny' id='landing-side-deco-text'>SDD.01</p>
                     </div>
-                    <img className='hero-side-decal' src='img/icon/MORSE.svg' alt='robin potze in barcode' />
-                    <img className='hero-side-decal' src='img/icon/PILL.svg' alt='pill with four arrows point downwards' />
+                    <img className='hero-side-decal' src='img/decal/MORSE.svg' alt='robin potze in barcode' />
+                    <img className='hero-side-decal' src='img/decal/PILL.svg' alt='pill with four arrows point downwards' />
                     <ScrollDown />
                 </div>
             </div>
