@@ -48,10 +48,10 @@ function WorkCard({ pageKey, data = {}, index = 0 }) {
             <Suspense fallback={<div className="pixel-card-fallback" />}>
                 <PixelCard variant="default" className="pixel-card-inner">
                     <div className="work-card-content">
-                        <span className='tech-small'>{idLabel}</span>
+                        <span className='deco-small'>{idLabel}</span>
                         <h3>{data?.title || pageKey}</h3>
                         <p className="synopsis">{data?.synopsis || ''}</p>
-                        <span className="tech-small">{data?.year || ''}</span>
+                        <span className="deco-small">{data?.year || ''}</span>
                     </div>
                 </PixelCard>
             </Suspense>

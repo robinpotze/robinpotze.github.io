@@ -37,7 +37,7 @@ export default function Entry() {
                         <DashLine direction="Horizontal" />
                         <div className='work-synopsis-subtitle'>
                             <img src='/img/icon/CRS.svg' alt='Cross symbol divider' />
-                            <p className='tech-small'>{data.synopsis}</p>
+                            <p className='deco-small'>{data.synopsis}</p>
                         </div>
                     </div>
                     <ScrollReveal>

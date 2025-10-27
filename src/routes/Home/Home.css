@@ -30,7 +30,6 @@
         ". hero-title ."
         ". hero-flavour ."
         ". hero-deco .";
-    mix-blend-mode: difference;
 }
 
 #landing-home-link {
@@ -107,5 +106,5 @@
 }
 
 #landing-side-scroll {
-    padding: 0 0 12px 0
+    padding: 0 0 1rem 0;
 }
