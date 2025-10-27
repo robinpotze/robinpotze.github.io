@@ -24,7 +24,7 @@ export default function Ld58() {
             <div className='work-header'>
                 <div className='work-header-chapter'>
                     <h3>TELEVISION</h3>
-                    <img src='/img/icon/PLS.svg' />
+                    <img src='/img/icon/PLS.svg' alt='plus icon divider'/>
                     <p className='tech-small'>SALVATION:::CONSUMPTION</p>
                 </div>
                 <ScrollReveal>

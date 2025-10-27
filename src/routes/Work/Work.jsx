@@ -7,7 +7,6 @@ import { useMemo } from 'react';
 import { pages as autogenPages } from '../Entry/pages/autogen';
 import './Work.css';
 
-// Lazy loaded heavy interaction component
 const PixelCard = lazy(() => import('@components/interactive/PixelCard/PixelCard.jsx'));
 
 function parseDate(val) {
@@ -18,7 +17,7 @@ function parseDate(val) {
     return Number.isFinite(p) ? p : -Infinity;
 }
 
-function buildSortedItems(pages) {
+function sortItems(pages) {
     return Object.entries(pages || {})
         .map(([key, val]) => ({ key, data: val?.data || {} }))
         .sort((a, b) => {
@@ -61,7 +60,7 @@ function WorkCard({ pageKey, data = {}, index = 0 }) {
 }
 
 export default function Work() {
-    const items = useMemo(() => buildSortedItems(autogenPages), []);
+    const items = useMemo(() => sortItems(autogenPages), []);
 
     return (
         <div className='work-overview' id='work-overview'>

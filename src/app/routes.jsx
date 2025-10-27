@@ -1,6 +1,6 @@
-import { createBrowserRouter } from 'react-router-dom';
-import App from './App';
 import { lazy, Suspense } from 'react';
+import { createHashRouter } from 'react-router-dom';
+import App from './App';
 
 const Home = lazy(() => import('@routes/Home/Home.jsx'));
 const Work = lazy(() => import('@routes/Work/Work.jsx'));
@@ -8,7 +8,7 @@ const Info = lazy(() => import('@routes/Info/Info.jsx'));
 const Contact = lazy(() => import('@routes/Contact/Contact.jsx'));
 const Entry = lazy(() => import('@routes/Entry/Entry.jsx'));
 
-export const router = createBrowserRouter([
+export const router = createHashRouter([
     {
         element: <App />,
         children: [

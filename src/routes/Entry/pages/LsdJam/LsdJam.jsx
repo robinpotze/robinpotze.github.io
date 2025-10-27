@@ -24,7 +24,7 @@ export default function LsdJam() {
             <div className='work-header'>
                 <div className='work-header-chapter'>
                     <h3>THE COMMAND ROOM</h3>
-                    <img src='/img/icon/PLS.svg' />
+                    <img src='/img/icon/PLS.svg' alt='plus icon divider'/>
                     <p className='tech-small'>LVL::001 - HIBERNATION</p>
                 </div>
                 <ScrollReveal>
