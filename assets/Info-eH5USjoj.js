@@ -1,1 +1,0 @@
-import{j as e}from"./router_motion-Bmyc_1Q_.js";import"./react-gH-7aFTg.js";function n(){return e.jsxs("div",{className:"info-page",children:[e.jsx("h1",{children:"Info Page"}),e.jsx("p",{children:"This is the info page."})]})}export{n as default};
