@@ -1,9 +1,8 @@
 import { NavigationMenu } from '@features';
-import { Suspense, lazy } from 'react';
 import { useWorkCardTransition } from '@hooks';
 import { motion } from 'framer-motion';
 import PropTypes from 'prop-types';
-import { useMemo } from 'react';
+import { Suspense, lazy, useMemo } from 'react';
 import { pages as autogenPages } from '../Entry/pages/autogen';
 import './Work.css';
 
