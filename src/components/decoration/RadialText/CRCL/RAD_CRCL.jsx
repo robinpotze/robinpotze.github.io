@@ -1,11 +1,11 @@
 import { motion } from 'framer-motion';
 import PropTypes from 'prop-types';
 
-export default function RAD_CRCL({ value }) {
+export default function RAD_CRCL({ value = 0 }) {
     const radius = 5;
     const width = 2;
     const circumference = 2 * Math.PI * radius;
-    const progress = (value / 360) * circumference
+    const progress = (value / 360) * circumference;
 
     return (
         <svg
@@ -13,7 +13,7 @@ export default function RAD_CRCL({ value }) {
             height="12"
             viewBox="0 0 12 12"
             className="rad-circle"
-            id={'rad-circle-' + value}
+            id={`rad-circle-${value}`}
         >
             <circle
                 cx="6"
@@ -25,7 +25,7 @@ export default function RAD_CRCL({ value }) {
             />
             <motion.circle
                 animate={{ strokeDashoffset: circumference - progress }}
-                transition={{ type: "easeOut" }}
+                transition={{ type: "spring", stiffness: 100, damping: 20 }}
                 cx="6"
                 cy="6"
                 r={radius}
@@ -33,12 +33,13 @@ export default function RAD_CRCL({ value }) {
                 stroke="var(--c-LGHT)"
                 strokeWidth={width}
                 strokeDasharray={circumference}
-                transform={`rotate(${value} 6 6)`}
+                strokeDashoffset={circumference}
+                transform={`rotate(-90 6 6)`}
             />
         </svg>
     );
-};
+}
 
 RAD_CRCL.propTypes = {
-    value: PropTypes.number.isRequired,
+    value: PropTypes.number,
 };

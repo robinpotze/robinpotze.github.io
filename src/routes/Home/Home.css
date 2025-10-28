@@ -1,6 +1,7 @@
 .hero-section {
     display: flex;
-    height: calc(100vh - 64px);
+    height: 100vh;
+    box-sizing: border-box;
 }
 
 .hero-side {
@@ -30,6 +31,7 @@
         ". hero-title ."
         ". hero-flavour ."
         ". hero-deco .";
+    mix-blend-mode: difference;
 }
 
 #landing-home-link {
