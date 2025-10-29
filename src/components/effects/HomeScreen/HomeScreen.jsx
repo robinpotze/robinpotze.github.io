@@ -1,7 +1,6 @@
-import { Canvas, useFrame } from "@react-three/fiber"
-import { useGLTF, Float, Lightformer, Text, Html, ContactShadows, Environment, MeshTransmissionMaterial, useVideoTexture } from "@react-three/drei"
-import { Bloom, ChromaticAberration, EffectComposer, N8AO, TiltShift2 } from "@react-three/postprocessing"
-import { PerspectiveCamera } from '@react-three/drei'
+import { Float, MeshTransmissionMaterial, PerspectiveCamera, Text, useGLTF, useVideoTexture } from "@react-three/drei";
+import { Canvas, useFrame } from "@react-three/fiber";
+import { Bloom, ChromaticAberration, EffectComposer, N8AO, TiltShift2 } from "@react-three/postprocessing";
 import './HomeScreen.css';
 
 useGLTF.preload("/assets/3d/Logo.glb")
