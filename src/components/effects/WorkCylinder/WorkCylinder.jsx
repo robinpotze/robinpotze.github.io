@@ -12,7 +12,7 @@ export default function WorkCylinder({ items = [] }) {
     return (
         <Canvas className='work-cylinder-canvas'>
             <PerspectiveCamera makeDefault position={[0, 0, 5]} fov={50} />
-            <ScrollControls pages={items.length/10} damping={0.1} distance={1}>
+            <ScrollControls pages={items.length / 20} damping={0.1}>
                 <Rig itemCount={items.length}>
                     <Carousel items={items} />
                 </Rig>
