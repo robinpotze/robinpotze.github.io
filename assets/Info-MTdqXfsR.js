@@ -1,0 +1,1 @@
+import{j as e}from"./router_motion-2JVGeciU.js";import"./react-Bzgz95E1.js";function n(){return e.jsxs("div",{className:"info-page",children:[e.jsx("h1",{children:"Info Page"}),e.jsx("p",{children:"This is the info page."})]})}export{n as default};
