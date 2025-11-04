@@ -1,9 +1,9 @@
 import useLenisScroll from '@core/scroll/useLenisScroll';
-import { DashLine, GradualBlur, ScrollReveal } from '@components';
+import { DashLine, ScrollReveal } from '@components';
+import GradualBlur from '@canvas/effects/GradualBlur/GradualBlur.jsx';
 import { ProjectHero, NavigationMenu } from '@features';
 import { useParams } from 'react-router-dom';
 import { pages } from './pages';
-
 import './Entry.css';
 
 export default function Entry() {

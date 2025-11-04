@@ -5,7 +5,6 @@ import { RadialGrid, RedoAnimText, ScrollDown } from '@components';
 import { useDateTime } from '@hooks';
 import './Home.css';
 
-const BlackwallEffect = lazy(() => import('@components/effects/Blackwall/Blackwall.jsx'));
 const HomeScreenEffect = lazy(() => import('@components/effects/HomeScreen/HomeScreen.jsx'));
 
 export default function Home() {

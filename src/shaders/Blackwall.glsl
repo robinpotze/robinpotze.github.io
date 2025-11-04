@@ -4,6 +4,7 @@ uniform vec2 u_resolution;
 uniform float u_time;
 uniform vec2 u_mouse;
 uniform sampler2D u_flame;
+uniform sampler2D u_noise;
 
 vec2 getAspectUV(vec2 fragCoord,vec2 resolution){
     vec2 uv=fragCoord/resolution;
@@ -16,14 +17,7 @@ float random(vec2 st){
 }
 
 float noise(vec2 st){
-    vec2 i=floor(st);
-    vec2 f=fract(st);
-    vec2 u=f*f*(3.-2.*f);
-    return mix(
-        mix(random(i+vec2(0.,0.)),random(i+vec2(1.,0.)),u.x),
-        mix(random(i+vec2(0.,1.)),random(i+vec2(1.,1.)),u.x),
-        u.y
-    );
+    return texture2D(u_noise, st).r;
 }
 
 float circularMask(vec2 uv,vec2 center,float radius){

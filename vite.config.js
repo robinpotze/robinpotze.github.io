@@ -20,6 +20,7 @@ export default defineConfig({
         alias: {
             '@': '/src',
             '@app': '/src/app',
+            '@canvas': '/src/canvas',
             '@components': '/src/components',
             '@core': '/src/core',
             '@features': '/src/features',

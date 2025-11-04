@@ -31,6 +31,13 @@ export default function BlackwallEffect({
     });
     const currentScaleRef = useRef(adaptive.getScale());
 
+    const noiseTexture = useNoiseTexture({
+        size: 512,
+        scale: 10,
+        octaves: 4,
+        persistence: 0.5
+    });
+
     useEffect(() => {
         const container = containerRef.current;
         if (!container) return;
@@ -70,6 +77,7 @@ export default function BlackwallEffect({
             u_resolution: { value: new THREE.Vector2(Math.max(1, Math.floor(initialBufferW * dpr)), Math.max(1, Math.floor(initialBufferH * dpr))) },
             u_mouse: { value: new THREE.Vector2(0.5, 0.5) },
             u_flame: { value: flameRenderTarget.texture },
+            u_noise: { value: noiseTexture },
         };
 
         const blackwallMaterial = new THREE.ShaderMaterial({
@@ -199,7 +207,7 @@ export default function BlackwallEffect({
             blackwallMaterial.dispose();
             renderer.dispose();
         };
-    }, []);
+    }, [noiseTexture]);
 
     return <div ref={containerRef} className="fixed inset-0 -z-10 pointer-events-none" />;
 }
