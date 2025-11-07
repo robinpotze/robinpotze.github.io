@@ -3,6 +3,7 @@ import { Canvas } from "@react-three/fiber"
 import { Bloom, ChromaticAberration, EffectComposer, N8AO, TiltShift2 } from "@react-three/postprocessing"
 import BackgroundMesh from '@canvas/meshes/BackgroundMesh'
 import LogoMesh from '@canvas/meshes/LogoMesh'
+import FlameMesh from '@canvas/meshes/FlameMesh'
 import Rig from '@canvas/camera/Rig'
 import './HomeScreen.css'
 
@@ -13,6 +14,7 @@ export default function HomeScreenEffect() {
                 <PerspectiveCamera makeDefault position={[0, 0, 20]} fov={50} />
                 <ambientLight intensity={0.5} />
                 <BackgroundMesh position={[0, 0, -30]} scale={6} />
+                <FlameMesh position={[0, -5, -20]} scale={4} />
                 {/* <LogoText position={[0, 0, -20]} /> */}
                 <SubtitleText position={[0, -9, 0]} />
                 <Float floatIntensity={2} rotationIntensity={0.5} speed={0.5}>

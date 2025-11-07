@@ -4,10 +4,12 @@ uniform vec2 u_resolution;
 uniform float u_time;
 uniform vec2 u_mouse;
 
-vec2 getAspectUV(vec2 fragCoord,vec2 resolution){
-    vec2 uv = fragCoord/resolution;
-    uv.x = (uv.x-.5)*(resolution.x/resolution.y)+.5;
-    return uv;
+varying vec2 vUv;
+
+vec2 getAspectUV(vec2 uv,vec2 resolution){
+    vec2 aspectUv = uv;
+    aspectUv.x = (aspectUv.x-.5)*(resolution.x/resolution.y)+.5;
+    return aspectUv;
 }
 
 /* original noise kept intact */
@@ -64,7 +66,7 @@ vec4 raymarch(vec3 org, vec3 dir){
 }
 
 void main(){
-    vec2 uv = getAspectUV(gl_FragCoord.xy, u_resolution)*2.-1.;
+    vec2 uv = getAspectUV(vUv, u_resolution)*2.-1.;
     vec3 org = vec3(0.,-2.,4.);
     vec3 dir = normalize(vec3(uv.x*1.6,-uv.y,-1.5));
 
@@ -72,6 +74,6 @@ void main(){
     float glow = p.w;
 
     vec4 col = mix(vec4(1.,1.,1.,1.), vec4(.0314,.8863,1.,1.), p.y*.02+.4);
-    gl_FragColor = mix(vec4(0.), col, pow(glow*2., 4.));
+    gl_FragColor = mix(vec4(0.,0.,0.,0.), col, pow(glow*2., 4.));
 }
  
