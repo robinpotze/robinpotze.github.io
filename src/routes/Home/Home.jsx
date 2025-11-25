@@ -1,46 +1,19 @@
 import { Suspense, lazy, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { useTransition } from '@core/transitions';
 import { RadialGrid, RedoAnimText, ScrollDown } from '@components';
 import { useDateTime } from '@hooks';
 import './Home.css';
 
-const HomeScreenEffect = lazy(() => import('@components/effects/HomeScreen/HomeScreen.jsx'));
+const HomeScreenEffect = lazy(() => import('./HomeScreen/HomeScreen.jsx'));
 
 export default function Home() {
     const navigate = useNavigate();
     const busyRef = useRef(false);
-    const { start } = useTransition();
 
     useEffect(() => {
-        const buildBootPayload = () => {
-            const heroEl = document.getElementById('landing-content');
-            const viewport = { width: window.innerWidth, height: window.innerHeight };
-            const rectData = () => {
-                if (!heroEl) {
-                    return {
-                        centerX: viewport.width / 2,
-                        centerY: viewport.height / 2,
-                        width: Math.min(viewport.width * 0.8, 960),
-                        height: Math.min(viewport.height * 0.25, 340),
-                    };
-                }
-                const r = heroEl.getBoundingClientRect();
-                return {
-                    centerX: r.left + r.width / 2,
-                    centerY: r.top + r.height / 2,
-                    width: r.width,
-                    height: r.height,
-                };
-            };
-            return { mode: 'boot', viewport, rect: rectData() };
-        };
-
-        async function navigateToWork() {
+        function navigateToWork() {
             if (busyRef.current) return;
             busyRef.current = true;
-            const payload = buildBootPayload();
-            try { await start({ out: 1600, payload }); } catch { }
             navigate('/work');
             setTimeout(() => { busyRef.current = false; }, 1000);
         }
@@ -69,7 +42,7 @@ export default function Home() {
             window.removeEventListener('touchend', onTouchEnd);
             window.removeEventListener('keydown', onKey);
         };
-    }, [navigate, start]);
+    }, [navigate]);
 
 
     return (

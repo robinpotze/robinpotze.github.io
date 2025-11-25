@@ -1,4 +1,4 @@
-import { WorkCylinder } from '@components';
+import WorkCylinder from './WorkCylinder/WorkCylinder.jsx';
 import { NavigationMenu } from '@features';
 import { useMemo } from 'react';
 import { sortItems } from '../../utils/workUtils';

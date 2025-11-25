@@ -1,4 +1,4 @@
-import useLenisScroll from '@core/scroll/useLenisScroll';
+import { useLenisScroll } from '@hooks';
 import { DashLine, ScrollReveal } from '@components';
 import GradualBlur from '@canvas/effects/GradualBlur/GradualBlur.jsx';
 import { ProjectHero, NavigationMenu } from '@features';
