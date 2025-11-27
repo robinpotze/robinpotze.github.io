@@ -11,3 +11,12 @@
 .persistent-canvas-container canvas {
     pointer-events: auto;
 }
+
+.persistent-canvas-container.is-work-scene {
+    z-index: 10;
+    pointer-events: auto;
+}
+
+.persistent-canvas-container.is-work-scene canvas {
+    pointer-events: auto;
+}

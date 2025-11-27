@@ -2,11 +2,10 @@ import { useWorkCardTransition } from '@hooks';
 import { Html, useScroll } from "@react-three/drei";
 import { useFrame, useThree } from "@react-three/fiber";
 import { motion } from 'framer-motion';
-import FlameMesh from '@canvas/meshes/FlameMesh';
 import PropTypes from 'prop-types';
 import { lazy, Suspense, useRef, useEffect } from "react";
 import { useCanvas } from '@core/contexts/CanvasContext';
-import '../../routes/Work/WorkCylinder/WorkCylinder.css';
+import './WorkScene.css';
 
 const PixelCard = lazy(() => import('@components/interactive/PixelCard/PixelCard.jsx'));
 
@@ -28,9 +27,8 @@ export default function WorkScene({ items = [], progress = 1 }) {
 
     return (
         <>
-            <group scale={0.85 + eased * 0.25} position={[0, (1 - eased) * 3, 0]}>
+            <group scale={4} position={[0, (1 - eased) * 3, 0]}>
                 <Rig itemCount={items.length}>
-                    <FlameMesh position={[0, -5 + eased * 2, 0]} scale={0.6 + eased * 0.6} />
                     <Carousel items={items} progress={eased} />
                 </Rig>
             </group>

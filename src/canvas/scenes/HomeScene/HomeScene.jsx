@@ -2,7 +2,6 @@ import { Float, Text } from "@react-three/drei";
 import { Bloom, ChromaticAberration, EffectComposer, N8AO, TiltShift2 } from "@react-three/postprocessing";
 import BackgroundMesh from '@canvas/meshes/BackgroundMesh';
 import LogoMesh from '@canvas/meshes/LogoMesh';
-import FlameMesh from '@canvas/meshes/FlameMesh';
 import Rig from '@canvas/camera/Rig';
 import { useCanvas } from '@core/contexts/CanvasContext';
 import { useMemo } from 'react';
@@ -12,18 +11,15 @@ export default function HomeScene() {
     const progress = sceneProgress.home ?? 0;
     const eased = useMemo(() => Math.min(1, Math.max(0, progress)), [progress]);
     const logoScale = useMemo(() => 2 + eased * 0.8, [eased]);
-    const logoDepth = useMemo(() => -eased * 6, [eased]);
-    const flameY = useMemo(() => -5 + eased * 3, [eased]);
-    const flameScale = useMemo(() => 4 - eased * 1.2, [eased]);
+    const logoY = useMemo(() => eased * 10, [eased]);
     const bloomIntensity = useMemo(() => 0.2 + eased * 0.35, [eased]);
 
     return (
         <>
             <BackgroundMesh position={[0, 0, -30]} scale={6 - eased} />
-            <FlameMesh position={[0, flameY, -20 + eased * 6]} scale={flameScale} />
             <SubtitleText position={[0, -9, 0]} />
             <Float floatIntensity={1 + eased} rotationIntensity={0.5} speed={0.5}>
-                <group position={[0, 0, logoDepth]} scale={logoScale}>
+                <group position={[0, logoY, -5]} scale={logoScale}>
                     <LogoMesh />
                 </group>
             </Float>

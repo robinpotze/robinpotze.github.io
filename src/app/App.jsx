@@ -3,8 +3,7 @@ import { useEffect } from 'react';
 import AppProvider from './store';
 import WorkItemsBootstrap from './WorkItemsBootstrap';
 import { CanvasProvider } from '@core/contexts/CanvasContext';
-import PersistentCanvas from '@canvas/scenes/PersistentCanvas';
-import { TransitionLoader } from '@components/effects';
+import PersistentCanvas from '@canvas/scenes/PersistentCanvas/PersistentCanvas';
 
 export default function App() {
     useEffect(() => {
@@ -16,7 +15,6 @@ export default function App() {
             <WorkItemsBootstrap />
             <CanvasProvider>
                 <PersistentCanvas />
-                <TransitionLoader />
                 <main>
                     <Outlet />
                 </main>
