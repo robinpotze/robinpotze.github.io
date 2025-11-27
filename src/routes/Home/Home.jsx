@@ -1,79 +1,123 @@
-import { Suspense, lazy, useEffect, useRef } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useCallback, useEffect, useRef } from 'react';
+import { Link } from 'react-router-dom';
 import { RadialGrid, RedoAnimText, ScrollDown } from '@components';
-import { useDateTime } from '@hooks';
+import { useCanvas } from '@core/contexts/CanvasContext';
+import { useTransition } from '@core/transitions/TransitionManager';
 import './Home.css';
 
-const HomeScreenEffect = lazy(() => import('./HomeScreen/HomeScreen.jsx'));
-
 export default function Home() {
-    const navigate = useNavigate();
+    const { transitionToScene, setTransitionProgress } = useCanvas();
+    const { transitionToWork, isTransitioning } = useTransition();
     const busyRef = useRef(false);
+    const progressRef = useRef(0);
 
     useEffect(() => {
-        function navigateToWork() {
-            if (busyRef.current) return;
-            busyRef.current = true;
-            navigate('/work');
-            setTimeout(() => { busyRef.current = false; }, 1000);
-        }
+        transitionToScene('home');
+        setTransitionProgress(0);
+    }, [setTransitionProgress, transitionToScene]);
 
-        const onWheel = (e) => { if (e.deltaY > 20) navigateToWork(); };
-        let touchStartY = null;
-        const onTouchStart = (e) => { touchStartY = e.touches ? e.touches[0].clientY : null; };
-        const onTouchEnd = (e) => {
-            if (touchStartY == null) return;
-            const endY = e.changedTouches ? e.changedTouches[0].clientY : null;
-            if (endY != null && touchStartY - endY > 50) navigateToWork();
-            touchStartY = null;
+    const triggerTransition = useCallback(async () => {
+        if (busyRef.current || isTransitioning) return;
+        busyRef.current = true;
+        await transitionToWork({ animate: false });
+        busyRef.current = false;
+    }, [isTransitioning, transitionToWork]);
+
+    const setProgress = useCallback((value) => {
+        const clamped = Math.min(1, Math.max(0, value));
+        if (Math.abs(clamped - progressRef.current) < 0.001) return;
+        progressRef.current = clamped;
+        setTransitionProgress(clamped);
+        if (clamped >= 1) {
+            triggerTransition();
+        }
+    }, [setTransitionProgress, triggerTransition]);
+
+    const applyDelta = useCallback((delta) => {
+        if (busyRef.current || isTransitioning || delta === 0) return;
+        const normalized = delta / 1200;
+        setProgress(progressRef.current + normalized);
+    }, [isTransitioning, setProgress]);
+
+    useEffect(() => {
+        let touchY = null;
+
+        const onWheel = (e) => {
+            if (e.ctrlKey) return;
+            applyDelta(e.deltaY);
         };
+
+        const onTouchStart = (e) => {
+            touchY = e.touches?.[0]?.clientY ?? null;
+        };
+
+        const onTouchMove = (e) => {
+            if (touchY == null) return;
+            const current = e.touches?.[0]?.clientY;
+            if (current == null) return;
+            applyDelta(touchY - current);
+            touchY = current;
+        };
+
+        const onTouchEnd = () => {
+            touchY = null;
+        };
+
         const onKey = (e) => {
-            if (['ArrowDown', 'PageDown', ' '].includes(e.key)) navigateToWork();
+            if (['ArrowDown', 'PageDown', ' '].includes(e.key)) {
+                e.preventDefault();
+                applyDelta(150);
+            } else if (['ArrowUp', 'PageUp'].includes(e.key)) {
+                e.preventDefault();
+                applyDelta(-150);
+            } else if (e.key === 'Enter') {
+                triggerTransition();
+            }
         };
 
         window.addEventListener('wheel', onWheel, { passive: true });
         window.addEventListener('touchstart', onTouchStart, { passive: true });
+        window.addEventListener('touchmove', onTouchMove, { passive: true });
         window.addEventListener('touchend', onTouchEnd, { passive: true });
         window.addEventListener('keydown', onKey);
 
         return () => {
             window.removeEventListener('wheel', onWheel);
             window.removeEventListener('touchstart', onTouchStart);
+            window.removeEventListener('touchmove', onTouchMove);
             window.removeEventListener('touchend', onTouchEnd);
             window.removeEventListener('keydown', onKey);
         };
-    }, [navigate]);
-
+    }, [applyDelta, triggerTransition]);
 
     return (
-        <div className='landing-page'>
-            <div className='hero-section' id='landing-hero'>
-                <Suspense fallback={<div className="fixed inset-0 -z-10 pointer-events-none" />}>
-                    <HomeScreenEffect onScrollTrigger={() => { "hero-section" }} />
-                </Suspense>
-                <div className='hero-content' id='landing-content'>
-                    <Link to='/' className='logo-home-link' id='landing-home-link'><img src="img/logo/logo64.png" alt='robin potze logo' className='logo-header' id='landing-logo' /></Link>
-                    <p className='deco' id='landing-name'>ROBIN <br /> POTZE</p>
-                    <p className='deco-small' id='landing-quote'>| THOSE WHO DOUBT |<br />| CAST THEMSELVES|<br />| INTO A VOID |<br /><RedoAnimText delay={0.5} /><br />| AMBIGUOUS AMBIVALENCE |</p>
-                    <div className='hero-accents-bottom' id='landing-accents-bottom'>
+        <div className='home-page'>
+            <div className='home-section'>
+                <div className='home-content'>
+                    <Link to='/' className='home-logo-link'><img src="img/logo/logo64.png" alt='robin potze logo' className='home-logo' /></Link>
+                    <p className='deco home-name'>ROBIN <br /> POTZE</p>
+                    <p className='deco-small home-quote'>| THOSE WHO DOUBT |<br />| CAST THEMSELVES|<br />| INTO A VOID |<br /><RedoAnimText delay={0.5} /><br />| AMBIGUOUS AMBIVALENCE |</p>
+                    <div className='home-accents-bottom'>
                         <RadialGrid type='CRCL' />
-                        <img className='hero-accent-decal' id='landing-accent-decal' src='img/decal/OFS.svg' alt='Offset cyberpunk dorito decal' />
+                        <img className='home-accent-decal' src='img/decal/OFS.svg' alt='Offset cyberpunk dorito decal' />
                     </div>
                 </div>
-                <div className='hero-side' id='landing-side'>
-                    <div className='rotation-wrapper' id='landing-side-rotation-wrapper'>
-                        <div className='flavour-text r90' id='landing-side-flavour-text'>
-                            <p className='deco-small' id='landing-side-text'>assertThat(AMBIGUOUS.AMBIVALENCE)</p>
-                            <p className='deco-small' id='landing-side-text-brand'>willReturn(“ESCAPE WILL MAKE ME GOD”)</p>
+                <div className='home-side'>
+                    <div className='home-side-rotation-wrapper'>
+                        <div className='home-side-flavour-text r90'>
+                            <p className='deco-small home-side-text'>assertThat(AMBIGUOUS.AMBIVALENCE)</p>
+                            <p className='deco-small home-side-text-brand'>willReturn("ESCAPE WILL MAKE ME GOD")</p>
                         </div>
                     </div>
-                    <div className='icon-text r90' id='landing-side-divider'>
-                        <img className='hero-side-decal' src='img/icon/CRS.svg' alt='divider' />
-                        <p className='deco-tiny' id='landing-side-deco-text'>SDD.01</p>
+                    <div className='home-side-divider r90'>
+                        <img className='home-side-decal' src='img/icon/CRS.svg' alt='divider' />
+                        <p className='deco-tiny home-side-deco-text'>SDD.01</p>
                     </div>
-                    <img className='hero-side-decal' src='img/decal/MORSE.svg' alt='robin potze in barcode' />
-                    <img className='hero-side-decal' src='img/decal/PILL.svg' alt='pill with four arrows point downwards' />
-                    <ScrollDown />
+                    <img className='home-side-decal' src='img/decal/MORSE.svg' alt='robin potze in barcode' />
+                    <img className='home-side-decal' src='img/decal/PILL.svg' alt='pill with four arrows point downwards' />
+                    <div className='home-scroll-trigger' onClick={() => setProgress(1)} role='presentation'>
+                        <ScrollDown />
+                    </div>
                 </div>
             </div>
         </div>

@@ -26,7 +26,6 @@ export default defineConfig({
             '@features': '/src/features',
             '@hooks': '/src/hooks',
             '@routes': '/src/routes',
-            '@shaders': '/src/shaders',
             '@utils': '/src/utils',
         }
     },

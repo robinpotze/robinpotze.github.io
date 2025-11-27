@@ -1,17 +1,15 @@
-import WorkCylinder from './WorkCylinder/WorkCylinder.jsx';
 import { NavigationMenu } from '@features';
-import { useMemo } from 'react';
-import { sortItems } from '../../utils/workUtils';
-import { pages as autogenPages } from '../Entry/pages/autogen';
+import { useEffect } from 'react';
+import { useCanvas } from '@core/contexts/CanvasContext';
 import './Work.css';
 
 export default function Work() {
-    const items = useMemo(() => sortItems(autogenPages), []);
+    const { transitionToScene, setTransitionProgress } = useCanvas();
 
-    return (
-        <div className='work-overview' id='work-overview'>
-            <NavigationMenu />
-            <WorkCylinder items={items} />
-        </div>
-    );
+    useEffect(() => {
+        transitionToScene('work');
+        setTransitionProgress(1);
+    }, [setTransitionProgress, transitionToScene]);
+
+    return <NavigationMenu />;
 }

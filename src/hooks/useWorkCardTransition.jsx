@@ -1,18 +1,16 @@
 import { useCallback, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-// Hook for Work cards: simplified navigation without transitions
-// Returns { busy, trigger } and consumer wires trigger to clicks or motion handlers.
-export default function useWorkCardTransition({ to, data = {}, duration = 500, delay = 40 } = {}) {
-    const navigate = useNavigate();
+export default function useWorkCardTransition({ to, delay = 40 } = {}) {
     const busyRef = useRef(false);
+    const navigate = useNavigate();
 
-    const trigger = useCallback(async (el) => {
+    const trigger = useCallback(() => {
         if (busyRef.current) return;
         busyRef.current = true;
         setTimeout(() => {
             navigate(to);
-            setTimeout(() => { busyRef.current = false; }, 500);
+            busyRef.current = false;
         }, delay);
     }, [to, delay, navigate]);
 

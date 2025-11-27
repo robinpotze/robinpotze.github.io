@@ -1,27 +1,12 @@
-.hero-section {
+.home-section {
     display: flex;
     height: 100vh;
     box-sizing: border-box;
-}
-
-.hero-side {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-between;
-    padding: 16px 0;
-    width: 64px;
-}
-
-.hero-content {
-    flex: 1;
-}
-
-#landing-hero {
     padding: 64px 0 0 64px;
 }
 
-#landing-content {
+.home-content {
+    flex: 1;
     display: grid;
     grid-template-columns: 1fr 3fr 1fr;
     grid-template-rows: 1fr 1fr 1fr 1fr 1fr;
@@ -30,83 +15,86 @@
         "quote . ."
         ". hero-title ."
         ". hero-flavour ."
-        ". hero-deco .";
+        ". home-deco .";
     mix-blend-mode: difference;
+    align-items: start;
 }
 
-#landing-home-link {
+.home-logo-link {
     display: block;
+    width: fit-content;
+    height: fit-content;
+    grid-area: rp-logo;
+}
+
+.home-logo {
     width: fit-content;
     height: fit-content;
 }
 
-#landing-name {
+.home-name {
     grid-area: rp-name;
     text-align: right;
+    align-self: start;
 }
 
-#landing-quote {
+.home-quote {
     grid-area: quote;
 }
 
-#landing-title {
-    grid-area: hero-title;
-    margin: 0 auto;
-    text-align: center;
-    line-height: 0.7em;
-}
-
-#landing-subtitle {
-    grid-area: hero-flavour;
-    margin: auto;
-    text-align: center;
-}
-
-#landing-accents-bottom {
-    grid-area: hero-deco;
+.home-accents-bottom {
+    grid-area: home-deco;
     display: flex;
     justify-content: space-between;
 }
 
-#landing-accent-decal {
+.home-accent-decal {
     margin: 0 0 auto 0;
     width: 4rem;
     aspect-ratio: 52/18;
 }
 
-#landing-side {
+.home-side {
+    display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: space-between;
     align-self: flex-end;
     padding: 0 0 16px 0;
-    height: 896px;
+    width: 64px;
+    height: 100%;
+    max-height: calc(100vh - 64px);
     mix-blend-mode: difference;
+    flex-shrink: 0;
 }
 
-#landing-side-rotation-wrapper {
+.home-side-rotation-wrapper {
     width: 64px;
     height: 256px;
 }
 
-#landing-side-flavour-text {
+.home-side-flavour-text {
     display: flex;
     justify-content: center;
     flex-direction: column;
 }
 
-#landing-side-flavour-text p {
+.home-side-flavour-text p {
     text-align: left;
     white-space: nowrap;
 }
 
-#landing-side-text-brand {
+.home-side-text-brand {
     color: var(--c-BRND);
 }
 
-#landing-side-deco-text {
-    text-align: center;
+.home-side-divider {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
 }
 
-#landing-side-scroll {
-    padding: 0 0 1rem 0;
+.home-side-deco-text {
+    text-align: center;
 }

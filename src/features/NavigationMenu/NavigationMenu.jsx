@@ -1,6 +1,7 @@
 import React, { useCallback, useLayoutEffect, useRef, useState } from 'react';
 import { motion, AnimatePresence, useAnimation } from 'framer-motion';
 import { Link } from 'react-router-dom';
+import { useTransition } from '@core/transitions/TransitionManager';
 import './NavigationMenu.css';
 
 const MENU_ITEMS = [
@@ -23,6 +24,7 @@ export const NavigationMenu = () => {
     const [label, setLabel] = useState('Menu');
     const buttonRef = useRef(null);
     const busy = useRef(false);
+    const { transitionToHome, transitionToWork, isTransitioning } = useTransition();
 
     const glitchR = useAnimation();
     const glitchB = useAnimation();
@@ -184,9 +186,18 @@ export const NavigationMenu = () => {
                 >
                     <div className="sm-panel-inner">
                         <motion.div className='sm-panel-logo' initial={{ opacity: 0 }} animate={{ opacity: open ? 1 : 0 }} >
-                            <Link to="/" className="sm-panel-logo-link">
+                            <a
+                                href="/"
+                                className="sm-panel-logo-link"
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    if (isTransitioning) return;
+                                    setOpen(false);
+                                    transitionToHome();
+                                }}
+                            >
                                 <img src="/img/logo/logo.svg" alt="Logo" />
-                            </Link>
+                            </a>
                         </motion.div>
                         <motion.ul
                             className="sm-panel-list"
@@ -206,7 +217,17 @@ export const NavigationMenu = () => {
                                             open: { y: '0%', rotate: 0, transition: { duration: 0.9, ease } }
                                         }}
                                     >
-                                        <Link to={item.link} className="sm-panel-item" data-index={i + 1}>
+                                        <Link
+                                            to={item.link}
+                                            className="sm-panel-item"
+                                            data-index={i + 1}
+                                            onClick={(e) => {
+                                                if (item.link !== '/work' || isTransitioning) return;
+                                                e.preventDefault();
+                                                setOpen(false);
+                                                transitionToWork();
+                                            }}
+                                        >
                                             {item.label}
                                         </Link>
                                     </motion.li>

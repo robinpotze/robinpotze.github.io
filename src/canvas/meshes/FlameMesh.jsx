@@ -2,9 +2,8 @@ import { shaderMaterial } from "@react-three/drei"
 import { extend, useFrame } from "@react-three/fiber"
 import { useRef } from 'react'
 import * as THREE from 'three'
-import flameFragmentShader from '@shaders/Flame.glsl?raw'
+import flameFragmentShader from '../shaders/Flame.glsl?raw'
 
-// Vertex shader - simple passthrough
 const flameVertexShader = `
 varying vec2 vUv;
 void main() {
