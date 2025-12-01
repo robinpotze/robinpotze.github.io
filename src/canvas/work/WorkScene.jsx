@@ -2,7 +2,8 @@ import { useRigRotation } from '@hooks';
 import PropTypes from 'prop-types';
 import { useRef } from "react";
 import { CAROUSEL_CONFIG, calculateCardPosition, calculateCardRotation } from '@config/carousel.config';
-import { WorkCard3D, WorkCardContent } from '@components/canvas';
+import WorkCard3D from './WorkCard3D';
+import WorkCardContent from './WorkCardContent';
 import './WorkScene.css';
 
 export default function WorkScene({ items = [], progress = 1, onCardNavigate }) {

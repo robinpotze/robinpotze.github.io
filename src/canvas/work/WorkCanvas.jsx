@@ -1,0 +1,33 @@
+import { Canvas } from '@react-three/fiber';
+import { PerspectiveCamera, ScrollControls } from '@react-three/drei';
+import WorkScene from './WorkScene';
+import { CAROUSEL_CONFIG, calculateScrollPages } from '@config/carousel.config';
+
+export default function WorkCanvas({ items, onCardNavigate }) {
+    const pages = calculateScrollPages(items.length);
+
+    return (
+        <div className="work-canvas-container">
+            <Canvas
+                shadows
+                gl={{
+                    antialias: true,
+                    powerPreference: 'high-performance',
+                    preserveDrawingBuffer: false
+                }}
+            >
+                <color attach="background" args={['#000000']} />
+
+                <PerspectiveCamera
+                    makeDefault
+                    position={CAROUSEL_CONFIG.CAMERA.POSITION}
+                    fov={CAROUSEL_CONFIG.CAMERA.FOV}
+                />
+
+                <ScrollControls pages={pages} damping={CAROUSEL_CONFIG.SCROLL_DAMPING}>
+                    <WorkScene items={items} progress={1} onCardNavigate={onCardNavigate} />
+                </ScrollControls>
+            </Canvas>
+        </div>
+    );
+}

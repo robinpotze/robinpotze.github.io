@@ -1,1 +1,0 @@
-export { default as PixelCard } from './PixelCard/PixelCard.jsx';

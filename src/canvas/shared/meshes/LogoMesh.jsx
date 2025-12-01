@@ -2,7 +2,7 @@ import { useGLTF, useFBO } from "@react-three/drei"
 import { useFrame, extend } from "@react-three/fiber"
 import { useRef } from 'react'
 import * as THREE from 'three'
-import { GlassLogoMaterial } from '@canvas/materials/GlassLogoMaterial'
+import { GlassLogoMaterial } from '@canvas/shared/materials/GlassLogoMaterial'
 import { useNoiseTexture } from '@hooks'
 
 useGLTF.preload("/assets/3d/Logo.glb")

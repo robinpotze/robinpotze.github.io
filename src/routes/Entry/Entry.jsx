@@ -1,6 +1,7 @@
 import { useLenisScroll } from '@hooks';
 import { DashLine, ScrollReveal, GradualBlur } from '@components';
-import { ProjectHero, NavigationMenu } from '@features';
+import ProjectHero from '@components/layout/ProjectHero/ProjectHero';
+import { NavigationMenu } from '@components/layout/NavigationMenu/NavigationMenu';
 import { useParams } from 'react-router-dom';
 import { pages } from './pages';
 import './Entry.css';

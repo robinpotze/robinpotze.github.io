@@ -1,14 +1,10 @@
-/**
- * WorkCardContent - HTML content for work card
- */
-
 import { Suspense } from 'react';
 import { motion } from 'framer-motion';
 import { lazy } from 'react';
 import PropTypes from 'prop-types';
 import './WorkCardContent.css';
 
-const PixelCard = lazy(() => import('@components/interactive/PixelCard/PixelCard.jsx'));
+const PixelCard = lazy(() => import('@components/ui/PixelCard/PixelCard.jsx'));
 
 export default function WorkCardContent({
     item,

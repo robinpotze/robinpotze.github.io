@@ -1,9 +1,4 @@
-.work-cylinder-canvas {
-    width: 100vw;
-    height: 100vh;
-    background: linear-gradient(180deg, var(--c-DRK) 70%, var(--c-BRND_TRNS) 100%);
-    overflow: hidden;
-}
+/* WorkCardContent styles - extracted from WorkScene.css */
 
 .work-card-wrap {
     perspective: 900px;

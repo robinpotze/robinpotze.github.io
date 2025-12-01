@@ -1,8 +1,3 @@
-/**
- * Carousel Configuration
- * Centralized constants for the Work carousel scene
- */
-
 export const CAROUSEL_CONFIG = {
     // Layout
     RADIUS: 3,

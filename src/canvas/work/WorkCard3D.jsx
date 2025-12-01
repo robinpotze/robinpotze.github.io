@@ -1,7 +1,3 @@
-/**
- * WorkCard3D - 3D wrapper for work card with R3F logic
- */
-
 import { useRef } from 'react';
 import { Html } from '@react-three/drei';
 import { useCardScale, useCardFloat } from '@hooks';
@@ -15,7 +11,6 @@ export default function WorkCard3D({
 }) {
     const groupRef = useRef();
 
-    // Apply 3D transformations
     useCardScale(groupRef, index);
     useCardFloat(groupRef, position, index);
 

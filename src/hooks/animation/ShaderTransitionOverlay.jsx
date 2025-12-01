@@ -4,8 +4,8 @@ import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { shaderMaterial, OrthographicCamera } from '@react-three/drei';
 import { extend } from '@react-three/fiber';
 import * as THREE from 'three';
-import transitionFragmentShader from '@canvas/shaders/Transition.glsl?raw';
-import transitionVertexShader from '@canvas/shaders/Transition.vert?raw';
+import transitionFragmentShader from '@canvas/shared/shaders/Transition.glsl?raw';
+import transitionVertexShader from '@canvas/shared/shaders/Transition.vert?raw';
 
 // Create shader material
 const TransitionMaterial = shaderMaterial(
