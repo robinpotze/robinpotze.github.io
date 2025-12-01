@@ -10,8 +10,8 @@ useGLTF.preload("/assets/3d/Logo.glb")
 export default function LogoMesh({ ...props }) {
     const meshRef = useRef()
     const materialRef = useRef()
-    
-    const fbo = useFBO(1024, 1024, {
+
+    const fbo = useFBO(512, 512, {
         minFilter: THREE.LinearFilter,
         magFilter: THREE.LinearFilter,
         format: THREE.RGBAFormat,

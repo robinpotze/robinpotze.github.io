@@ -1,8 +1,16 @@
+.home-page {
+    height: 100vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+}
+
 .home-section {
     display: flex;
     height: 100vh;
     box-sizing: border-box;
     padding: 64px 0 0 64px;
+    position: relative;
 }
 
 .home-content {
@@ -97,4 +105,58 @@
 
 .home-side-deco-text {
     text-align: center;
+}
+
+/* Transition section between home and work */
+.home-transition-section {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.transition-content {
+    text-align: center;
+    z-index: 1;
+    mix-blend-mode: difference;
+    padding: 2rem;
+}
+
+.transition-title {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+    opacity: 0.9;
+}
+
+.transition-subtitle {
+    font-size: 1.2rem;
+    margin-bottom: 2rem;
+    opacity: 0.7;
+}
+
+.transition-progress {
+    width: 300px;
+    height: 2px;
+    background: rgba(255, 255, 255, 0.2);
+    margin: 2rem auto;
+    border-radius: 1px;
+    overflow: hidden;
+}
+
+.progress-bar {
+    height: 100%;
+    background: var(--c-BRND);
+    transition: width 0.1s ease-out;
+}
+
+/* Canvas container for 3D scene */
+.home-canvas-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: -1;
+    pointer-events: none;
 }
