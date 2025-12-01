@@ -17,17 +17,17 @@ export default function HomeScene({ scrollProgress = 0 }) {
 
     // Animate logo entrance
     useEntryAnimation(logoRef, 'home', {
-        duration: 1.5,
-        startPosition: [0, -15, -5],
+        duration: 3,
+        startPosition: [0, 0, 20],
         endPosition: [0, 0, -5],
-        startScale: [0.5, 0.5, 0.5],
-        endScale: [2.8, 2.8, 2.8]
+        startScale: [4, 4, 4],
+        endScale: [3, 3, 3]
     });
 
     // Animate background
     useEntryAnimation(backgroundRef, 'home', {
-        duration: 1.5,
-        startPosition: [0, 0, -30],
+        duration: 3,
+        startPosition: [0, 0, -15],
         endPosition: [0, 0, -30],
         startScale: [8, 8, 8],
         endScale: [6, 6, 6]
@@ -65,26 +65,24 @@ export default function HomeScene({ scrollProgress = 0 }) {
         if (scrollProgress > 0) {
             if (logoRef.current) {
                 const targetY = THREE.MathUtils.lerp(0, 15, scrollProgress);
-                const targetScale = THREE.MathUtils.lerp(2.8, 1.5, scrollProgress);
                 logoRef.current.position.y += (targetY - logoRef.current.position.y) * 0.1;
-                logoRef.current.scale.setScalar(logoRef.current.scale.x + (targetScale - logoRef.current.scale.x) * 0.1);
             }
 
             if (cameraRef.current) {
                 const targetZ = THREE.MathUtils.lerp(20, 10, scrollProgress);
-                const targetFov = THREE.MathUtils.lerp(50, 60, scrollProgress);
+                const targetFov = THREE.MathUtils.lerp(50, 100, scrollProgress);
                 cameraRef.current.position.z += (targetZ - cameraRef.current.position.z) * 0.1;
                 cameraRef.current.fov += (targetFov - cameraRef.current.fov) * 0.1;
                 cameraRef.current.updateProjectionMatrix();
             }
 
             if (backgroundRef.current) {
-                const targetScale = THREE.MathUtils.lerp(6, 3, scrollProgress);
+                const targetScale = THREE.MathUtils.lerp(6, 12, scrollProgress);
                 backgroundRef.current.scale.setScalar(backgroundRef.current.scale.x + (targetScale - backgroundRef.current.scale.x) * 0.1);
             }
 
             if (subtitleRef.current) {
-                const targetY = THREE.MathUtils.lerp(-9, -12, scrollProgress);
+                const targetY = THREE.MathUtils.lerp(-9, -10, scrollProgress);
                 subtitleRef.current.position.y += (targetY - subtitleRef.current.position.y) * 0.1;
             }
 

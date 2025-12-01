@@ -20,7 +20,6 @@ export default function Home() {
 
             setScrollProgress(progress);
 
-            // Navigate to /work when scroll reaches bottom
             if (progress >= 0.95) {
                 navigate('/work');
             }

@@ -2,15 +2,17 @@
     height: 100vh;
     overflow-y: auto;
     overflow-x: hidden;
+    scrollbar-width: none;
     scroll-behavior: smooth;
 }
 
 .home-section {
     display: flex;
     height: 100vh;
+    width: 100vw;
     box-sizing: border-box;
     padding: 64px 0 0 64px;
-    position: relative;
+    position: fixed;
 }
 
 .home-content {
@@ -107,8 +109,8 @@
     text-align: center;
 }
 
-/* Transition section between home and work */
 .home-transition-section {
+    padding-top: 100vh;
     height: 100vh;
     display: flex;
     align-items: center;
@@ -116,29 +118,10 @@
     position: relative;
 }
 
-.transition-content {
-    text-align: center;
-    z-index: 1;
-    mix-blend-mode: difference;
-    padding: 2rem;
-}
-
-.transition-title {
-    font-size: 4rem;
-    margin-bottom: 1rem;
-    opacity: 0.9;
-}
-
-.transition-subtitle {
-    font-size: 1.2rem;
-    margin-bottom: 2rem;
-    opacity: 0.7;
-}
-
 .transition-progress {
-    width: 300px;
+    width: 40vw;
     height: 2px;
-    background: rgba(255, 255, 255, 0.2);
+    background: var(--c-LGHT);
     margin: 2rem auto;
     border-radius: 1px;
     overflow: hidden;
