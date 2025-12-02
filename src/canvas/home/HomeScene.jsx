@@ -17,7 +17,7 @@ export default function HomeScene({ scrollProgress = 0 }) {
 
     // Animate logo entrance
     useEntryAnimation(logoRef, 'home', {
-        duration: 3,
+        duration: 1.2,
         startPosition: [0, 0, 20],
         endPosition: [0, 0, -5],
         startScale: [4, 4, 4],
@@ -26,7 +26,7 @@ export default function HomeScene({ scrollProgress = 0 }) {
 
     // Animate background
     useEntryAnimation(backgroundRef, 'home', {
-        duration: 3,
+        duration: 1.2,
         startPosition: [0, 0, -15],
         endPosition: [0, 0, -30],
         startScale: [8, 8, 8],

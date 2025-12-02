@@ -2,6 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import { useEffect, useRef, useState } from 'react';
 import HomeLayout from './HomeLayout';
 import HomeCanvas from '@canvas/home/HomeCanvas';
+import { LaserFlow } from '@canvas/laser/Laser';
 import './Home.css';
 
 export default function Home() {
@@ -29,16 +30,22 @@ export default function Home() {
         return () => container.removeEventListener('scroll', handleScroll);
     }, [navigate]);
 
+    const horizontalSizing = 0.3 + (scrollProgress * 1.2); // 0.3 → 1.5
+    const verticalSizing = 1.5 - (scrollProgress * 1.0);   // 1.5 → 0.5
+
     return (
         <div className='home-page' ref={containerRef}>
+            <LaserFlow
+                horizontalSizing={horizontalSizing}
+                verticalSizing={verticalSizing}
+                horizontalBeamOffset={0.0}
+                verticalBeamOffset={-0.5}
+                color="#00CCFF"
+                fogIntensity={0.8}
+                wispIntensity={4.0}
+                flowSpeed={0.5}
+            />
             <HomeLayout />
-
-            <div className='home-transition-section'>
-                <div className='transition-progress'>
-                    <div className='progress-bar' style={{ width: `${scrollProgress * 100}%` }} />
-                </div>
-            </div>
-
             <HomeCanvas scrollProgress={scrollProgress} />
         </div>
     );
