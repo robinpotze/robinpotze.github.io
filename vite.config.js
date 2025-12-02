@@ -19,14 +19,8 @@ export default defineConfig({
                     'r3f-postprocessing': ['@react-three/postprocessing']
                 }
             }
-        },
-        // Exclude video files from build (using CDN instead)
-        copyPublicDir: true,
-        assetsInlineLimit: 0
+        }
     },
-    publicDir: 'public',
-    // Exclude video files from being copied to dist
-    assetsInclude: ['**/*.glb', '**/*.gltf', '**/*.png', '**/*.jpg', '**/*.jpeg', '**/*.svg', '**/*.webp', '**/*.ttf', '**/*.woff', '**/*.woff2', '**/*.exr', '**/*.glsl'],
     plugins: [react(), glsl()],
     resolve: {
         alias: {
