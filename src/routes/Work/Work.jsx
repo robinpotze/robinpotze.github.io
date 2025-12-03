@@ -57,21 +57,21 @@ export default function Work() {
 
     return (
         <div className='work-page-container'>
-            <TransitionOverlay 
+            <TransitionOverlay
                 scrollProgress={0}
                 onTransitionComplete={null}
                 entryAnimation={true}
             />
             {scrollProgress >= 0.85 && (
-                <TransitionOverlay 
+                <TransitionOverlay
                     scrollProgress={scrollProgress}
                     onTransitionComplete={handleTransitionComplete}
                     entryAnimation={false}
                 />
             )}
             <NavigationMenu />
-            <WorkCanvas 
-                items={items} 
+            <WorkCanvas
+                items={items}
                 onCardNavigate={handleCardNavigate}
                 onScrollChange={handleCanvasScrollChange}
             />

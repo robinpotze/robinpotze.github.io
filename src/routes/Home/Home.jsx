@@ -39,7 +39,7 @@ export default function Home() {
     const handleTransitionComplete = () => {
         if (hasNavigated.current) return;
         hasNavigated.current = true;
-        
+
         setTimeout(() => {
             navigate('/work');
         }, 200);
@@ -55,7 +55,7 @@ export default function Home() {
 
     return (
         <div className='home-page' ref={containerRef}>
-            <TransitionOverlay 
+            <TransitionOverlay
                 scrollProgress={scrollProgress}
                 onTransitionComplete={handleTransitionComplete}
                 entryAnimation={false}

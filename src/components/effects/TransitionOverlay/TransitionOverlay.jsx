@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import './TransitionOverlay.css';
 
-export default function TransitionOverlay({ 
+export default function TransitionOverlay({
     scrollProgress = 0,
     onTransitionComplete,
     entryAnimation = false
@@ -22,12 +22,12 @@ export default function TransitionOverlay({
         const animate = () => {
             const elapsed = Date.now() - startTime;
             const progress = Math.min(elapsed / duration, 1);
-            
+
             // Animate from 1 (full) to 0 (closed)
             const scale = 1 - progress;
-            
+
             if (overlayRef.current) overlayRef.current.style.opacity = '1';
-            
+
             layerRefs.current.forEach(layer => {
                 if (layer) layer.style.transform = `scaleX(${scale})`;
             });
@@ -49,7 +49,7 @@ export default function TransitionOverlay({
         if (!overlayRef.current) return;
 
         const threshold = 0.85;
-        
+
         // Hide below threshold
         if (scrollProgress < threshold) {
             overlayRef.current.style.opacity = '0';
@@ -62,11 +62,11 @@ export default function TransitionOverlay({
 
         // Show and animate above threshold
         overlayRef.current.style.opacity = '1';
-        
+
         // Map 0.85-1.0 to 0-1 scale
         const normalizedProgress = (scrollProgress - threshold) / (1 - threshold);
         const clampedProgress = Math.max(0, Math.min(1, normalizedProgress));
-        
+
         // Apply to all layers (no stagger)
         layerRefs.current.forEach((layer) => {
             if (!layer) return;

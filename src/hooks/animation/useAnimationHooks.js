@@ -43,7 +43,7 @@ export function useEntryAnimation(ref, routeName, options = {}) {
         enabled = true,
         scrollProgress = 0
     } = options;
-    
+
     // Use scroll-specific end values if provided, otherwise use same as entry
     const finalEndPosition = scrollEndPosition || endPosition;
     const finalEndScale = scrollEndScale || endScale;
@@ -96,12 +96,12 @@ export function useEntryAnimation(ref, routeName, options = {}) {
             // After entry, use scroll with full ActiveTheory curve
             // Continues from entry end position to final scroll position
             eased = activeTheoryEase(scrollProgress);
-            
+
             // Animate from entry end to scroll end positions
             ref.current.position.x = THREE.MathUtils.lerp(endPosition[0], finalEndPosition[0], eased);
             ref.current.position.y = THREE.MathUtils.lerp(endPosition[1], finalEndPosition[1], eased);
             ref.current.position.z = THREE.MathUtils.lerp(endPosition[2], finalEndPosition[2], eased);
-            
+
             ref.current.scale.x = THREE.MathUtils.lerp(endScale[0], finalEndScale[0], eased);
             ref.current.scale.y = THREE.MathUtils.lerp(endScale[1], finalEndScale[1], eased);
             ref.current.scale.z = THREE.MathUtils.lerp(endScale[2], finalEndScale[2], eased);
@@ -227,7 +227,7 @@ export function useFadeAnimation(ref, routeName, options = {}) {
 
             const entryProgress = Math.min(elapsed / duration, 1);
             const eased = entryEase(entryProgress);
-            
+
             value = THREE.MathUtils.lerp(startValue, endValue, eased);
 
             if (entryProgress >= 1) {
