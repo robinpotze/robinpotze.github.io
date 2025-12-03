@@ -3,7 +3,7 @@ import { PerspectiveCamera, ScrollControls } from '@react-three/drei';
 import WorkScene from './WorkScene';
 import { CAROUSEL_CONFIG, calculateScrollPages } from '@config/carousel.config';
 
-export default function WorkCanvas({ items, onCardNavigate }) {
+export default function WorkCanvas({ items, onCardNavigate, onScrollChange }) {
     const pages = calculateScrollPages(items.length);
 
     return (
@@ -25,7 +25,7 @@ export default function WorkCanvas({ items, onCardNavigate }) {
                 />
 
                 <ScrollControls pages={pages} damping={CAROUSEL_CONFIG.SCROLL_DAMPING}>
-                    <WorkScene items={items} progress={1} onCardNavigate={onCardNavigate} />
+                    <WorkScene items={items} progress={1} onCardNavigate={onCardNavigate} onScrollChange={onScrollChange} />
                 </ScrollControls>
             </Canvas>
         </div>

@@ -118,22 +118,6 @@
     position: relative;
 }
 
-.transition-progress {
-    width: 40vw;
-    height: 2px;
-    background: var(--c-LGHT);
-    margin: 2rem auto;
-    border-radius: 1px;
-    overflow: hidden;
-}
-
-.progress-bar {
-    height: 100%;
-    background: var(--c-BRND);
-    transition: width 0.1s ease-out;
-}
-
-/* Canvas container for 3D scene */
 .home-canvas-container {
     position: fixed;
     top: 0;

@@ -1,0 +1,13 @@
+# Shader files - formatting breaks GLSL syntax
+**/*.glsl
+**/*.frag
+**/*.vert
+**/*.wgsl
+
+# Build output
+dist
+build
+.vite
+
+# Dependencies
+node_modules

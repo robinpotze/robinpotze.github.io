@@ -1,13 +1,23 @@
 import { useRigRotation } from '@hooks';
 import PropTypes from 'prop-types';
 import { useRef } from "react";
+import { useScroll } from '@react-three/drei';
+import { useFrame } from '@react-three/fiber';
 import { CAROUSEL_CONFIG, calculateCardPosition, calculateCardRotation } from '@config/carousel.config';
 import WorkCard3D from './WorkCard3D';
 import WorkCardContent from './WorkCardContent';
 import './WorkScene.css';
 
-export default function WorkScene({ items = [], progress = 1, onCardNavigate }) {
+export default function WorkScene({ items = [], progress = 1, onCardNavigate, onScrollChange }) {
     const eased = Math.min(1, Math.max(0, progress));
+    const scroll = useScroll();
+
+    // Report scroll position back to parent
+    useFrame(() => {
+        if (onScrollChange && scroll) {
+            onScrollChange(scroll.offset);
+        }
+    });
 
     if (!items?.length) return null;
 

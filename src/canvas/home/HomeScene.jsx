@@ -15,83 +15,65 @@ export default function HomeScene({ scrollProgress = 0 }) {
     const lightRef = useRef();
     const cameraRef = useRef();
 
-    // Animate logo entrance
+    // Animate logo entrance (snappy entry easing) then scroll (full ActiveTheory easing)
     useEntryAnimation(logoRef, 'home', {
         duration: 1.2,
         startPosition: [0, 0, 20],
         endPosition: [0, 0, -5],
+        scrollEndPosition: [0, 0, -15], // Move further back on scroll
         startScale: [4, 4, 4],
-        endScale: [3, 3, 3]
+        endScale: [3, 3, 3],
+        scrollEndScale: [2.5, 2.5, 2.5], // Scale down more on scroll
+        scrollProgress
     });
 
-    // Animate background
+    // Animate background (snappy entry easing) then scroll (full ActiveTheory easing)
     useEntryAnimation(backgroundRef, 'home', {
         duration: 1.2,
         startPosition: [0, 0, -15],
         endPosition: [0, 0, -30],
+        scrollEndPosition: [0, 0, -10], // Move even further back on scroll
         startScale: [8, 8, 8],
-        endScale: [6, 6, 6]
+        endScale: [6, 6, 6],
+        scrollEndScale: [5, 5, 5], // Scale down on scroll
+        scrollProgress
     });
 
-    // Animate subtitle with delay
+    // Animate subtitle with delay (snappy entry easing) then scroll (full ActiveTheory easing)
     useEntryAnimation(subtitleRef, 'home', {
         duration: 0.9,
         delay: 0.6,
         startPosition: [0, -12, 0],
         endPosition: [0, -9, 0],
+        scrollEndPosition: [0, -7, 0], // Move up slightly on scroll
         startScale: [1, 1, 1],
-        endScale: [1, 1, 1]
+        endScale: [1, 1, 1],
+        scrollEndScale: [0.9, 0.9, 0.9], // Scale down slightly on scroll
+        scrollProgress
     });
 
-    // Animate camera
+    // Animate camera (snappy entry easing) then scroll (full ActiveTheory easing)
     useCameraAnimation(cameraRef, 'home', {
         duration: 1.5,
         startPosition: [0, 0, 30],
         endPosition: [0, 0, 20],
+        scrollEndPosition: [0, 0, 10], // Move closer on scroll
         startFov: 70,
-        endFov: 50
+        endFov: 50,
+        scrollEndFov: 100, // Increase FOV on scroll
+        scrollProgress
     });
 
-    // Fade in ambient light
+    // Fade in ambient light (snappy entry easing) then scroll (full ActiveTheory easing)
     useFadeAnimation(lightRef, 'home', {
         duration: 1.0,
         startValue: 0,
         endValue: 1,
-        property: 'intensity'
+        property: 'intensity',
+        scrollProgress
     });
 
-    // Apply scroll-based transformations
-    useFrame(() => {
-        if (scrollProgress > 0) {
-            if (logoRef.current) {
-                const targetY = THREE.MathUtils.lerp(0, 15, scrollProgress);
-                logoRef.current.position.y += (targetY - logoRef.current.position.y) * 0.1;
-            }
-
-            if (cameraRef.current) {
-                const targetZ = THREE.MathUtils.lerp(20, 10, scrollProgress);
-                const targetFov = THREE.MathUtils.lerp(50, 100, scrollProgress);
-                cameraRef.current.position.z += (targetZ - cameraRef.current.position.z) * 0.1;
-                cameraRef.current.fov += (targetFov - cameraRef.current.fov) * 0.1;
-                cameraRef.current.updateProjectionMatrix();
-            }
-
-            if (backgroundRef.current) {
-                const targetScale = THREE.MathUtils.lerp(6, 12, scrollProgress);
-                backgroundRef.current.scale.setScalar(backgroundRef.current.scale.x + (targetScale - backgroundRef.current.scale.x) * 0.1);
-            }
-
-            if (subtitleRef.current) {
-                const targetY = THREE.MathUtils.lerp(-9, -10, scrollProgress);
-                subtitleRef.current.position.y += (targetY - subtitleRef.current.position.y) * 0.1;
-            }
-
-            if (lightRef.current) {
-                const targetIntensity = THREE.MathUtils.lerp(1, 0.3, scrollProgress);
-                lightRef.current.intensity += (targetIntensity - lightRef.current.intensity) * 0.1;
-            }
-        }
-    });
+    // Scroll transformations are now handled by animation hooks
 
     return (
         <>

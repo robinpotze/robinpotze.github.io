@@ -1,5 +1,14 @@
 /* Work page styles - transparent background for canvas visibility */
 
+.work-page-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+}
+
 .work-canvas-container {
     position: fixed;
     top: 0;

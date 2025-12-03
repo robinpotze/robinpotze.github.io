@@ -10,21 +10,21 @@ const FRAG = laserFragmentShader;
 export const LaserFlow = ({
     className,
     style,
-    wispDensity = 1,
+    wispDensity = 1.0,
     dpr,
     mouseSmoothTime = 0.0,
     mouseTiltStrength = 0.01,
-    horizontalBeamOffset = 0.1,
+    horizontalBeamOffset = 0.0,
     verticalBeamOffset = 0.0,
     flowSpeed = 0.35,
     verticalSizing = 2.0,
     horizontalSizing = 0.5,
     fogIntensity = 0.45,
-    fogScale = 0.3,
+    fogScale = 0.1,
     wispSpeed = 15.0,
     wispIntensity = 5.0,
     flowStrength = 0.25,
-    decay = 1.1,
+    decay = 1.5,
     falloffStart = 1.2,
     fogFallSpeed = 0.6,
     color = '#FF79C6'
@@ -57,6 +57,9 @@ export const LaserFlow = ({
 
     useEffect(() => {
         const mount = mountRef.current;
+
+        window.scrollTo(0, 0);
+
         const renderer = new THREE.WebGLRenderer({
             antialias: false,
             alpha: true,
@@ -137,8 +140,15 @@ export const LaserFlow = ({
         const mouseSmooth = new THREE.Vector2(0, 0);
 
         const setSizeNow = () => {
-            const w = mount.clientWidth || 1;
-            const h = mount.clientHeight || 1;
+            let w = mount.clientWidth || 1;
+            let h = mount.clientHeight || 1;
+
+            // Fallback if container hasn't computed size yet
+            if (w === 0 || h === 0) {
+                w = window.innerWidth;
+                h = window.innerHeight;
+            }
+
             const pr = currentDprRef.current;
 
             const last = lastSizeRef.current;
@@ -165,7 +175,12 @@ export const LaserFlow = ({
             resizeRaf = requestAnimationFrame(setSizeNow);
         };
 
-        setSizeNow();
+        requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+                setSizeNow();
+            });
+        });
+
         const ro = new ResizeObserver(scheduleResize);
         ro.observe(mount);
 
