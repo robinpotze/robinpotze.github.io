@@ -133,13 +133,13 @@ export const NavigationMenu = () => {
                     ref={buttonRef}
                     open={open}
                     label={label}
-                toggle={toggle}
-                mainText={mainText}
-                glitchR={glitchR}
-                glitchB={glitchB}
-            />
+                    toggle={toggle}
+                    mainText={mainText}
+                    glitchR={glitchR}
+                    glitchB={glitchB}
+                />
 
-            <MenuPanel open={open} onClose={handleClose} />
+                <MenuPanel open={open} onClose={handleClose} />
             </div>
         </NavigationContext.Provider>
     );

@@ -12,7 +12,7 @@ export default function Home() {
     const location = useLocation();
     const containerRef = useRef(null);
     const [scrollProgress, setScrollProgress] = useState(0);
-    
+
     // Skip loading screen if navigating from another page
     const skipLoading = !!(location.state?.fromNavigation);
     const [isLoading, setIsLoading] = useState(!skipLoading);

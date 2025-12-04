@@ -68,13 +68,13 @@ export default function CurtainTransition({
         <div className="curtain-transition" data-active={isOpen || undefined}>
             {LAYER_COLORS.map((color, i) => {
                 const isLastLayer = i === LAYER_COLORS.length - 1;
-                
+
                 return (
                     <motion.div
                         key={i}
                         ref={isLastLayer ? lastLayerRef : null}
                         className="curtain-layer"
-                        style={{ 
+                        style={{
                             background: color,
                             zIndex: 5 + i
                         }}

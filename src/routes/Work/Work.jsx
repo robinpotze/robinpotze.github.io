@@ -20,7 +20,7 @@ export default function Work() {
     useEffect(() => {
         if (hasEntryAnimated.current) return;
         hasEntryAnimated.current = true;
-        
+
         // Start covered, then reveal after a brief moment
         setCurtainOpen(true);
         setTimeout(() => {
