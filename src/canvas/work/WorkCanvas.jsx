@@ -17,13 +17,11 @@ export default function WorkCanvas({ items, onCardNavigate, onScrollChange }) {
                 }}
             >
                 <color attach="background" args={['#000000']} />
-
                 <PerspectiveCamera
                     makeDefault
                     position={CAROUSEL_CONFIG.CAMERA.POSITION}
                     fov={CAROUSEL_CONFIG.CAMERA.FOV}
                 />
-
                 <ScrollControls pages={pages} damping={CAROUSEL_CONFIG.SCROLL_DAMPING}>
                     <WorkScene items={items} progress={1} onCardNavigate={onCardNavigate} onScrollChange={onScrollChange} />
                 </ScrollControls>

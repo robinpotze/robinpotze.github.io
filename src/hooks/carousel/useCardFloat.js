@@ -1,6 +1,3 @@
-/**
- * Hook for card floating animation
- */
 import { useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
 import { CAROUSEL_CONFIG } from '@config/carousel.config';

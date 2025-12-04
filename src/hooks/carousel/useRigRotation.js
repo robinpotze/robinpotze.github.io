@@ -1,6 +1,3 @@
-/**
- * Hook for carousel rig rotation logic
- */
 import { useRef } from 'react';
 import { useFrame, useThree } from '@react-three/fiber';
 import { useScroll } from '@react-three/drei';
@@ -22,7 +19,6 @@ export function useRigRotation(rigRef, itemCount) {
         rigRef.current.rotation.y +=
             (targetRotation - rigRef.current.rotation.y) * CAROUSEL_CONFIG.LERP_SPEED;
 
-        // Move camera vertically to follow the helix
         if (cameraRef.current) {
             const targetY = calculateCameraY(scroll.offset, itemCount);
             cameraRef.current.position.y +=

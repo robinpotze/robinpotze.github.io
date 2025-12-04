@@ -21,8 +21,8 @@ export default function WorkCard3D({
                 distanceFactor={1}
                 position={[0, 0, 0]}
                 style={{
-                    width: '800px',
-                    height: '450px',
+                    width: '50vw',
+                    height: '50vh',
                     pointerEvents: 'auto'
                 }}
             >

@@ -42,10 +42,11 @@ export default function WorkCardContent({
             <Suspense fallback={<div className="pixel-card-fallback" />}>
                 <PixelCard variant="default" className="pixel-card-inner">
                     <div className="work-card-content">
-                        <span className='deco-small'>{idLabel}</span>
-                        <h3>{data?.title || pageKey}</h3>
-                        <p className="synopsis">{data?.synopsis || ''}</p>
-                        <span className="deco-small">{data?.year || ''}</span>
+                        <h3 id='project-name'>{data?.title || pageKey}</h3>
+                        <span className='deco-small' id='project-number'>{idLabel}</span>
+                        <p className="synopsis" id='project-software'>{data?.skills.map(skill => skill.toString().toLowerCase().replace(/\s+/g, '_') + "_/ ") || ''}</p>
+                        <span className="deco-small" id='project-client'>{data?.client || ''}</span>
+                        <h3 id='project-year'>{data?.year || ''}</h3>
                     </div>
                 </PixelCard>
             </Suspense>

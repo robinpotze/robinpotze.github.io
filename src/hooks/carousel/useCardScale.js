@@ -1,6 +1,3 @@
-/**
- * Hook for card scale based on rotation distance from center
- */
 import { useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
 import { calculateCardCenteredness, calculateCardScale } from '@utils/carousel.math';
@@ -11,7 +8,6 @@ export function useCardScale(groupRef, index) {
     useFrame(() => {
         if (!groupRef.current) return;
 
-        // Get the rotation group (Rig) on first frame
         if (!rigRef.current) {
             rigRef.current = groupRef.current.parent;
         }

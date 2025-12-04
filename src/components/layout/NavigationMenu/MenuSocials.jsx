@@ -6,9 +6,9 @@ import React from 'react';
 import { motion } from 'framer-motion';
 
 const SOCIALS = [
-    { label: 'Artstation', link: 'https://twitter.com' },
-    { label: 'GitHub', link: 'https://github.com' },
-    { label: 'LinkedIn', link: 'https://linkedin.com' }
+    { label: 'Artstation', link: 'https://artstation.com/living_ipod' },
+    { label: 'GitHub', link: 'https://github.com/robinpotze' },
+    { label: 'LinkedIn', link: 'https://linkedin.com/in/robinpotze' }
 ];
 
 export default function MenuSocials({ open }) {

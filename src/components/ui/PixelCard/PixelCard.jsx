@@ -114,7 +114,7 @@ export default function PixelCard({ gap = 6, speed = 200, noFocus = true, classN
         canvasRef.current.style.width = `${width}px`;
         canvasRef.current.style.height = `${height}px`;
 
-        const colorsArray = ['#eeeeee', '#2ad0d5', '#d52a2a'];
+        const colorsArray = ['#eee', '#2ad0d5'];
         const pxs = [];
         for (let x = 0; x < width; x += parseInt(gap, 10)) {
             for (let y = 0; y < height; y += parseInt(gap, 10)) {
