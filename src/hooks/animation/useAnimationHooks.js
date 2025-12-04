@@ -2,8 +2,7 @@ import { useEffect, useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
 
-// Custom easing function matching ActiveTheory's style (full curve)
-const activeTheoryEase = (t) => {
+const easeCurve = (t) => {
     if (t <= 0.45) {
         return Math.pow(t / 0.45, 1.4) * 0.6;
     }
@@ -19,17 +18,14 @@ const activeTheoryEase = (t) => {
     return 0.9 + local * 0.1;
 };
 
-// Entry easing - uses only first 25% of ActiveTheory curve, normalized to 0-1
+
 const entryEase = (t) => {
-    // Map t (0-1) to first 25% of curve (0-0.25), then normalize output
     const curveInput = t * 0.25;
-    const curveOutput = activeTheoryEase(curveInput);
-    // At t=0.25, activeTheoryEase returns ~0.15, so normalize: output / 0.15
-    const normalizedOutput = curveOutput / activeTheoryEase(0.25);
+    const curveOutput = easeCurve(curveInput);
+    const normalizedOutput = curveOutput / easeCurve(0.25);
     return normalizedOutput;
 };
 
-// Hook for animating objects on route entry (full animation with entry easing) + scroll (full easing)
 export function useEntryAnimation(ref, routeName, options = {}) {
     const {
         duration = 1.5,
@@ -38,21 +34,18 @@ export function useEntryAnimation(ref, routeName, options = {}) {
         endPosition = [0, 0, -5],
         startScale = [0.5, 0.5, 0.5],
         endScale = [2.8, 2.8, 2.8],
-        scrollEndPosition = null, // Different end position for scroll phase
-        scrollEndScale = null,     // Different end scale for scroll phase
+        scrollEndPosition = null,
+        scrollEndScale = null,
         enabled = true,
         scrollProgress = 0
     } = options;
 
-    // Use scroll-specific end values if provided, otherwise use same as entry
     const finalEndPosition = scrollEndPosition || endPosition;
     const finalEndScale = scrollEndScale || endScale;
-
     const animationStartTime = useRef(null);
     const hasCompletedEntry = useRef(false);
     const initializedRoute = useRef(routeName);
 
-    // Reset when component mounts or route actually changes
     useEffect(() => {
         if (initializedRoute.current !== routeName) {
             hasCompletedEntry.current = false;
@@ -66,7 +59,6 @@ export function useEntryAnimation(ref, routeName, options = {}) {
 
         let eased = 0;
 
-        // Entry animation - full animation with snappy easing (first 25% of curve)
         if (!hasCompletedEntry.current) {
             if (animationStartTime.current === null) {
                 animationStartTime.current = clock.getElapsedTime();
@@ -74,7 +66,7 @@ export function useEntryAnimation(ref, routeName, options = {}) {
 
             const elapsed = clock.getElapsedTime() - animationStartTime.current - delay;
 
-            if (elapsed < 0) return; // Still in delay period
+            if (elapsed < 0) return;
 
             const entryProgress = Math.min(elapsed / duration, 1);
             eased = entryEase(entryProgress);
@@ -83,21 +75,16 @@ export function useEntryAnimation(ref, routeName, options = {}) {
                 hasCompletedEntry.current = true;
             }
 
-            // Animate position during entry
             ref.current.position.x = THREE.MathUtils.lerp(startPosition[0], endPosition[0], eased);
             ref.current.position.y = THREE.MathUtils.lerp(startPosition[1], endPosition[1], eased);
             ref.current.position.z = THREE.MathUtils.lerp(startPosition[2], endPosition[2], eased);
 
-            // Animate scale during entry
             ref.current.scale.x = THREE.MathUtils.lerp(startScale[0], endScale[0], eased);
             ref.current.scale.y = THREE.MathUtils.lerp(startScale[1], endScale[1], eased);
             ref.current.scale.z = THREE.MathUtils.lerp(startScale[2], endScale[2], eased);
         } else {
-            // After entry, use scroll with full ActiveTheory curve
-            // Continues from entry end position to final scroll position
-            eased = activeTheoryEase(scrollProgress);
+            eased = easeCurve(scrollProgress);
 
-            // Animate from entry end to scroll end positions
             ref.current.position.x = THREE.MathUtils.lerp(endPosition[0], finalEndPosition[0], eased);
             ref.current.position.y = THREE.MathUtils.lerp(endPosition[1], finalEndPosition[1], eased);
             ref.current.position.z = THREE.MathUtils.lerp(endPosition[2], finalEndPosition[2], eased);
@@ -109,7 +96,6 @@ export function useEntryAnimation(ref, routeName, options = {}) {
     });
 }
 
-// Hook for camera animations with scroll continuation
 export function useCameraAnimation(cameraRef, routeName, options = {}) {
     const {
         duration = 1.5,
@@ -146,7 +132,6 @@ export function useCameraAnimation(cameraRef, routeName, options = {}) {
 
         let eased = 0;
 
-        // Entry animation
         if (!hasCompletedEntry.current) {
             if (animationStartTime.current === null) {
                 animationStartTime.current = clock.getElapsedTime();
@@ -160,7 +145,6 @@ export function useCameraAnimation(cameraRef, routeName, options = {}) {
                 hasCompletedEntry.current = true;
             }
 
-            // Animate to entry end position
             targetCamera.position.x = THREE.MathUtils.lerp(startPosition[0], endPosition[0], eased);
             targetCamera.position.y = THREE.MathUtils.lerp(startPosition[1], endPosition[1], eased);
             targetCamera.position.z = THREE.MathUtils.lerp(startPosition[2], endPosition[2], eased);
@@ -170,10 +154,8 @@ export function useCameraAnimation(cameraRef, routeName, options = {}) {
                 targetCamera.updateProjectionMatrix();
             }
         } else {
-            // After entry, continue based on scroll
-            eased = activeTheoryEase(scrollProgress);
+            eased = easeCurve(scrollProgress);
 
-            // Animate from entry end to scroll end positions
             targetCamera.position.x = THREE.MathUtils.lerp(endPosition[0], finalEndPosition[0], eased);
             targetCamera.position.y = THREE.MathUtils.lerp(endPosition[1], finalEndPosition[1], eased);
             targetCamera.position.z = THREE.MathUtils.lerp(endPosition[2], finalEndPosition[2], eased);
@@ -186,7 +168,6 @@ export function useCameraAnimation(cameraRef, routeName, options = {}) {
     });
 }
 
-// Hook for fade animations (lights, opacity, etc.) (full entry with snappy easing + scroll with full easing)
 export function useFadeAnimation(ref, routeName, options = {}) {
     const {
         duration = 1.0,
@@ -215,7 +196,6 @@ export function useFadeAnimation(ref, routeName, options = {}) {
 
         let value = endValue;
 
-        // Entry animation - full animation with snappy easing
         if (!hasCompletedEntry.current) {
             if (animationStartTime.current === null) {
                 animationStartTime.current = clock.getElapsedTime();
@@ -234,7 +214,6 @@ export function useFadeAnimation(ref, routeName, options = {}) {
                 hasCompletedEntry.current = true;
             }
         } else {
-            // After entry, keep at end value (no further animation during scroll)
             value = endValue;
         }
 

@@ -70,10 +70,9 @@
     align-items: center;
     justify-content: space-between;
     align-self: flex-end;
+    gap: 24px;
     padding: 0 0 16px 0;
     width: 64px;
-    height: 100%;
-    max-height: calc(100vh - 64px);
     mix-blend-mode: difference;
     flex-shrink: 0;
 }

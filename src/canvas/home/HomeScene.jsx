@@ -15,56 +15,51 @@ export default function HomeScene({ scrollProgress = 0 }) {
     const lightRef = useRef();
     const cameraRef = useRef();
 
-    // Animate logo entrance (snappy entry easing) then scroll (full ActiveTheory easing)
     useEntryAnimation(logoRef, 'home', {
-        duration: 1.2,
+        duration:0.6,
         startPosition: [0, 0, 20],
         endPosition: [0, 0, -5],
-        scrollEndPosition: [0, 0, -15], // Move further back on scroll
+        scrollEndPosition: [0, 0, -15],
         startScale: [4, 4, 4],
-        endScale: [3, 3, 3],
-        scrollEndScale: [2.5, 2.5, 2.5], // Scale down more on scroll
+        endScale: [2.5, 2.5, 2.5],
+        scrollEndScale: [2, 2, 2],
         scrollProgress
     });
 
-    // Animate background (snappy entry easing) then scroll (full ActiveTheory easing)
     useEntryAnimation(backgroundRef, 'home', {
-        duration: 1.2,
+        duration: 0.6,
         startPosition: [0, 0, -15],
         endPosition: [0, 0, -30],
-        scrollEndPosition: [0, 0, -10], // Move even further back on scroll
+        scrollEndPosition: [0, 0, -10],
         startScale: [8, 8, 8],
         endScale: [6, 6, 6],
-        scrollEndScale: [5, 5, 5], // Scale down on scroll
+        scrollEndScale: [5, 5, 5],
         scrollProgress
     });
 
-    // Animate subtitle with delay (snappy entry easing) then scroll (full ActiveTheory easing)
     useEntryAnimation(subtitleRef, 'home', {
-        duration: 0.9,
+        duration: 0.6,
         delay: 0.6,
-        startPosition: [0, -12, 0],
-        endPosition: [0, -9, 0],
-        scrollEndPosition: [0, -7, 0], // Move up slightly on scroll
+        startPosition: [0, -10, 20],
+        endPosition: [0, -9, -5],
+        scrollEndPosition: [0, -7, -5],
         startScale: [1, 1, 1],
         endScale: [1, 1, 1],
-        scrollEndScale: [0.9, 0.9, 0.9], // Scale down slightly on scroll
+        scrollEndScale: [0.9, 0.9, 0.9],
         scrollProgress
     });
 
-    // Animate camera (snappy entry easing) then scroll (full ActiveTheory easing)
     useCameraAnimation(cameraRef, 'home', {
         duration: 1.5,
         startPosition: [0, 0, 30],
         endPosition: [0, 0, 20],
-        scrollEndPosition: [0, 0, 10], // Move closer on scroll
+        scrollEndPosition: [0, 0, 10],
         startFov: 70,
         endFov: 50,
-        scrollEndFov: 100, // Increase FOV on scroll
+        scrollEndFov: 100,
         scrollProgress
     });
 
-    // Fade in ambient light (snappy entry easing) then scroll (full ActiveTheory easing)
     useFadeAnimation(lightRef, 'home', {
         duration: 1.0,
         startValue: 0,
@@ -72,8 +67,6 @@ export default function HomeScene({ scrollProgress = 0 }) {
         property: 'intensity',
         scrollProgress
     });
-
-    // Scroll transformations are now handled by animation hooks
 
     return (
         <>
