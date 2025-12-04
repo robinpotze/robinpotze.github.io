@@ -1,13 +1,13 @@
 import { useGLTF, useFBO } from "@react-three/drei"
 import { useFrame, extend } from "@react-three/fiber"
-import { useRef } from 'react'
+import { useRef, useState, useEffect } from 'react'
 import * as THREE from 'three'
 import { GlassLogoMaterial } from '@canvas/shared/materials/GlassLogoMaterial'
 import { useNoiseTexture } from '@hooks'
 
 useGLTF.preload("/assets/3d/Logo.glb")
 
-export default function LogoMesh({ ...props }) {
+export default function LogoMesh({ enableFBO = true, ...props }) {
     const meshRef = useRef()
     const materialRef = useRef()
 
@@ -39,14 +39,17 @@ export default function LogoMesh({ ...props }) {
             materialRef.current.uTime = state.clock.elapsedTime
             materialRef.current.uResolution.set(state.size.width, state.size.height)
 
-            const oldTarget = state.gl.getRenderTarget()
-            meshRef.current.visible = false
-            state.gl.setRenderTarget(fbo)
-            state.gl.render(state.scene, state.camera)
-            state.gl.setRenderTarget(oldTarget)
-            meshRef.current.visible = true
+            // Only render to FBO when enabled
+            if (enableFBO) {
+                const oldTarget = state.gl.getRenderTarget()
+                meshRef.current.visible = false
+                state.gl.setRenderTarget(fbo)
+                state.gl.render(state.scene, state.camera)
+                state.gl.setRenderTarget(oldTarget)
+                meshRef.current.visible = true
 
-            materialRef.current.uTrnsTex = fbo.texture
+                materialRef.current.uTrnsTex = fbo.texture
+            }
         }
     })
 

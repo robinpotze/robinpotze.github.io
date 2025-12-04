@@ -12,7 +12,6 @@ export default function WorkScene({ items = [], progress = 1, onCardNavigate, on
     const eased = Math.min(1, Math.max(0, progress));
     const scroll = useScroll();
 
-    // Report scroll position back to parent
     useFrame(() => {
         if (onScrollChange && scroll) {
             onScrollChange(scroll.offset);

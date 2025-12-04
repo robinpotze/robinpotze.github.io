@@ -1,4 +1,3 @@
-// Small utility for non-react-random values used during render
 export function randomInt(min, max) {
     const mn = Math.ceil(min);
     const mx = Math.floor(max);

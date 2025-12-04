@@ -1,28 +1,28 @@
 import { useRef, useState, useEffect } from 'react';
-import { useFrame } from '@react-three/fiber';
 import { PerspectiveCamera, Float, Text } from '@react-three/drei';
 import { Bloom, ChromaticAberration, EffectComposer, N8AO, TiltShift2 } from '@react-three/postprocessing';
 import BackgroundMesh from '@canvas/shared/meshes/BackgroundMesh';
 import LogoMesh from '@canvas/shared/meshes/LogoMesh';
+// import RoomMesh from '@canvas/shared/meshes/RoomMesh';
 import Rig from '@canvas/shared/camera/Rig';
 import { useEntryAnimation, useCameraAnimation, useFadeAnimation } from '@hooks/animation/useAnimationHooks';
-import * as THREE from 'three';
 
-export default function HomeScene({ scrollProgress = 0 }) {
+export default function HomeScene({ scrollProgress = 0, startAnimations = true }) {
     const logoRef = useRef();
     const backgroundRef = useRef();
     const subtitleRef = useRef();
     const lightRef = useRef();
     const cameraRef = useRef();
+    // const roomRef = useRef();
     const [entryComplete, setEntryComplete] = useState(false);
 
-    // Delay Float activation to allow entry animation to complete cleanly
     useEffect(() => {
+        if (!startAnimations) return;
         const timer = setTimeout(() => {
             setEntryComplete(true);
-        }, 800); // Slightly longer than the 0.6s entry duration
+        }, 800);
         return () => clearTimeout(timer);
-    }, []);
+    }, [startAnimations]);
 
     useEntryAnimation(logoRef, 'home', {
         duration: 0.6,
@@ -32,7 +32,8 @@ export default function HomeScene({ scrollProgress = 0 }) {
         startScale: [4, 4, 4],
         endScale: [2.5, 2.5, 2.5],
         scrollEndScale: [2, 2, 2],
-        scrollProgress
+        scrollProgress,
+        enabled: startAnimations
     });
 
     useEntryAnimation(backgroundRef, 'home', {
@@ -43,7 +44,8 @@ export default function HomeScene({ scrollProgress = 0 }) {
         startScale: [8, 8, 8],
         endScale: [6, 6, 6],
         scrollEndScale: [5, 5, 5],
-        scrollProgress
+        scrollProgress,
+        enabled: startAnimations
     });
 
     useEntryAnimation(subtitleRef, 'home', {
@@ -55,7 +57,8 @@ export default function HomeScene({ scrollProgress = 0 }) {
         startScale: [1, 1, 1],
         endScale: [1, 1, 1],
         scrollEndScale: [0.9, 0.9, 0.9],
-        scrollProgress
+        scrollProgress,
+        enabled: startAnimations
     });
 
     useCameraAnimation(cameraRef, 'home', {
@@ -66,7 +69,8 @@ export default function HomeScene({ scrollProgress = 0 }) {
         startFov: 70,
         endFov: 50,
         scrollEndFov: 100,
-        scrollProgress
+        scrollProgress,
+        enabled: startAnimations
     });
 
     useFadeAnimation(lightRef, 'home', {
@@ -74,20 +78,31 @@ export default function HomeScene({ scrollProgress = 0 }) {
         startValue: 0,
         endValue: 1,
         property: 'intensity',
-        scrollProgress
+        scrollProgress,
+        enabled: startAnimations
     });
+
+    // useEntryAnimation(roomRef, 'home', {
+    //     duration: 0.6,
+    //     startPosition: [0, -5, 30],
+    //     endPosition: [0, -5, 22],
+    //     scrollEndPosition: [0, -5, 15],
+    //     startScale: [1, 1, 1],
+    //     endScale: [1, 1, 1],
+    //     scrollEndScale: [1, 1, 1],
+    //     scrollProgress
+    // });
 
     return (
         <>
-            <color attach="background" args={['#000000']} />
             <PerspectiveCamera ref={cameraRef} makeDefault position={[0, 0, 30]} fov={70} />
             <ambientLight ref={lightRef} intensity={0} />
 
-            <group ref={backgroundRef} position={[0, 0, -30]} scale={8}>
+            <group ref={backgroundRef} scale={8}>
                 <BackgroundMesh />
             </group>
 
-            <group ref={subtitleRef} position={[0, -12, 0]}>
+            <group ref={subtitleRef}>
                 <Text fontSize={0.6} font="/assets/fonts/Kode_Mono/static/KodeMono-Regular.ttf" color="#eee">
                     PRJNo::000 | C://PRJ/PF/CUSTOM | V1 |GRONINGEN | NL
                 </Text>
@@ -98,10 +113,14 @@ export default function HomeScene({ scrollProgress = 0 }) {
                 rotationIntensity={entryComplete ? 0.5 : 0}
                 speed={0.5}
             >
-                <group ref={logoRef} position={[0, -15, -5]} scale={0.5}>
-                    <LogoMesh />
+                <group ref={logoRef} scale={0.5}>
+                    <LogoMesh enableFBO={startAnimations && entryComplete} />
                 </group>
             </Float>
+
+            {/* <group ref={roomRef} rotation={[0, Math.PI, 0]}>
+                <RoomMesh scrollProgress={scrollProgress} />
+            </group> */}
 
             <EffectComposer>
                 <N8AO aoRadius={1} intensity={1.5} />

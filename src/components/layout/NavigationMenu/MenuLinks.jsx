@@ -4,7 +4,7 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Link } from 'react-router-dom';
+import { useNavigationCurtain } from './NavigationMenu';
 
 const MENU_ITEMS = [
     { label: 'Work', link: '/work' },
@@ -14,6 +14,11 @@ const MENU_ITEMS = [
 
 export default function MenuLinks({ open, onItemClick }) {
     const ease = [0.22, 1, 0.36, 1];
+    const { navigateWithCurtain } = useNavigationCurtain();
+
+    const handleClick = (link) => {
+        navigateWithCurtain(link);
+    };
 
     return (
         <motion.ul
@@ -34,14 +39,13 @@ export default function MenuLinks({ open, onItemClick }) {
                             open: { y: '0%', rotate: 0, transition: { duration: 0.9, ease } }
                         }}
                     >
-                        <Link
-                            to={item.link}
+                        <button
                             className="sm-panel-item"
                             data-index={i + 1}
-                            onClick={onItemClick}
+                            onClick={() => handleClick(item.link)}
                         >
                             {item.label}
-                        </Link>
+                        </button>
                     </motion.li>
                 </div>
             ))}

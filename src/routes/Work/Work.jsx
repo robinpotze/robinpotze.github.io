@@ -3,7 +3,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { NavigationMenu } from '@components/layout/NavigationMenu/NavigationMenu';
 import { useWorkStore } from '@/stores/workStore';
 import WorkCanvas from '@canvas/work/WorkCanvas';
-import TransitionOverlay from '@components/effects/TransitionOverlay/TransitionOverlay';
+import { CurtainTransition } from '@components/effects';
 import { LaserFlow } from '@canvas/laser/Laser';
 import './Work.css';
 
@@ -12,6 +12,21 @@ export default function Work() {
     const items = useWorkStore((state) => state.items);
     const [scrollProgress, setScrollProgress] = useState(0);
     const [canvasScrollOffset, setCanvasScrollOffset] = useState(0);
+    const [curtainOpen, setCurtainOpen] = useState(false);
+    const hasNavigated = useRef(false);
+    const hasEntryAnimated = useRef(false);
+
+    // Entry animation: start with curtain covering, then reveal
+    useEffect(() => {
+        if (hasEntryAnimated.current) return;
+        hasEntryAnimated.current = true;
+        
+        // Start covered, then reveal after a brief moment
+        setCurtainOpen(true);
+        setTimeout(() => {
+            setCurtainOpen(false);
+        }, 100);
+    }, []);
 
     const handleCardNavigate = useCallback((pageKey) => {
         navigate(`/work/${pageKey}`);
@@ -42,33 +57,40 @@ export default function Work() {
                 scrollAmount = Math.max(0, scrollAmount - Math.abs(e.deltaY));
             }
 
-            // Map 0-600px of upward scroll to 0.85-1.0 progress
-            const progress = 0.85 + (Math.min(scrollAmount, maxScroll) / maxScroll) * 0.15;
+            // Map 0-600px of upward scroll to 0-1 progress
+            const progress = Math.min(scrollAmount, maxScroll) / maxScroll;
             setScrollProgress(progress);
+
+            // Trigger curtain at threshold
+            if (progress >= 0.5 && !hasNavigated.current) {
+                setCurtainOpen(true);
+            }
         };
 
         window.addEventListener('wheel', handleWheel, { passive: true });
         return () => window.removeEventListener('wheel', handleWheel);
     }, [canvasScrollOffset]);
 
-    const handleTransitionComplete = () => {
-        navigate('/');
+    const handleRevealComplete = () => {
+        // Entry animation finished, allow interactions
+        // Curtain is already closed (isOpen=false)
+    };
+
+    const handleCoverComplete = () => {
+        // Only navigate if this is an exit transition (not entry animation)
+        if (hasNavigated.current || !hasEntryAnimated.current) return;
+        hasNavigated.current = true;
+        navigate('/', { state: { fromNavigation: true } });
     };
 
     return (
         <div className='work-page-container'>
-            <TransitionOverlay
-                scrollProgress={0}
-                onTransitionComplete={null}
-                entryAnimation={true}
+            <CurtainTransition
+                isOpen={curtainOpen}
+                direction="up"
+                onCoverComplete={handleCoverComplete}
+                onRevealComplete={handleRevealComplete}
             />
-            {scrollProgress >= 0.85 && (
-                <TransitionOverlay
-                    scrollProgress={scrollProgress}
-                    onTransitionComplete={handleTransitionComplete}
-                    entryAnimation={false}
-                />
-            )}
             <NavigationMenu />
             <WorkCanvas
                 items={items}

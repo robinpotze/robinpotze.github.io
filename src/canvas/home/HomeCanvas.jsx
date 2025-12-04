@@ -1,7 +1,7 @@
 import { Canvas } from '@react-three/fiber';
 import HomeScene from './HomeScene';
 
-export default function HomeCanvas({ scrollProgress }) {
+export default function HomeCanvas({ scrollProgress, startAnimations = true }) {
     return (
         <div className="home-canvas-container">
             <Canvas
@@ -12,7 +12,7 @@ export default function HomeCanvas({ scrollProgress }) {
                     preserveDrawingBuffer: false
                 }}
             >
-                <HomeScene scrollProgress={scrollProgress} />
+                <HomeScene scrollProgress={scrollProgress} startAnimations={startAnimations} />
             </Canvas>
         </div>
     );

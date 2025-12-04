@@ -1,18 +1,27 @@
-import React, { useCallback, useLayoutEffect, useRef, useState } from 'react';
+import React, { useCallback, useLayoutEffect, useRef, useState, createContext, useContext } from 'react';
 import { useAnimation } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
+import { CurtainTransition } from '@components/effects';
 import MenuButton from './MenuButton';
 import MenuBackgroundLayers from './MenuBackgroundLayers';
 import MenuPanel from './MenuPanel';
 import './NavigationMenu.css';
 
+// Context for navigation with curtain transition
+const NavigationContext = createContext(null);
+export const useNavigationCurtain = () => useContext(NavigationContext);
+
 const BTN_COLOR = 'var(--c-LGHT)';
 const BTN_COLOR_OPEN = 'var(--c-BRND)';
 
 export const NavigationMenu = () => {
+    const navigate = useNavigate();
     const [open, setOpen] = useState(false);
     const [label, setLabel] = useState('Menu');
+    const [curtainOpen, setCurtainOpen] = useState(false);
     const buttonRef = useRef(null);
     const busy = useRef(false);
+    const pendingNavigation = useRef(null);
 
     const glitchR = useAnimation();
     const glitchB = useAnimation();
@@ -87,17 +96,43 @@ export const NavigationMenu = () => {
         setOpen(false);
     }, []);
 
-    return (
-        <div
-            className="staggered-menu-wrapper fixed-wrapper"
-            data-open={open || undefined}
-        >
-            <MenuBackgroundLayers open={open} />
+    const navigateWithCurtain = useCallback((path) => {
+        pendingNavigation.current = path;
+        setOpen(false); // Close menu first
+        setTimeout(() => {
+            setCurtainOpen(true); // Trigger curtain
+        }, 300); // Wait for menu to close
+    }, []);
 
-            <MenuButton
-                ref={buttonRef}
-                open={open}
-                label={label}
+    const handleCurtainCoverComplete = useCallback(() => {
+        if (pendingNavigation.current) {
+            navigate(pendingNavigation.current, { state: { fromNavigation: true } });
+            pendingNavigation.current = null;
+        }
+    }, [navigate]);
+
+    const handleCurtainRevealComplete = useCallback(() => {
+        setCurtainOpen(false);
+    }, []);
+
+    return (
+        <NavigationContext.Provider value={{ navigateWithCurtain }}>
+            <CurtainTransition
+                isOpen={curtainOpen}
+                direction="left"
+                onCoverComplete={handleCurtainCoverComplete}
+                onRevealComplete={handleCurtainRevealComplete}
+            />
+            <div
+                className="staggered-menu-wrapper fixed-wrapper"
+                data-open={open || undefined}
+            >
+                <MenuBackgroundLayers open={open} />
+
+                <MenuButton
+                    ref={buttonRef}
+                    open={open}
+                    label={label}
                 toggle={toggle}
                 mainText={mainText}
                 glitchR={glitchR}
@@ -105,7 +140,8 @@ export const NavigationMenu = () => {
             />
 
             <MenuPanel open={open} onClose={handleClose} />
-        </div>
+            </div>
+        </NavigationContext.Provider>
     );
 };
 

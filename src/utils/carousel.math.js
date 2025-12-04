@@ -1,8 +1,3 @@
-/**
- * Carousel Math Utilities
- * Pure functions for carousel calculations
- */
-
 import { CAROUSEL_CONFIG } from '@config/carousel.config';
 
 /**

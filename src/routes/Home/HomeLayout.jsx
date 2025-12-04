@@ -40,15 +40,7 @@ export default function HomeLayout() {
                     </div>
                 </div>
             </div>
-
-            <div className='home-transition-section'>
-                <div className='transition-content'>
-                    <h2 className='deco transition-title'>SELECTED PROJECTS</h2>
-                    <p className='deco-small transition-subtitle'>
-                        Scroll to explore work
-                    </p>
-                </div>
-            </div>
+            <div className='home-transition-section' />
         </>
     );
 }

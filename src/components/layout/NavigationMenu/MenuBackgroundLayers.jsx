@@ -1,8 +1,3 @@
-/**
- * Menu Background Layers - Animated background overlays
- */
-
-import React from 'react';
 import { motion } from 'framer-motion';
 
 const BG_COLORS = ['var(--c-LGHT)', 'var(--c-BRND)'];
