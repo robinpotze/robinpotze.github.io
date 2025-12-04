@@ -1,24 +1,43 @@
 import { useNavigate, useLocation } from 'react-router-dom';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, useReducer } from 'react';
+import { ANIMATION_TIMING, SCROLL_THRESHOLDS } from '@/constants/animations';
 import HomeLayout from './HomeLayout';
 import HomeCanvas from '@canvas/home/HomeCanvas';
 import { LaserFlow } from '@canvas/laser/Laser';
-import { CurtainTransition } from '@components/effects';
-import { LoadingScreen } from '@components';
+import { CurtainTransition, LoadingScreen, ErrorBoundary } from '@components';
 import './Home.css';
+
+// State machine for page lifecycle
+const initialState = (skipLoading) => ({
+    isLoading: !skipLoading,
+    showContent: skipLoading,
+    curtainOpen: false,
+    scrollProgress: 0,
+});
+
+function homeReducer(state, action) {
+    switch (action.type) {
+        case 'LOADING_COMPLETE':
+            return { ...state, isLoading: false, showContent: true };
+        case 'SET_SCROLL':
+            return { ...state, scrollProgress: action.payload };
+        case 'OPEN_CURTAIN':
+            return { ...state, curtainOpen: true };
+        case 'CLOSE_CURTAIN':
+            return { ...state, curtainOpen: false };
+        default:
+            return state;
+    }
+}
 
 export default function Home() {
     const navigate = useNavigate();
     const location = useLocation();
     const containerRef = useRef(null);
-    const [scrollProgress, setScrollProgress] = useState(0);
-
-    // Skip loading screen if navigating from another page
-    const skipLoading = !!(location.state?.fromNavigation);
-    const [isLoading, setIsLoading] = useState(!skipLoading);
-    const [showContent, setShowContent] = useState(skipLoading);
-    const [curtainOpen, setCurtainOpen] = useState(false);
     const hasNavigated = useRef(false);
+
+    const skipLoading = !!(location.state?.fromNavigation);
+    const [state, dispatch] = useReducer(homeReducer, skipLoading, initialState);
 
     useEffect(() => {
         window.scrollTo(0, 0);
@@ -42,11 +61,11 @@ export default function Home() {
             const scrollHeight = Math.max(1, container.scrollHeight - container.clientHeight);
             const progress = Math.max(0, Math.min(1, scrollTop / scrollHeight));
 
-            setScrollProgress(progress);
+            dispatch({ type: 'SET_SCROLL', payload: progress });
 
-            // Trigger curtain at 95% scroll
-            if (progress >= 0.95 && !hasNavigated.current) {
-                setCurtainOpen(true);
+            // Trigger curtain at threshold
+            if (progress >= SCROLL_THRESHOLDS.HOME_TRANSITION && !hasNavigated.current) {
+                dispatch({ type: 'OPEN_CURTAIN' });
             }
         };
 
@@ -64,12 +83,11 @@ export default function Home() {
 
     const handleLoadingComplete = () => {
         setTimeout(() => {
-            setIsLoading(false);
-            setShowContent(true);
-        }, 50);
+            dispatch({ type: 'LOADING_COMPLETE' });
+        }, ANIMATION_TIMING.LOADING_COMPLETE_DELAY);
     };
 
-    const laserProgress = showContent ? scrollProgress : 0;
+    const laserProgress = state.showContent ? state.scrollProgress : 0;
     const horizontalSizing = 0 + (laserProgress * 2);
     const verticalSizing = 0 + (laserProgress * 3);
     const verticalBeamOffset = -0.6 + (laserProgress * 0.1);
@@ -80,16 +98,16 @@ export default function Home() {
 
     return (
         <>
-            {isLoading && (
+            {state.isLoading && (
                 <LoadingScreen
                     onComplete={handleLoadingComplete}
-                    minDisplayTime={2000}
+                    minDisplayTime={ANIMATION_TIMING.LOADING_MIN_DISPLAY}
                     logoSrc="/img/logo/logo.svg"
                 />
             )}
-            <div className='home-page' ref={containerRef} style={{ opacity: showContent ? 1 : 0, transition: 'opacity 0.6s ease-out', pointerEvents: showContent ? 'auto' : 'none' }}>
+            <div className='home-page' ref={containerRef} style={{ opacity: state.showContent ? 1 : 0, transition: 'opacity 0.6s ease-out', pointerEvents: state.showContent ? 'auto' : 'none' }}>
                 <CurtainTransition
-                    isOpen={curtainOpen}
+                    isOpen={state.curtainOpen}
                     direction="up"
                     onCoverComplete={handleCoverComplete}
                 />
@@ -105,7 +123,9 @@ export default function Home() {
                     decay={decay}
                 />
                 <HomeLayout />
-                <HomeCanvas scrollProgress={scrollProgress} startAnimations={showContent} />
+                <ErrorBoundary>
+                    <HomeCanvas scrollProgress={state.scrollProgress} startAnimations={state.showContent} />
+                </ErrorBoundary>
             </div>
         </>
     );

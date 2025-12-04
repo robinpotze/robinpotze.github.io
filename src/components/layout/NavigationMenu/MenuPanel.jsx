@@ -3,6 +3,7 @@
  */
 
 import React from 'react';
+import PropTypes from 'prop-types';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import MenuLinks from './MenuLinks';
@@ -52,3 +53,8 @@ export default function MenuPanel({ open, onClose }) {
         </AnimatePresence>
     );
 }
+
+MenuPanel.propTypes = {
+    open: PropTypes.bool.isRequired,
+    onClose: PropTypes.func.isRequired,
+};

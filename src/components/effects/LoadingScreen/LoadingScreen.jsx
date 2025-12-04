@@ -1,5 +1,6 @@
 import { useEffect, useState, useRef } from 'react';
 import PropTypes from 'prop-types';
+import { ANIMATION_TIMING } from '@/constants/animations';
 import './LoadingScreen.css';
 
 export default function LoadingScreen({
@@ -44,7 +45,7 @@ export default function LoadingScreen({
                     if (onComplete) {
                         onComplete();
                     }
-                }, 600);
+                }, ANIMATION_TIMING.LOADING_FADE_OUT);
             }, remainingTime);
         }
     }, [progress, minDisplayTime, onComplete]);

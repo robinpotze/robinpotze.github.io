@@ -22,8 +22,8 @@ export class WorkService {
             const items = sortItems(this.dataSource);
             return items;
         } catch (error) {
-            console.error('Failed to fetch work items:', error);
-            throw new Error('Unable to load work items');
+            // Re-throw with more context for error boundaries
+            throw new Error(`Unable to load work items: ${error.message}`);
         }
     }
 

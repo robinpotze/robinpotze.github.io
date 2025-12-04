@@ -1,9 +1,10 @@
 import { useNavigate } from 'react-router-dom';
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { ANIMATION_TIMING, SCROLL_THRESHOLDS } from '@/constants/animations';
 import { NavigationMenu } from '@components/layout/NavigationMenu/NavigationMenu';
 import { useWorkStore } from '@/stores/workStore';
 import WorkCanvas from '@canvas/work/WorkCanvas';
-import { CurtainTransition } from '@components/effects';
+import { CurtainTransition, ErrorBoundary } from '@components';
 import { LaserFlow } from '@canvas/laser/Laser';
 import './Work.css';
 
@@ -25,7 +26,7 @@ export default function Work() {
         setCurtainOpen(true);
         setTimeout(() => {
             setCurtainOpen(false);
-        }, 100);
+        }, ANIMATION_TIMING.CURTAIN_REVEAL_DELAY);
     }, []);
 
     const handleCardNavigate = useCallback((pageKey) => {
@@ -39,7 +40,7 @@ export default function Work() {
     // Track upward scroll for transition back to home (only when at top)
     useEffect(() => {
         let scrollAmount = 0;
-        const maxScroll = 600;
+        const maxScroll = SCROLL_THRESHOLDS.WORK_MAX_SCROLL;
 
         const handleWheel = (e) => {
             // Only track if canvas is at the top (offset near 0)
@@ -62,7 +63,7 @@ export default function Work() {
             setScrollProgress(progress);
 
             // Trigger curtain at threshold
-            if (progress >= 0.5 && !hasNavigated.current) {
+            if (progress >= SCROLL_THRESHOLDS.WORK_RETURN && !hasNavigated.current) {
                 setCurtainOpen(true);
             }
         };
@@ -92,11 +93,13 @@ export default function Work() {
                 onRevealComplete={handleRevealComplete}
             />
             <NavigationMenu />
-            <WorkCanvas
-                items={items}
-                onCardNavigate={handleCardNavigate}
-                onScrollChange={handleCanvasScrollChange}
-            />
+            <ErrorBoundary>
+                <WorkCanvas
+                    items={items}
+                    onCardNavigate={handleCardNavigate}
+                    onScrollChange={handleCanvasScrollChange}
+                />
+            </ErrorBoundary>
         </div>
     );
 }

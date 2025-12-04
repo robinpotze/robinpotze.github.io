@@ -1,13 +1,14 @@
+import React, { useRef, useState, useEffect } from 'react'
+import PropTypes from 'prop-types';
 import { useGLTF, useFBO } from "@react-three/drei"
 import { useFrame, extend } from "@react-three/fiber"
-import { useRef, useState, useEffect } from 'react'
 import * as THREE from 'three'
 import { GlassLogoMaterial } from '@canvas/shared/materials/GlassLogoMaterial'
 import { useNoiseTexture } from '@hooks'
 
 useGLTF.preload("/assets/3d/Logo.glb")
 
-export default function LogoMesh({ enableFBO = true, ...props }) {
+function LogoMesh({ enableFBO = true, ...props }) {
     const meshRef = useRef()
     const materialRef = useRef()
 
@@ -74,3 +75,9 @@ export default function LogoMesh({ enableFBO = true, ...props }) {
         </mesh>
     )
 }
+
+LogoMesh.propTypes = {
+    enableFBO: PropTypes.bool,
+};
+
+export default React.memo(LogoMesh);

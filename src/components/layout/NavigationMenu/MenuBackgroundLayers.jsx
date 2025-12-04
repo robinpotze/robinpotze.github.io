@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import { motion } from 'framer-motion';
 
 const BG_COLORS = ['var(--c-LGHT)', 'var(--c-BRND)'];
@@ -20,3 +21,7 @@ export default function MenuBackgroundLayers({ open }) {
         </div>
     );
 }
+
+MenuBackgroundLayers.propTypes = {
+    open: PropTypes.bool.isRequired,
+};

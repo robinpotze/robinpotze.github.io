@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import { Canvas } from '@react-three/fiber';
 import { PerspectiveCamera, ScrollControls } from '@react-three/drei';
 import WorkScene from './WorkScene';
@@ -28,3 +29,9 @@ export default function WorkCanvas({ items, onCardNavigate, onScrollChange }) {
         </div>
     );
 }
+
+WorkCanvas.propTypes = {
+    items: PropTypes.array.isRequired,
+    onCardNavigate: PropTypes.func.isRequired,
+    onScrollChange: PropTypes.func.isRequired,
+};

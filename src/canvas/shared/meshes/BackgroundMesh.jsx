@@ -1,6 +1,7 @@
+import React from 'react';
 import { useVideoTexture, useGLTF } from "@react-three/drei";
 
-export default function BackgroundMesh({ ...props }) {
+function BackgroundMesh({ ...props }) {
     const video = useVideoTexture("/assets/video/blackwall.mp4");
     const { nodes } = useGLTF("/assets/3d/Wall.glb");
     return (
@@ -9,3 +10,5 @@ export default function BackgroundMesh({ ...props }) {
         </mesh>
     )
 }
+
+export default React.memo(BackgroundMesh);

@@ -21,7 +21,7 @@
     grid-template-columns: 1fr 3fr 1fr;
     grid-template-rows: 1fr 1fr 1fr 1fr 1fr;
     grid-template-areas:
-        "rp-logo . rp-name"
+        "rp-name . nav-menu"
         "quote . ."
         ". hero-title ."
         ". hero-flavour ."
@@ -37,14 +37,8 @@
     grid-area: rp-logo;
 }
 
-.home-logo {
-    width: fit-content;
-    height: fit-content;
-}
-
 .home-name {
     grid-area: rp-name;
-    text-align: right;
     align-self: start;
 }
 

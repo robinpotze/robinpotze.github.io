@@ -1,6 +1,6 @@
+import React, { useRef } from 'react'
 import { shaderMaterial } from "@react-three/drei"
 import { extend, useFrame } from "@react-three/fiber"
-import { useRef } from 'react'
 import * as THREE from 'three'
 import flameFragmentShader from '../shaders/Flame.glsl?raw'
 
@@ -23,7 +23,7 @@ const FlameMaterial = shaderMaterial(
 
 extend({ FlameMaterial })
 
-export default function FlameMesh(props) {
+function FlameMesh(props) {
     const materialRef = useRef()
 
     useFrame((state) => {
@@ -43,3 +43,5 @@ export default function FlameMesh(props) {
         </mesh>
     )
 }
+
+export default React.memo(FlameMesh);

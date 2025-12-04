@@ -1,11 +1,12 @@
 import React, { useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import { ANIMATION_TIMING, ANIMATION_EASING } from '@/constants/animations';
 import './CurtainTransition.css';
 
 const LAYER_COLORS = ['var(--c-LGHT)', 'var(--c-BRND)', 'var(--c-DRK)'];
-const EASE = [0.22, 1, 0.36, 1];
-const DURATION = 0.2;
-const STAGGER_DELAY = 0.07;
+const EASE = ANIMATION_EASING.CURTAIN;
+const DURATION = ANIMATION_TIMING.CURTAIN_DURATION / 1000; // Convert to seconds
+const STAGGER_DELAY = ANIMATION_TIMING.LAYER_STAGGER_DELAY / 1000; // Convert to seconds
 
 const DIRECTION_CONFIG = {
     up: {
@@ -33,6 +34,8 @@ const DIRECTION_CONFIG = {
         revealed: '100%'
     }
 };
+
+import PropTypes from 'prop-types';
 
 export default function CurtainTransition({
     isOpen = false,
@@ -92,3 +95,10 @@ export default function CurtainTransition({
         </div>
     );
 }
+
+CurtainTransition.propTypes = {
+    isOpen: PropTypes.bool,
+    direction: PropTypes.oneOf(['up', 'down', 'left', 'right']),
+    onCoverComplete: PropTypes.func,
+    onRevealComplete: PropTypes.func,
+};

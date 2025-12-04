@@ -1,14 +1,12 @@
-import { Link } from 'react-router-dom';
 import { RadialGrid, RedoAnimText, ScrollDown } from '@components';
+import NavigationMenu from '../../components/layout/NavigationMenu/NavigationMenu';
 
 export default function HomeLayout() {
     return (
         <>
             <div className='home-section'>
                 <div className='home-content'>
-                    <Link to='/' className='home-logo-link'>
-                        <img src="img/logo/logo64.png" alt='robin potze logo' className='home-logo' />
-                    </Link>
+                    <NavigationMenu />
                     <p className='deco-small home-name'>ROBIN <br /> POTZE</p>
                     <p className='deco-tiny home-quote'>
                         | THOSE WHO DOUBT |<br />

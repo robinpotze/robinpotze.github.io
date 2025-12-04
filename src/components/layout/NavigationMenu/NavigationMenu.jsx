@@ -1,13 +1,13 @@
-import React, { useCallback, useLayoutEffect, useRef, useState, createContext, useContext } from 'react';
+import { useCallback, useLayoutEffect, useRef, useState, createContext, useContext } from 'react';
 import { useAnimation } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
+import { ANIMATION_TIMING } from '@/constants/animations';
 import { CurtainTransition } from '@components/effects';
 import MenuButton from './MenuButton';
 import MenuBackgroundLayers from './MenuBackgroundLayers';
 import MenuPanel from './MenuPanel';
 import './NavigationMenu.css';
 
-// Context for navigation with curtain transition
 const NavigationContext = createContext(null);
 export const useNavigationCurtain = () => useContext(NavigationContext);
 
@@ -98,10 +98,10 @@ export const NavigationMenu = () => {
 
     const navigateWithCurtain = useCallback((path) => {
         pendingNavigation.current = path;
-        setOpen(false); // Close menu first
+        setOpen(false);
         setTimeout(() => {
-            setCurtainOpen(true); // Trigger curtain
-        }, 300); // Wait for menu to close
+            setCurtainOpen(true);
+        }, ANIMATION_TIMING.MENU_CLOSE_DELAY);
     }, []);
 
     const handleCurtainCoverComplete = useCallback(() => {
