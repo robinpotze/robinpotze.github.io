@@ -9,8 +9,8 @@ export default function HomeLayout() {
                     <Link to='/' className='home-logo-link'>
                         <img src="img/logo/logo64.png" alt='robin potze logo' className='home-logo' />
                     </Link>
-                    <p className='deco home-name'>ROBIN <br /> POTZE</p>
-                    <p className='deco-small home-quote'>
+                    <p className='deco-small home-name'>ROBIN <br /> POTZE</p>
+                    <p className='deco-tiny home-quote'>
                         | THOSE WHO DOUBT |<br />
                         | CAST THEMSELVES|<br />
                         | INTO A VOID |<br />
@@ -25,8 +25,8 @@ export default function HomeLayout() {
                 <div className='home-side'>
                     <div className='home-side-rotation-wrapper'>
                         <div className='home-side-flavour-text r90'>
-                            <p className='deco-small home-side-text'>assertThat(AMBIGUOUS.AMBIVALENCE)</p>
-                            <p className='deco-small home-side-text-brand'>willReturn("ESCAPE WILL MAKE ME GOD")</p>
+                            <p className='deco-tiny home-side-text'>assertThat(AMBIGUOUS.AMBIVALENCE)</p>
+                            <p className='deco-tiny home-side-text-brand'>willReturn("ESCAPE WILL MAKE ME GOD")</p>
                         </div>
                     </div>
                     <div className='home-side-divider r90'>

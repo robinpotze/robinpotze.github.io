@@ -18,12 +18,9 @@ const easeCurve = (t) => {
     return 0.9 + local * 0.1;
 };
 
-
+// Simple ease out for entry animation
 const entryEase = (t) => {
-    const curveInput = t * 0.25;
-    const curveOutput = easeCurve(curveInput);
-    const normalizedOutput = curveOutput / easeCurve(0.25);
-    return normalizedOutput;
+    return 1 - Math.pow(1 - t, 3); // cubic ease out
 };
 
 export function useEntryAnimation(ref, routeName, options = {}) {
@@ -57,8 +54,6 @@ export function useEntryAnimation(ref, routeName, options = {}) {
     useFrame(({ clock }) => {
         if (!ref.current || !enabled) return;
 
-        let eased = 0;
-
         if (!hasCompletedEntry.current) {
             if (animationStartTime.current === null) {
                 animationStartTime.current = clock.getElapsedTime();
@@ -69,7 +64,7 @@ export function useEntryAnimation(ref, routeName, options = {}) {
             if (elapsed < 0) return;
 
             const entryProgress = Math.min(elapsed / duration, 1);
-            eased = entryEase(entryProgress);
+            const eased = entryEase(entryProgress);
 
             if (entryProgress >= 1) {
                 hasCompletedEntry.current = true;
@@ -83,15 +78,16 @@ export function useEntryAnimation(ref, routeName, options = {}) {
             ref.current.scale.y = THREE.MathUtils.lerp(startScale[1], endScale[1], eased);
             ref.current.scale.z = THREE.MathUtils.lerp(startScale[2], endScale[2], eased);
         } else {
-            eased = easeCurve(scrollProgress);
+            // After entry, apply scroll-based animation
+            const scrollEased = easeCurve(scrollProgress);
 
-            ref.current.position.x = THREE.MathUtils.lerp(endPosition[0], finalEndPosition[0], eased);
-            ref.current.position.y = THREE.MathUtils.lerp(endPosition[1], finalEndPosition[1], eased);
-            ref.current.position.z = THREE.MathUtils.lerp(endPosition[2], finalEndPosition[2], eased);
+            ref.current.position.x = THREE.MathUtils.lerp(endPosition[0], finalEndPosition[0], scrollEased);
+            ref.current.position.y = THREE.MathUtils.lerp(endPosition[1], finalEndPosition[1], scrollEased);
+            ref.current.position.z = THREE.MathUtils.lerp(endPosition[2], finalEndPosition[2], scrollEased);
 
-            ref.current.scale.x = THREE.MathUtils.lerp(endScale[0], finalEndScale[0], eased);
-            ref.current.scale.y = THREE.MathUtils.lerp(endScale[1], finalEndScale[1], eased);
-            ref.current.scale.z = THREE.MathUtils.lerp(endScale[2], finalEndScale[2], eased);
+            ref.current.scale.x = THREE.MathUtils.lerp(endScale[0], finalEndScale[0], scrollEased);
+            ref.current.scale.y = THREE.MathUtils.lerp(endScale[1], finalEndScale[1], scrollEased);
+            ref.current.scale.z = THREE.MathUtils.lerp(endScale[2], finalEndScale[2], scrollEased);
         }
     });
 }
@@ -130,8 +126,6 @@ export function useCameraAnimation(cameraRef, routeName, options = {}) {
         const targetCamera = cameraRef?.current || camera;
         if (!targetCamera) return;
 
-        let eased = 0;
-
         if (!hasCompletedEntry.current) {
             if (animationStartTime.current === null) {
                 animationStartTime.current = clock.getElapsedTime();
@@ -139,7 +133,7 @@ export function useCameraAnimation(cameraRef, routeName, options = {}) {
 
             const elapsed = clock.getElapsedTime() - animationStartTime.current;
             const progress = Math.min(elapsed / duration, 1);
-            eased = entryEase(progress);
+            const eased = entryEase(progress);
 
             if (progress >= 1) {
                 hasCompletedEntry.current = true;
@@ -154,14 +148,15 @@ export function useCameraAnimation(cameraRef, routeName, options = {}) {
                 targetCamera.updateProjectionMatrix();
             }
         } else {
-            eased = easeCurve(scrollProgress);
+            // After entry, apply scroll-based animation
+            const scrollEased = easeCurve(scrollProgress);
 
-            targetCamera.position.x = THREE.MathUtils.lerp(endPosition[0], finalEndPosition[0], eased);
-            targetCamera.position.y = THREE.MathUtils.lerp(endPosition[1], finalEndPosition[1], eased);
-            targetCamera.position.z = THREE.MathUtils.lerp(endPosition[2], finalEndPosition[2], eased);
+            targetCamera.position.x = THREE.MathUtils.lerp(endPosition[0], finalEndPosition[0], scrollEased);
+            targetCamera.position.y = THREE.MathUtils.lerp(endPosition[1], finalEndPosition[1], scrollEased);
+            targetCamera.position.z = THREE.MathUtils.lerp(endPosition[2], finalEndPosition[2], scrollEased);
 
             if (targetCamera.isPerspectiveCamera) {
-                targetCamera.fov = THREE.MathUtils.lerp(endFov, finalEndFov, eased);
+                targetCamera.fov = THREE.MathUtils.lerp(endFov, finalEndFov, scrollEased);
                 targetCamera.updateProjectionMatrix();
             }
         }

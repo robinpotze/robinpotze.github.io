@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { useFrame } from '@react-three/fiber';
 import { PerspectiveCamera, Float, Text } from '@react-three/drei';
 import { Bloom, ChromaticAberration, EffectComposer, N8AO, TiltShift2 } from '@react-three/postprocessing';
@@ -14,6 +14,15 @@ export default function HomeScene({ scrollProgress = 0 }) {
     const subtitleRef = useRef();
     const lightRef = useRef();
     const cameraRef = useRef();
+    const [entryComplete, setEntryComplete] = useState(false);
+
+    // Delay Float activation to allow entry animation to complete cleanly
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setEntryComplete(true);
+        }, 800); // Slightly longer than the 0.6s entry duration
+        return () => clearTimeout(timer);
+    }, []);
 
     useEntryAnimation(logoRef, 'home', {
         duration:0.6,
@@ -84,7 +93,11 @@ export default function HomeScene({ scrollProgress = 0 }) {
                 </Text>
             </group>
 
-            <Float floatIntensity={2} rotationIntensity={0.5} speed={0.5}>
+            <Float 
+                floatIntensity={entryComplete ? 2 : 0} 
+                rotationIntensity={entryComplete ? 0.5 : 0} 
+                speed={0.5}
+            >
                 <group ref={logoRef} position={[0, -15, -5]} scale={0.5}>
                     <LogoMesh />
                 </group>
