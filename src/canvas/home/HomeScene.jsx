@@ -25,7 +25,7 @@ export default function HomeScene({ scrollProgress = 0 }) {
     }, []);
 
     useEntryAnimation(logoRef, 'home', {
-        duration:0.6,
+        duration: 0.6,
         startPosition: [0, 0, 20],
         endPosition: [0, 0, -5],
         scrollEndPosition: [0, 0, -15],
@@ -93,9 +93,9 @@ export default function HomeScene({ scrollProgress = 0 }) {
                 </Text>
             </group>
 
-            <Float 
-                floatIntensity={entryComplete ? 2 : 0} 
-                rotationIntensity={entryComplete ? 0.5 : 0} 
+            <Float
+                floatIntensity={entryComplete ? 2 : 0}
+                rotationIntensity={entryComplete ? 0.5 : 0}
                 speed={0.5}
             >
                 <group ref={logoRef} position={[0, -15, -5]} scale={0.5}>
