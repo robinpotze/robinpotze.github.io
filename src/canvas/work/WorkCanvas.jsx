@@ -16,7 +16,6 @@ export default function WorkCanvas({ items, onCardNavigate, onScrollChange }) {
                     preserveDrawingBuffer: false
                 }}
             >
-                <color attach="background" args={['#000000']} />
                 <PerspectiveCamera
                     makeDefault
                     position={CAROUSEL_CONFIG.CAMERA.POSITION}
