@@ -1,6 +1,6 @@
 import { useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
-import { calculateCardCenteredness, calculateCardScale } from '@utils/carousel.math';
+import { calculateCardCenteredness, calculateCardScale } from '@config/carousel.config';
 
 export function useCardScale(groupRef, index) {
     const rigRef = useRef();

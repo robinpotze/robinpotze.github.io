@@ -1,7 +1,6 @@
 import { useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
-import { CAROUSEL_CONFIG } from '@config/carousel.config';
-import { calculateFloatOffset, applyPositionOffset } from '@utils/carousel.math';
+import { CAROUSEL_CONFIG, calculateFloatOffset, applyPositionOffset } from '@config/carousel.config';
 
 export function useCardFloat(groupRef, basePosition, index) {
     const floatSpeed = useRef(

@@ -1,7 +1,7 @@
 import { useCallback, useLayoutEffect, useRef, useState, createContext, useContext } from 'react';
 import { useAnimation } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-import { ANIMATION_TIMING } from '@/constants/animations';
+import { ANIMATION_TIMING } from '@config/animations';
 import { CurtainTransition } from '@components/effects';
 import MenuButton from './MenuButton';
 import MenuBackgroundLayers from './MenuBackgroundLayers';

@@ -1,10 +1,10 @@
 import { useNavigate, useLocation } from 'react-router-dom';
-import { useEffect, useRef, useState, useReducer } from 'react';
-import { ANIMATION_TIMING, SCROLL_THRESHOLDS } from '@/constants/animations';
-import HomeLayout from './HomeLayout';
+import { useEffect, useRef, useReducer } from 'react';
+import { ANIMATION_TIMING, SCROLL_THRESHOLDS } from '@config/animations';
 import HomeCanvas from '@canvas/home/HomeCanvas';
 import { LaserFlow } from '@canvas/laser/Laser';
-import { CurtainTransition, LoadingScreen, ErrorBoundary } from '@components';
+import { CurtainTransition, LoadingScreen, ErrorBoundary, RadialGrid, RedoAnimText, ScrollDown } from '@components';
+import { NavigationMenu } from '@components/layout/NavigationMenu/NavigationMenu';
 import './Home.css';
 
 // State machine for page lifecycle
@@ -122,7 +122,41 @@ export default function Home() {
                     wispIntensity={wispIntensity}
                     decay={decay}
                 />
-                <HomeLayout />
+                <div className='home-section'>
+                    <div className='home-content'>
+                        <NavigationMenu />
+                        <p className='deco-small home-name'>ROBIN <br /> POTZE</p>
+                        <p className='deco-tiny home-quote'>
+                            | THOSE WHO DOUBT |<br />
+                            | CAST THEMSELVES|<br />
+                            | INTO A VOID |<br />
+                            <RedoAnimText delay={0.5} /><br />
+                            | AMBIGUOUS AMBIVALENCE |
+                        </p>
+                        <div className='home-accents-bottom'>
+                            <RadialGrid type='CRCL' />
+                            <img className='home-accent-decal' src='img/decal/OFS.svg' alt='Offset cyberpunk dorito decal' />
+                        </div>
+                    </div>
+                    <div className='home-side'>
+                        <div className='home-side-rotation-wrapper'>
+                            <div className='home-side-flavour-text r90'>
+                                <p className='deco-tiny home-side-text'>assertThat(AMBIGUOUS.AMBIVALENCE)</p>
+                                <p className='deco-tiny home-side-text-brand'>willReturn("ESCAPE WILL MAKE ME GOD")</p>
+                            </div>
+                        </div>
+                        <div className='home-side-divider r90'>
+                            <img className='home-side-decal' src='img/icon/CRS.svg' alt='divider' />
+                            <p className='deco-tiny home-side-deco-text'>SDD.01</p>
+                        </div>
+                        <img className='home-side-decal' src='img/decal/MORSE.svg' alt='robin potze in barcode' />
+                        <img className='home-side-decal' src='img/decal/PILL.svg' alt='pill with four arrows point downwards' />
+                        <div className='home-scroll-trigger'>
+                            <ScrollDown />
+                        </div>
+                    </div>
+                </div>
+                <div className='home-transition-section' />
                 <ErrorBoundary>
                     <HomeCanvas scrollProgress={state.scrollProgress} startAnimations={state.showContent} />
                 </ErrorBoundary>

@@ -19,16 +19,22 @@ export const ANIMATION_TIMING = {
     NAVIGATION_DELAY: 200,
     MENU_CLOSE_DELAY: 300,
 
-    // Entry animations
-    ENTRY_DURATION: 1500,
-    CAMERA_DURATION: 1500,
-    FADE_DURATION: 1000,
+    // Entry animations - durations in seconds for Three.js animations
+    ENTRY_DURATION: 0.6,
+    ENTRY_DELAY: 0.6,
+    ENTRY_COMPLETE_TIMEOUT: 800,
+    CAMERA_DURATION: 1.5,
+    FADE_DURATION: 1.0,
 
     // Route transitions
     ROUTE_TRANSITION_DURATION: 1500,
 
     // Scroll
     SCROLL_DEBOUNCE: 16,
+
+    // Lenis smooth scroll
+    LENIS_LERP: 0.1,
+    LENIS_DURATION: 1.2,
 };
 
 export const ANIMATION_EASING = {

@@ -2,14 +2,15 @@ import { useLenisScroll } from '@hooks';
 import { DashLine, ScrollReveal, GradualBlur } from '@components';
 import ProjectHero from '@components/layout/ProjectHero/ProjectHero';
 import { NavigationMenu } from '@components/layout/NavigationMenu/NavigationMenu';
+import { ANIMATION_TIMING } from '@config/animations';
 import { useParams } from 'react-router-dom';
 import { pages } from './pages';
 import './Entry.css';
 
 export default function Entry() {
     useLenisScroll({
-        lerp: 0.1,
-        duration: 1.2,
+        lerp: ANIMATION_TIMING.LENIS_LERP,
+        duration: ANIMATION_TIMING.LENIS_DURATION,
         smoothWheel: true,
         wheelMultiplier: 1,
         touchMultiplier: 2,

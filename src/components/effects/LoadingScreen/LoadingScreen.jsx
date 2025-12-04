@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef } from 'react';
 import PropTypes from 'prop-types';
-import { ANIMATION_TIMING } from '@/constants/animations';
+import { ANIMATION_TIMING } from '@config/animations';
 import './LoadingScreen.css';
 
 export default function LoadingScreen({

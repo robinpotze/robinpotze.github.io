@@ -1,6 +1,7 @@
 import { useRef, useState, useEffect } from 'react';
 import { PerspectiveCamera, Float, Text } from '@react-three/drei';
 import { Bloom, ChromaticAberration, EffectComposer, N8AO, TiltShift2 } from '@react-three/postprocessing';
+import { ANIMATION_TIMING } from '@config/animations';
 import BackgroundMesh from '@canvas/shared/meshes/BackgroundMesh';
 import LogoMesh from '@canvas/shared/meshes/LogoMesh';
 // import RoomMesh from '@canvas/shared/meshes/RoomMesh';
@@ -20,12 +21,12 @@ export default function HomeScene({ scrollProgress = 0, startAnimations = true }
         if (!startAnimations) return;
         const timer = setTimeout(() => {
             setEntryComplete(true);
-        }, 800);
+        }, ANIMATION_TIMING.ENTRY_COMPLETE_TIMEOUT);
         return () => clearTimeout(timer);
     }, [startAnimations]);
 
     useEntryAnimation(logoRef, 'home', {
-        duration: 0.6,
+        duration: ANIMATION_TIMING.ENTRY_DURATION,
         startPosition: [0, 0, 20],
         endPosition: [0, 0, -5],
         scrollEndPosition: [0, 0, -15],
@@ -37,7 +38,7 @@ export default function HomeScene({ scrollProgress = 0, startAnimations = true }
     });
 
     useEntryAnimation(backgroundRef, 'home', {
-        duration: 0.6,
+        duration: ANIMATION_TIMING.ENTRY_DURATION,
         startPosition: [0, 0, -15],
         endPosition: [0, 0, -30],
         scrollEndPosition: [0, 0, -10],
@@ -49,8 +50,8 @@ export default function HomeScene({ scrollProgress = 0, startAnimations = true }
     });
 
     useEntryAnimation(subtitleRef, 'home', {
-        duration: 0.6,
-        delay: 0.6,
+        duration: ANIMATION_TIMING.ENTRY_DURATION,
+        delay: ANIMATION_TIMING.ENTRY_DELAY,
         startPosition: [0, -10, 20],
         endPosition: [0, -9, -5],
         scrollEndPosition: [0, -7, -5],
@@ -62,7 +63,7 @@ export default function HomeScene({ scrollProgress = 0, startAnimations = true }
     });
 
     useCameraAnimation(cameraRef, 'home', {
-        duration: 1.5,
+        duration: ANIMATION_TIMING.CAMERA_DURATION,
         startPosition: [0, 0, 30],
         endPosition: [0, 0, 20],
         scrollEndPosition: [0, 0, 10],
@@ -74,7 +75,7 @@ export default function HomeScene({ scrollProgress = 0, startAnimations = true }
     });
 
     useFadeAnimation(lightRef, 'home', {
-        duration: 1.0,
+        duration: ANIMATION_TIMING.FADE_DURATION,
         startValue: 0,
         endValue: 1,
         property: 'intensity',

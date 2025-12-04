@@ -1,6 +1,6 @@
 import React, { useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { ANIMATION_TIMING, ANIMATION_EASING } from '@/constants/animations';
+import { ANIMATION_TIMING, ANIMATION_EASING } from '@config/animations';
 import './CurtainTransition.css';
 
 const LAYER_COLORS = ['var(--c-LGHT)', 'var(--c-BRND)', 'var(--c-DRK)'];

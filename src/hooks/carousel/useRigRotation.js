@@ -1,8 +1,7 @@
 import { useRef } from 'react';
 import { useFrame, useThree } from '@react-three/fiber';
 import { useScroll } from '@react-three/drei';
-import { CAROUSEL_CONFIG } from '@config/carousel.config';
-import { calculateRigRotation, calculateCameraY } from '@utils/carousel.math';
+import { CAROUSEL_CONFIG, calculateRigRotation, calculateCameraY } from '@config/carousel.config';
 
 export function useRigRotation(rigRef, itemCount) {
     const cameraRef = useRef();

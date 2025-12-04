@@ -1,16 +1,16 @@
 import { Outlet } from 'react-router-dom';
-import { useEffect, useMemo } from 'react';
+import { useEffect } from 'react';
 import { useWorkStore } from '@/stores/workStore';
-import { createWorkService } from '@/services/WorkService';
+import { sortItems } from '@utils/workUtils';
 import { pages as autogenPages } from '@routes/Entry/pages/autogen';
 
 export default function App() {
-    const loadItems = useWorkStore((state) => state.loadItems);
-    const workService = useMemo(() => createWorkService(autogenPages), []);
+    const setItems = useWorkStore((state) => state.setItems);
 
     useEffect(() => {
-        loadItems(workService);
-    }, [loadItems, workService]);
+        const items = sortItems(autogenPages);
+        setItems(items);
+    }, [setItems]);
 
     return <Outlet />;
 }
