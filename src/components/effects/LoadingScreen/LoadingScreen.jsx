@@ -1,6 +1,7 @@
-import { useEffect, useState, useRef } from 'react';
-import PropTypes from 'prop-types';
 import { ANIMATION_TIMING } from '@config/animations';
+import { useProgress } from '@react-three/drei';
+import PropTypes from 'prop-types';
+import { useEffect, useRef, useState } from 'react';
 import './LoadingScreen.css';
 
 export default function LoadingScreen({
@@ -8,27 +9,16 @@ export default function LoadingScreen({
     minDisplayTime = 1500,
     logoSrc = null
 }) {
+    const { progress: threeProgress } = useProgress();
     const [progress, setProgress] = useState(0);
     const [isHidden, setIsHidden] = useState(false);
     const startTimeRef = useRef(Date.now());
     const hasCompletedRef = useRef(false);
 
     useEffect(() => {
-        // Simulate loading progress
-        const progressInterval = setInterval(() => {
-            setProgress(prev => {
-                if (prev >= 100) {
-                    clearInterval(progressInterval);
-                    return 100;
-                }
-                // Exponential easing for more natural progress
-                const increment = (100 - prev) * 0.15;
-                return Math.min(100, prev + Math.max(increment, 0.5));
-            });
-        }, 50);
-
-        return () => clearInterval(progressInterval);
-    }, []);
+        // Use real Three.js loading progress
+        setProgress(threeProgress);
+    }, [threeProgress]);
 
     useEffect(() => {
         if (progress >= 100 && !hasCompletedRef.current) {
