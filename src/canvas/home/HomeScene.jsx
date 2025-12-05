@@ -1,12 +1,12 @@
-import { useRef, useState, useEffect } from 'react';
-import { PerspectiveCamera, Float, Text } from '@react-three/drei';
-import { Bloom, ChromaticAberration, EffectComposer, N8AO, TiltShift2 } from '@react-three/postprocessing';
-import { ANIMATION_TIMING } from '@config/animations';
 import BackgroundMesh from '@canvas/shared/meshes/BackgroundMesh';
 import LogoMesh from '@canvas/shared/meshes/LogoMesh';
+import { ANIMATION_TIMING } from '@config/animations';
+import { Float, PerspectiveCamera, Text } from '@react-three/drei';
+import { Bloom, EffectComposer, N8AO } from '@react-three/postprocessing';
+import { useEffect, useRef, useState } from 'react';
 // import RoomMesh from '@canvas/shared/meshes/RoomMesh';
 import Rig from '@canvas/shared/camera/Rig';
-import { useEntryAnimation, useCameraAnimation, useFadeAnimation } from '@hooks/animation/useAnimationHooks';
+import { useCameraAnimation, useEntryAnimation, useFadeAnimation } from '@hooks/animation/useAnimationHooks';
 
 export default function HomeScene({ scrollProgress = 0, startAnimations = true }) {
     const logoRef = useRef();
@@ -123,14 +123,21 @@ export default function HomeScene({ scrollProgress = 0, startAnimations = true }
                 <RoomMesh scrollProgress={scrollProgress} />
             </group> */}
 
-            <EffectComposer>
-                <N8AO aoRadius={1} intensity={1.5} />
-                <Bloom mipmapBlur luminanceThreshold={0.92} intensity={0.55} radius={0.4} levels={8} />
-                <TiltShift2 blur={0.05} />
-                <ChromaticAberration distortion={0.02} />
+            <EffectComposer multisampling={0}>
+                <N8AO aoRadius={1} intensity={1.5} aoSamples={8} denoiseSamples={4} />
+                <Bloom
+                    mipmapBlur
+                    luminanceThreshold={0.92}
+                    intensity={0.55}
+                    radius={0.4}
+                    levels={6}  // Reduced from 8 for performance
+                />
+                {/* Disabled expensive effects for better performance */}
+                {/* <TiltShift2 blur={0.05} /> */}
+                {/* <ChromaticAberration distortion={0.02} /> */}
             </EffectComposer>
 
-            <Rig />
+            <Rig intensity={0.3} />
         </>
     );
 }

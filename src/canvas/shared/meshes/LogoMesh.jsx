@@ -1,27 +1,33 @@
-import React, { useRef, useState, useEffect } from 'react'
+import { GlassLogoMaterial } from '@canvas/shared/materials/GlassLogoMaterial';
+import { useNoiseTexture } from '@hooks';
+import { useFBO, useGLTF } from "@react-three/drei";
+import { extend, useFrame } from "@react-three/fiber";
 import PropTypes from 'prop-types';
-import { useGLTF, useFBO } from "@react-three/drei"
-import { useFrame, extend } from "@react-three/fiber"
-import * as THREE from 'three'
-import { GlassLogoMaterial } from '@canvas/shared/materials/GlassLogoMaterial'
-import { useNoiseTexture } from '@hooks'
+import React, { useRef } from 'react';
+import * as THREE from 'three';
+
+// Register the custom material with R3F
+extend({ GlassLogoMaterial })
 
 useGLTF.preload("/assets/3d/Logo.glb")
 
 function LogoMesh({ enableFBO = true, ...props }) {
     const meshRef = useRef()
     const materialRef = useRef()
+    const frameCount = useRef(0)
 
-    const fbo = useFBO(512, 512, {
+    // Reduce FBO resolution for better performance
+    const fbo = useFBO(256, 256, {
         minFilter: THREE.LinearFilter,
         magFilter: THREE.LinearFilter,
         format: THREE.RGBAFormat,
     })
 
+    // Reduce noise texture resolution
     const noiseTexture = useNoiseTexture({
-        size: 512,
+        size: 256,
         scale: 10,
-        octaves: 4,
+        octaves: 3,  // Reduced from 4
         persistence: 0.5
     })
 
@@ -40,8 +46,9 @@ function LogoMesh({ enableFBO = true, ...props }) {
             materialRef.current.uTime = state.clock.elapsedTime
             materialRef.current.uResolution.set(state.size.width, state.size.height)
 
-            // Only render to FBO when enabled
-            if (enableFBO) {
+            // Only render to FBO when enabled and every other frame for better performance
+            frameCount.current++
+            if (enableFBO && frameCount.current % 2 === 0) {
                 const oldTarget = state.gl.getRenderTarget()
                 meshRef.current.visible = false
                 state.gl.setRenderTarget(fbo)

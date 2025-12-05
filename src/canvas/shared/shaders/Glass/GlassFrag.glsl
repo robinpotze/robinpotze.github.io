@@ -14,7 +14,7 @@ varying vec3 vViewPos;
 varying vec3 vWorldNormal;
 
 #define PI 3.14159265359
-#define SAMPLES 8
+#define SAMPLES 3  // Reduced from 8 to 3 for better performance
 
 float random(vec2 p){
     return fract(sin(dot(p.xy,vec2(12.9898,78.233)))*43758.5453);

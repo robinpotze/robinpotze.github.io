@@ -16,7 +16,6 @@ export default function LoadingScreen({
     const hasCompletedRef = useRef(false);
 
     useEffect(() => {
-        // Use real Three.js loading progress
         setProgress(threeProgress);
     }, [threeProgress]);
 
@@ -29,8 +28,6 @@ export default function LoadingScreen({
 
             setTimeout(() => {
                 setIsHidden(true);
-
-                // Wait for fade out animation before calling onComplete
                 setTimeout(() => {
                     if (onComplete) {
                         onComplete();
